@@ -23,6 +23,7 @@
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.lblName = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.lblSize = new System.Windows.Forms.Label();
@@ -347,7 +348,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 328);
+            this.ClientSize = new System.Drawing.Size(510, 328);
             this.Controls.Add(this.numUpDownPeriod);
             this.Controls.Add(this.numUpDownGlobalPeriod);
             this.Controls.Add(this.lblGlobalPeriod);
@@ -368,8 +369,9 @@
             this.Controls.Add(this.lblSize);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.lblName);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "MonitoringProtokolu";
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownLines)).EndInit();
             this.panelSizes.ResumeLayout(false);
             this.panelSizes.PerformLayout();
