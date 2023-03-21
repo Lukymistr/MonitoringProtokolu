@@ -336,7 +336,6 @@ namespace MonitoringProtokolu {
         // remove prefix from files 
         private static void renameBack() {
             for (int i = 0; i < foundFiles.size(); i++) {
-                MessageBox.Show($"{foundFiles.get(i)[1]} na {foundFiles.get(i)[0]}");
                 File.Move(foundFiles.get(i)[1], foundFiles.get(i)[0]);
             }
         }
