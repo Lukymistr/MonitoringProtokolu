@@ -7,7 +7,8 @@ namespace MonitoringProtokolu {
         public Form1() {
             InitializeComponent();
             radioBtnB.Checked = true;
-            radioBtnSeconds.Checked = true;
+            radioBtnMiliSecondsPeriod.Checked = true;
+            radioBtnMiliSecondsGlobalPeriod.Checked = true;
             if (!Directory.Exists(filesFolder)) {
                 Directory.CreateDirectory(filesFolder);
             }
@@ -17,8 +18,8 @@ namespace MonitoringProtokolu {
         // needed variables
         static Boolean running = false;
         static String path = "";
-        static long size = 0;
-        static int lines = 0, period = 0, bytesToRead = 0, globalPeriod = 0;
+        static long size = 0, period = 0, globalPeriod = 0;
+        static int lines = 0, bytesToRead = 0;
 
         // timer for periods
         static DateTime timer = DateTime.UtcNow;
@@ -137,8 +138,11 @@ namespace MonitoringProtokolu {
 
             // calculate frequency
             period = Convert.ToInt32(numUpDownPeriod.Value);
-            if (radioBtnMins.Checked) {
-                period *= 60;
+            if (radioBtnSecondsPeriod.Checked) {
+                period *= 1000;
+            }
+            if (radioBtnMinsPeriod.Checked) {
+                period *= 60000;
             }
 
             // write frequency
@@ -150,6 +154,12 @@ namespace MonitoringProtokolu {
 
             // global period
             globalPeriod = Convert.ToInt32(numUpDownGlobalPeriod.Value);
+            if (radioBtnSecondsGlobalPeriod.Checked) {
+                globalPeriod *= 1000;
+            }
+            if (radioBtnMinsGlobalPeriod.Checked) {
+                globalPeriod *= 60000;
+            }
             MyIni.Write("globalPeriod", globalPeriod.ToString());
 
             return true;
@@ -163,9 +173,9 @@ namespace MonitoringProtokolu {
                 path = MyIni.Read("name");
                 size = Int64.Parse(MyIni.Read("size"));
                 lines = int.Parse(MyIni.Read("lines"));
-                period = int.Parse(MyIni.Read("period"));
+                period = Int64.Parse(MyIni.Read("period"));
                 bytesToRead = int.Parse(MyIni.Read("bytesToRead"));
-                globalPeriod = int.Parse(MyIni.Read("globalPeriod"));
+                globalPeriod = Int64.Parse(MyIni.Read("globalPeriod"));
 
                 if (period < 1 || globalPeriod < 1) {
                     MessageBox.Show("Interval mezi hledáním nemùže být menší než 1");

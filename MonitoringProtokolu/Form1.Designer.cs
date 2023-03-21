@@ -42,14 +42,19 @@
             this.lblPeriod = new System.Windows.Forms.Label();
             this.lblComment = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.radioBtnMins = new System.Windows.Forms.RadioButton();
-            this.radioBtnSeconds = new System.Windows.Forms.RadioButton();
+            this.radioBtnMiliSecondsPeriod = new System.Windows.Forms.RadioButton();
+            this.radioBtnMinsPeriod = new System.Windows.Forms.RadioButton();
+            this.radioBtnSecondsPeriod = new System.Windows.Forms.RadioButton();
             this.btnExit = new System.Windows.Forms.Button();
             this.numUpDownBytesToRead = new System.Windows.Forms.NumericUpDown();
             this.lblBody = new System.Windows.Forms.Label();
             this.lblGlobalPeriod = new System.Windows.Forms.Label();
             this.numUpDownGlobalPeriod = new System.Windows.Forms.NumericUpDown();
             this.numUpDownPeriod = new System.Windows.Forms.NumericUpDown();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.radioBtnMiliSecondsGlobalPeriod = new System.Windows.Forms.RadioButton();
+            this.radioBtnMinsGlobalPeriod = new System.Windows.Forms.RadioButton();
+            this.radioBtnSecondsGlobalPeriod = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownLines)).BeginInit();
             this.panelSizes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownSize)).BeginInit();
@@ -57,6 +62,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownBytesToRead)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownGlobalPeriod)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownPeriod)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblName
@@ -231,34 +237,46 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.radioBtnMins);
-            this.panel1.Controls.Add(this.radioBtnSeconds);
+            this.panel1.Controls.Add(this.radioBtnMiliSecondsPeriod);
+            this.panel1.Controls.Add(this.radioBtnMinsPeriod);
+            this.panel1.Controls.Add(this.radioBtnSecondsPeriod);
             this.panel1.Location = new System.Drawing.Point(309, 174);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(145, 31);
+            this.panel1.Size = new System.Drawing.Size(253, 31);
             this.panel1.TabIndex = 10;
             // 
-            // radioBtnMins
+            // radioBtnMiliSecondsPeriod
             // 
-            this.radioBtnMins.AutoSize = true;
-            this.radioBtnMins.Location = new System.Drawing.Point(69, 7);
-            this.radioBtnMins.Name = "radioBtnMins";
-            this.radioBtnMins.Size = new System.Drawing.Size(63, 19);
-            this.radioBtnMins.TabIndex = 12;
-            this.radioBtnMins.TabStop = true;
-            this.radioBtnMins.Text = "minuty";
-            this.radioBtnMins.UseVisualStyleBackColor = false;
+            this.radioBtnMiliSecondsPeriod.AutoSize = true;
+            this.radioBtnMiliSecondsPeriod.Location = new System.Drawing.Point(10, 7);
+            this.radioBtnMiliSecondsPeriod.Name = "radioBtnMiliSecondsPeriod";
+            this.radioBtnMiliSecondsPeriod.Size = new System.Drawing.Size(89, 19);
+            this.radioBtnMiliSecondsPeriod.TabIndex = 13;
+            this.radioBtnMiliSecondsPeriod.TabStop = true;
+            this.radioBtnMiliSecondsPeriod.Text = "milisekundy";
+            this.radioBtnMiliSecondsPeriod.UseVisualStyleBackColor = true;
             // 
-            // radioBtnSeconds
+            // radioBtnMinsPeriod
             // 
-            this.radioBtnSeconds.AutoSize = true;
-            this.radioBtnSeconds.Location = new System.Drawing.Point(3, 7);
-            this.radioBtnSeconds.Name = "radioBtnSeconds";
-            this.radioBtnSeconds.Size = new System.Drawing.Size(61, 19);
-            this.radioBtnSeconds.TabIndex = 11;
-            this.radioBtnSeconds.TabStop = true;
-            this.radioBtnSeconds.Text = "vteřiny";
-            this.radioBtnSeconds.UseVisualStyleBackColor = true;
+            this.radioBtnMinsPeriod.AutoSize = true;
+            this.radioBtnMinsPeriod.Location = new System.Drawing.Point(180, 7);
+            this.radioBtnMinsPeriod.Name = "radioBtnMinsPeriod";
+            this.radioBtnMinsPeriod.Size = new System.Drawing.Size(63, 19);
+            this.radioBtnMinsPeriod.TabIndex = 12;
+            this.radioBtnMinsPeriod.TabStop = true;
+            this.radioBtnMinsPeriod.Text = "minuty";
+            this.radioBtnMinsPeriod.UseVisualStyleBackColor = false;
+            // 
+            // radioBtnSecondsPeriod
+            // 
+            this.radioBtnSecondsPeriod.AutoSize = true;
+            this.radioBtnSecondsPeriod.Location = new System.Drawing.Point(105, 7);
+            this.radioBtnSecondsPeriod.Name = "radioBtnSecondsPeriod";
+            this.radioBtnSecondsPeriod.Size = new System.Drawing.Size(69, 19);
+            this.radioBtnSecondsPeriod.TabIndex = 11;
+            this.radioBtnSecondsPeriod.TabStop = true;
+            this.radioBtnSecondsPeriod.Text = "sekundy";
+            this.radioBtnSecondsPeriod.UseVisualStyleBackColor = true;
             // 
             // btnExit
             // 
@@ -272,7 +290,7 @@
             // 
             // numUpDownBytesToRead
             // 
-            this.numUpDownBytesToRead.Location = new System.Drawing.Point(139, 254);
+            this.numUpDownBytesToRead.Location = new System.Drawing.Point(182, 254);
             this.numUpDownBytesToRead.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -287,22 +305,22 @@
             this.lblBody.AutoSize = true;
             this.lblBody.Location = new System.Drawing.Point(12, 254);
             this.lblBody.Name = "lblBody";
-            this.lblBody.Size = new System.Drawing.Size(108, 15);
+            this.lblBody.Size = new System.Drawing.Size(164, 15);
             this.lblBody.TabIndex = 18;
-            this.lblBody.Text = "velikost těla emailu";
+            this.lblBody.Text = "velikost těla emailu (v bytech)";
             // 
             // lblGlobalPeriod
             // 
             this.lblGlobalPeriod.AutoSize = true;
-            this.lblGlobalPeriod.Location = new System.Drawing.Point(265, 254);
+            this.lblGlobalPeriod.Location = new System.Drawing.Point(476, 80);
             this.lblGlobalPeriod.Name = "lblGlobalPeriod";
-            this.lblGlobalPeriod.Size = new System.Drawing.Size(93, 15);
+            this.lblGlobalPeriod.Size = new System.Drawing.Size(233, 15);
             this.lblGlobalPeriod.TabIndex = 19;
-            this.lblGlobalPeriod.Text = "globální perioda";
+            this.lblGlobalPeriod.Text = "globální perioda (opakovat celé hledání za)";
             // 
             // numUpDownGlobalPeriod
             // 
-            this.numUpDownGlobalPeriod.Location = new System.Drawing.Point(364, 254);
+            this.numUpDownGlobalPeriod.Location = new System.Drawing.Point(476, 98);
             this.numUpDownGlobalPeriod.Maximum = new decimal(new int[] {
             31556926,
             0,
@@ -344,11 +362,55 @@
             0,
             0});
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.radioBtnMiliSecondsGlobalPeriod);
+            this.panel2.Controls.Add(this.radioBtnMinsGlobalPeriod);
+            this.panel2.Controls.Add(this.radioBtnSecondsGlobalPeriod);
+            this.panel2.Location = new System.Drawing.Point(602, 98);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(253, 31);
+            this.panel2.TabIndex = 14;
+            // 
+            // radioBtnMiliSecondsGlobalPeriod
+            // 
+            this.radioBtnMiliSecondsGlobalPeriod.AutoSize = true;
+            this.radioBtnMiliSecondsGlobalPeriod.Location = new System.Drawing.Point(10, 7);
+            this.radioBtnMiliSecondsGlobalPeriod.Name = "radioBtnMiliSecondsGlobalPeriod";
+            this.radioBtnMiliSecondsGlobalPeriod.Size = new System.Drawing.Size(89, 19);
+            this.radioBtnMiliSecondsGlobalPeriod.TabIndex = 13;
+            this.radioBtnMiliSecondsGlobalPeriod.TabStop = true;
+            this.radioBtnMiliSecondsGlobalPeriod.Text = "milisekundy";
+            this.radioBtnMiliSecondsGlobalPeriod.UseVisualStyleBackColor = true;
+            // 
+            // radioBtnMinsGlobalPeriod
+            // 
+            this.radioBtnMinsGlobalPeriod.AutoSize = true;
+            this.radioBtnMinsGlobalPeriod.Location = new System.Drawing.Point(180, 7);
+            this.radioBtnMinsGlobalPeriod.Name = "radioBtnMinsGlobalPeriod";
+            this.radioBtnMinsGlobalPeriod.Size = new System.Drawing.Size(63, 19);
+            this.radioBtnMinsGlobalPeriod.TabIndex = 12;
+            this.radioBtnMinsGlobalPeriod.TabStop = true;
+            this.radioBtnMinsGlobalPeriod.Text = "minuty";
+            this.radioBtnMinsGlobalPeriod.UseVisualStyleBackColor = false;
+            // 
+            // radioBtnSecondsGlobalPeriod
+            // 
+            this.radioBtnSecondsGlobalPeriod.AutoSize = true;
+            this.radioBtnSecondsGlobalPeriod.Location = new System.Drawing.Point(105, 7);
+            this.radioBtnSecondsGlobalPeriod.Name = "radioBtnSecondsGlobalPeriod";
+            this.radioBtnSecondsGlobalPeriod.Size = new System.Drawing.Size(69, 19);
+            this.radioBtnSecondsGlobalPeriod.TabIndex = 11;
+            this.radioBtnSecondsGlobalPeriod.TabStop = true;
+            this.radioBtnSecondsGlobalPeriod.Text = "sekundy";
+            this.radioBtnSecondsGlobalPeriod.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(510, 328);
+            this.ClientSize = new System.Drawing.Size(867, 328);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.numUpDownPeriod);
             this.Controls.Add(this.numUpDownGlobalPeriod);
             this.Controls.Add(this.lblGlobalPeriod);
@@ -381,6 +443,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownBytesToRead)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownGlobalPeriod)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownPeriod)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -405,8 +469,8 @@
         private Label lblPeriod;
         private Label lblComment;
         private Panel panel1;
-        private RadioButton radioBtnMins;
-        private RadioButton radioBtnSeconds;
+        private RadioButton radioBtnMinsPeriod;
+        private RadioButton radioBtnSecondsPeriod;
         private RadioButton radioBtnB;
         private Button btnExit;
         private NumericUpDown numUpDownBytesToRead;
@@ -414,5 +478,10 @@
         private Label lblGlobalPeriod;
         private NumericUpDown numUpDownGlobalPeriod;
         private NumericUpDown numUpDownPeriod;
+        private RadioButton radioBtnMiliSecondsPeriod;
+        private Panel panel2;
+        private RadioButton radioBtnMiliSecondsGlobalPeriod;
+        private RadioButton radioBtnMinsGlobalPeriod;
+        private RadioButton radioBtnSecondsGlobalPeriod;
     }
 }
