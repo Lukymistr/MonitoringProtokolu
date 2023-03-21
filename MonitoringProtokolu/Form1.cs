@@ -14,7 +14,10 @@ namespace MonitoringProtokolu {
         static Boolean running = false;
         static String path = "";
         static long size = 0;
-        static int lines = 0, frequency = 0, bytesToRead = 0;
+        static int lines = 0, period = 0, bytesToRead = 0, globalPeriod = 0;
+
+        // timer for periods
+        static DateTime timer = DateTime.UtcNow;
 
         // 0 = original path, 1 = path with prefix
         private static MyArrayList<String[]> foundFiles;
@@ -68,6 +71,14 @@ namespace MonitoringProtokolu {
             running = true;
             end = false;
             while (tree(path, size, lines)) {
+                
+                //globální perioda
+                timer = DateTime.UtcNow;
+                while (DateTime.UtcNow - timer < TimeSpan.FromSeconds(globalPeriod)) {
+                    if (end) {
+                        break;
+                    }
+                }
             }
             renameBack();
             running = false;
@@ -115,17 +126,21 @@ namespace MonitoringProtokolu {
             }
 
             // calculate frequency
-            frequency = Convert.ToInt32(numUpDownFrequency.Value);
+            period = Convert.ToInt32(numUpDownPeriod.Value);
             if (radioBtnMins.Checked) {
-                frequency *= 60;
+                period *= 60;
             }
 
             // write frequency
-            MyIni.Write("frequency", frequency.ToString());
+            MyIni.Write("period", period.ToString());
 
             // size of email body
             bytesToRead = Convert.ToInt32(numUpDownBytesToRead.Value);
             MyIni.Write("bytesToRead", bytesToRead.ToString());
+
+            // global period
+            globalPeriod = Convert.ToInt32(numUpDownGlobalPeriod.Value);
+            MyIni.Write("globalPeriod", globalPeriod.ToString());
 
             return true;
         }
@@ -137,10 +152,11 @@ namespace MonitoringProtokolu {
                 path = MyIni.Read("name");
                 size = Int64.Parse(MyIni.Read("size"));
                 lines = int.Parse(MyIni.Read("lines"));
-                frequency = int.Parse(MyIni.Read("frequency"));
+                period = int.Parse(MyIni.Read("period"));
                 bytesToRead = int.Parse(MyIni.Read("bytesToRead"));
+                globalPeriod = int.Parse(MyIni.Read("globalPeriod"));
 
-                if (frequency < 1) {
+                if (period < 1 || globalPeriod < 1) {
                     MessageBox.Show("Interval mezi hledáním nemùže být menší než 1");
                     return false;
                 }
@@ -245,8 +261,13 @@ namespace MonitoringProtokolu {
                     if (haveSizeOrLines(tmp, size, lines)) {                                             
                         renameAndAdd(tmp);
                         sendMail(tmp);
-                    } else {
-                        Thread.Sleep(frequency * 1000);
+                    }
+                    //souborová perioda
+                    timer = DateTime.UtcNow;
+                    while (DateTime.UtcNow - timer < TimeSpan.FromSeconds(period)) {
+                        if (end) {
+                            break;
+                        }
                     }
                 } else {
                     tree(tmp, size, lines);
@@ -293,8 +314,6 @@ namespace MonitoringProtokolu {
             if (!File.Exists(logFile)) {
                 File.Create(logFile).Close();
 
-                // kvùli vytvoøení souboru
-                // Thread.Sleep(500);
             }
             StreamWriter protocols = new StreamWriter(logFile, true);
             if (new FileInfo(logFile).Length == 0) {

@@ -38,8 +38,7 @@
             this.radioBtnMB = new System.Windows.Forms.RadioButton();
             this.radioBtnKB = new System.Windows.Forms.RadioButton();
             this.numUpDownSize = new System.Windows.Forms.NumericUpDown();
-            this.lblFrequency = new System.Windows.Forms.Label();
-            this.numUpDownFrequency = new System.Windows.Forms.NumericUpDown();
+            this.lblPeriod = new System.Windows.Forms.Label();
             this.lblComment = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.radioBtnMins = new System.Windows.Forms.RadioButton();
@@ -47,12 +46,16 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.numUpDownBytesToRead = new System.Windows.Forms.NumericUpDown();
             this.lblBody = new System.Windows.Forms.Label();
+            this.lblGlobalPeriod = new System.Windows.Forms.Label();
+            this.numUpDownGlobalPeriod = new System.Windows.Forms.NumericUpDown();
+            this.numUpDownPeriod = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownLines)).BeginInit();
             this.panelSizes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownSize)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numUpDownFrequency)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownBytesToRead)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDownGlobalPeriod)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDownPeriod)).BeginInit();
             this.SuspendLayout();
             // 
             // lblName
@@ -207,31 +210,14 @@
             this.numUpDownSize.Size = new System.Drawing.Size(120, 23);
             this.numUpDownSize.TabIndex = 2;
             // 
-            // lblFrequency
+            // lblPeriod
             // 
-            this.lblFrequency.AutoSize = true;
-            this.lblFrequency.Location = new System.Drawing.Point(12, 183);
-            this.lblFrequency.Name = "lblFrequency";
-            this.lblFrequency.Size = new System.Drawing.Size(58, 15);
-            this.lblFrequency.TabIndex = 12;
-            this.lblFrequency.Text = "frekvence";
-            // 
-            // numUpDownFrequency
-            // 
-            this.numUpDownFrequency.Location = new System.Drawing.Point(162, 183);
-            this.numUpDownFrequency.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numUpDownFrequency.Name = "numUpDownFrequency";
-            this.numUpDownFrequency.Size = new System.Drawing.Size(120, 23);
-            this.numUpDownFrequency.TabIndex = 9;
-            this.numUpDownFrequency.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.lblPeriod.AutoSize = true;
+            this.lblPeriod.Location = new System.Drawing.Point(12, 183);
+            this.lblPeriod.Name = "lblPeriod";
+            this.lblPeriod.Size = new System.Drawing.Size(47, 15);
+            this.lblPeriod.TabIndex = 12;
+            this.lblPeriod.Text = "perioda";
             // 
             // lblComment
             // 
@@ -304,18 +290,73 @@
             this.lblBody.TabIndex = 18;
             this.lblBody.Text = "velikost těla emailu";
             // 
+            // lblGlobalPeriod
+            // 
+            this.lblGlobalPeriod.AutoSize = true;
+            this.lblGlobalPeriod.Location = new System.Drawing.Point(265, 254);
+            this.lblGlobalPeriod.Name = "lblGlobalPeriod";
+            this.lblGlobalPeriod.Size = new System.Drawing.Size(93, 15);
+            this.lblGlobalPeriod.TabIndex = 19;
+            this.lblGlobalPeriod.Text = "globální perioda";
+            // 
+            // numUpDownGlobalPeriod
+            // 
+            this.numUpDownGlobalPeriod.Location = new System.Drawing.Point(364, 254);
+            this.numUpDownGlobalPeriod.Maximum = new decimal(new int[] {
+            31556926,
+            0,
+            0,
+            0});
+            this.numUpDownGlobalPeriod.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numUpDownGlobalPeriod.Name = "numUpDownGlobalPeriod";
+            this.numUpDownGlobalPeriod.Size = new System.Drawing.Size(120, 23);
+            this.numUpDownGlobalPeriod.TabIndex = 20;
+            this.numUpDownGlobalPeriod.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numUpDownPeriod
+            // 
+            this.numUpDownPeriod.Location = new System.Drawing.Point(162, 183);
+            this.numUpDownPeriod.Maximum = new decimal(new int[] {
+            31556926,
+            0,
+            0,
+            0});
+            this.numUpDownPeriod.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numUpDownPeriod.Name = "numUpDownPeriod";
+            this.numUpDownPeriod.Size = new System.Drawing.Size(120, 23);
+            this.numUpDownPeriod.TabIndex = 21;
+            this.numUpDownPeriod.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 328);
+            this.ClientSize = new System.Drawing.Size(500, 328);
+            this.Controls.Add(this.numUpDownPeriod);
+            this.Controls.Add(this.numUpDownGlobalPeriod);
+            this.Controls.Add(this.lblGlobalPeriod);
             this.Controls.Add(this.lblBody);
             this.Controls.Add(this.numUpDownBytesToRead);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblComment);
-            this.Controls.Add(this.numUpDownFrequency);
-            this.Controls.Add(this.lblFrequency);
+            this.Controls.Add(this.lblPeriod);
             this.Controls.Add(this.numUpDownSize);
             this.Controls.Add(this.panelSizes);
             this.Controls.Add(this.btnEnd);
@@ -333,10 +374,11 @@
             this.panelSizes.ResumeLayout(false);
             this.panelSizes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownSize)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numUpDownFrequency)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownBytesToRead)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDownGlobalPeriod)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDownPeriod)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -358,8 +400,7 @@
         private RadioButton radioBtnMB;
         private RadioButton radioBtnKB;
         private NumericUpDown numUpDownSize;
-        private Label lblFrequency;
-        private NumericUpDown numUpDownFrequency;
+        private Label lblPeriod;
         private Label lblComment;
         private Panel panel1;
         private RadioButton radioBtnMins;
@@ -368,5 +409,8 @@
         private Button btnExit;
         private NumericUpDown numUpDownBytesToRead;
         private Label lblBody;
+        private Label lblGlobalPeriod;
+        private NumericUpDown numUpDownGlobalPeriod;
+        private NumericUpDown numUpDownPeriod;
     }
 }
