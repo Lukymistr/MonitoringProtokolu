@@ -22,8 +22,13 @@ namespace MonitoringProtokolu {
         // 0 = original path, 1 = path with prefix
         private static MyArrayList<String[]> foundFiles;
 
-        // for ini file work
+        // path for log email sent
+        static String logFile = @"../../../protocols.csv";
+
+        // path for ini file
         static String iniFilePath = @"../../../MonitoringProtokolu.ini";
+        
+        // for ini file work
         static IniFile MyIni = new IniFile(iniFilePath);
 
         // end lokking for
@@ -148,6 +153,7 @@ namespace MonitoringProtokolu {
         // take values from file
         private Boolean fileInput() {
             try {
+
                 // takes values from ini file
                 path = MyIni.Read("name");
                 size = Int64.Parse(MyIni.Read("size"));
@@ -310,7 +316,6 @@ namespace MonitoringProtokolu {
 
         // write email log to the file
         private static void addLog(String path, String from, String to) {
-            String logFile = @"../../../protocols.csv";
             if (!File.Exists(logFile)) {
                 File.Create(logFile).Close();
 
