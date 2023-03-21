@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 namespace C_Sharp.ArrayList {
-    internal class MyArrayList<T> { // T as type 
+    internal class MyArrayList<T> {
         private static T[] array = new T[0];
 
         public void add(T toAdd) {
@@ -227,10 +227,5 @@ namespace C_Sharp.ArrayList {
             }
             array = newArray;
         }
-
-        // TODO - jen pokud je to možné, aby to nehodilo error
-        // Max
-        // Min
-        // sort
     }
 }

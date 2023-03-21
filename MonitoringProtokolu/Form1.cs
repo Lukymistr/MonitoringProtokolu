@@ -14,18 +14,21 @@ namespace MonitoringProtokolu {
         static Boolean running = false;
         static String path = "";
         static long size = 0;
-        static int lines = 0, frequency = 0;
+        static int lines = 0, frequency = 0, bytesToRead = 0;
+
         // 0 = original path, 1 = path with prefix
-        private static MyArrayList<String[]>? foundFiles;
+        private static MyArrayList<String[]> foundFiles;
 
         // for ini file work
-        static IniFile MyIni = new IniFile(@"../../../MonitoringProtokolu.ini");
+        static String iniFilePath = @"../../../MonitoringProtokolu.ini";
+        static IniFile MyIni = new IniFile(iniFilePath);
 
         // end lokking for
         private void btnEnd_Click(object sender, EventArgs e) {
             end = true;
         }
 
+        // start looking for files
         private void btnStart_Click(object sender, EventArgs e){
 
             // if unChecked take values from input
@@ -33,7 +36,10 @@ namespace MonitoringProtokolu {
             if (!checkBoxFile.Checked) {
                 if (!userInput()) { return; }
             } else {
-                if (!fileInput()) { return; }
+                if (!fileInput()) {
+                    MessageBox.Show("Hodnoty v souboru nejsou v poøádku");    
+                    return;
+                }
             }
 
             // test some basics
@@ -41,7 +47,10 @@ namespace MonitoringProtokolu {
 
             // have still running
             if (!running) {
+
+                // will create empy arrayList
                 foundFiles = new MyArrayList<String[]>();
+
                 // new thread for finding
                 Thread t2 = new Thread(find);
                 t2.Start();
@@ -113,22 +122,32 @@ namespace MonitoringProtokolu {
 
             // write frequency
             MyIni.Write("frequency", frequency.ToString());
+
+            // size of email body
+            bytesToRead = Convert.ToInt32(numUpDownBytesToRead.Value);
+            MyIni.Write("bytesToRead", bytesToRead.ToString());
+
             return true;
         }
 
         // take values from file
         private Boolean fileInput() {
-            // takes values from ini file
-            path = MyIni.Read("name");
-            size = Int64.Parse(MyIni.Read("size"));
-            lines = int.Parse(MyIni.Read("lines"));
-            frequency = int.Parse(MyIni.Read("frequency"));
+            try {
+                // takes values from ini file
+                path = MyIni.Read("name");
+                size = Int64.Parse(MyIni.Read("size"));
+                lines = int.Parse(MyIni.Read("lines"));
+                frequency = int.Parse(MyIni.Read("frequency"));
+                bytesToRead = int.Parse(MyIni.Read("bytesToRead"));
 
-            if (frequency < 1) {
-                MessageBox.Show("Interval mezi hledáním nemùže být menší než 1");
+                if (frequency < 1) {
+                    MessageBox.Show("Interval mezi hledáním nemùže být menší než 1");
+                    return false;
+                }
+                return true;
+            } catch (Exception) {
                 return false;
             }
-            return true;
         }
 
         // test some basic things, like if file exists etc.
@@ -193,7 +212,7 @@ namespace MonitoringProtokolu {
         // add path and path with prefix to the list (to prevent duplicate files)
         private static void renameAndAdd(String path) {
             string fileName = Path.GetFileName(path);
-            string modifiedFileName = "$$" + fileName;
+            string modifiedFileName = $"$${fileName}";
             string modifiedFilePath = Path.Combine(Path.GetDirectoryName(path), modifiedFileName);
             foundFiles.add(new string[] {path, modifiedFilePath});
             File.Move(path, modifiedFilePath);
@@ -236,14 +255,14 @@ namespace MonitoringProtokolu {
             return !end;
         }
 
-        // send mail via SMTP server to reciver
-        public static Boolean sendMail(String path) {
+        // send email via SMTP server to reciver
+        private static Boolean sendMail(String path) {
             try {
                 MailMessage msg = new MailMessage();
                 msg.From = new MailAddress("gogodalu@brand-app.biz");
                 msg.To.Add("lukymistr3@seznam.cz");
                 msg.Subject = path;
-                msg.Body = null;
+                msg.Body = bodyOfEmail(path);
 
                 SmtpClient smtp = new SmtpClient();
                 smtp.Host = "smtp.elasticemail.com";
@@ -254,11 +273,35 @@ namespace MonitoringProtokolu {
                 smtp.EnableSsl = true;
                 smtp.Port = 2525;
                 smtp.Send(msg);
+                addLog(path, msg.From.ToString(), msg.To.ToString());
                 return true;
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
                 return false;
             }
+        }
+
+        // will separate return specific amount of bytes from file
+        private static String bodyOfEmail(String path) {
+            string fileContent = File.ReadAllText(Path.Combine(Path.GetDirectoryName(path), $"$${Path.GetFileName(path)}"));
+            return(fileContent.Substring(0, Math.Min(fileContent.Length, bytesToRead)));
+        }
+
+        // write email log to the file
+        private static void addLog(String path, String from, String to) {
+            String logFile = @"../../../protocols.csv";
+            if (!File.Exists(logFile)) {
+                File.Create(logFile).Close();
+
+                // kvùli vytvoøení souboru
+                // Thread.Sleep(500);
+            }
+            StreamWriter protocols = new StreamWriter(logFile, true);
+            if (new FileInfo(logFile).Length == 0) {
+                protocols.WriteLine($"name;path;from;to");
+            }
+            protocols.WriteLine($"{Path.GetFileName(path)};{path};{from};{to}");
+            protocols.Close();
         }
 
         // remove prefix from files 

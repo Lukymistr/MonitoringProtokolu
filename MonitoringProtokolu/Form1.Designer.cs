@@ -45,11 +45,14 @@
             this.radioBtnMins = new System.Windows.Forms.RadioButton();
             this.radioBtnSeconds = new System.Windows.Forms.RadioButton();
             this.btnExit = new System.Windows.Forms.Button();
+            this.numUpDownBytesToRead = new System.Windows.Forms.NumericUpDown();
+            this.lblBody = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownLines)).BeginInit();
             this.panelSizes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownFrequency)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDownBytesToRead)).BeginInit();
             this.SuspendLayout();
             // 
             // lblName
@@ -65,7 +68,7 @@
             // 
             this.textBoxName.Location = new System.Drawing.Point(175, 25);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(100, 23);
+            this.textBoxName.Size = new System.Drawing.Size(279, 23);
             this.textBoxName.TabIndex = 1;
             // 
             // lblSize
@@ -119,7 +122,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 269);
+            this.btnStart.Location = new System.Drawing.Point(12, 293);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 14;
@@ -129,7 +132,7 @@
             // 
             // btnEnd
             // 
-            this.btnEnd.Location = new System.Drawing.Point(96, 269);
+            this.btnEnd.Location = new System.Drawing.Point(96, 293);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(186, 23);
             this.btnEnd.TabIndex = 15;
@@ -215,7 +218,7 @@
             // 
             // numUpDownFrequency
             // 
-            this.numUpDownFrequency.Location = new System.Drawing.Point(155, 181);
+            this.numUpDownFrequency.Location = new System.Drawing.Point(162, 183);
             this.numUpDownFrequency.Minimum = new decimal(new int[] {
             1,
             0,
@@ -272,7 +275,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(379, 269);
+            this.btnExit.Location = new System.Drawing.Point(379, 293);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 16;
@@ -280,11 +283,34 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // numUpDownBytesToRead
+            // 
+            this.numUpDownBytesToRead.Location = new System.Drawing.Point(139, 254);
+            this.numUpDownBytesToRead.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numUpDownBytesToRead.Name = "numUpDownBytesToRead";
+            this.numUpDownBytesToRead.Size = new System.Drawing.Size(120, 23);
+            this.numUpDownBytesToRead.TabIndex = 17;
+            // 
+            // lblBody
+            // 
+            this.lblBody.AutoSize = true;
+            this.lblBody.Location = new System.Drawing.Point(12, 254);
+            this.lblBody.Name = "lblBody";
+            this.lblBody.Size = new System.Drawing.Size(108, 15);
+            this.lblBody.TabIndex = 18;
+            this.lblBody.Text = "velikost těla emailu";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 313);
+            this.ClientSize = new System.Drawing.Size(480, 328);
+            this.Controls.Add(this.lblBody);
+            this.Controls.Add(this.numUpDownBytesToRead);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblComment);
@@ -310,6 +336,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownFrequency)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDownBytesToRead)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -339,5 +366,7 @@
         private RadioButton radioBtnSeconds;
         private RadioButton radioBtnB;
         private Button btnExit;
+        private NumericUpDown numUpDownBytesToRead;
+        private Label lblBody;
     }
 }
