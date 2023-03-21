@@ -24,7 +24,7 @@ namespace MonitoringProtokolu {
         static DateTime timer = DateTime.UtcNow;
 
         // 0 = original path, 1 = path with prefix
-        private static MyArrayList<String[]> foundFiles;
+        private static MyArrayList<String[]> foundFiles = new MyArrayList<String[]>();
 
         // create path for files (ini and log
         static String filesFolder = @"cfg";
@@ -63,9 +63,6 @@ namespace MonitoringProtokolu {
             // have still running
             if (!running) {
 
-                // will create empy arrayList
-                foundFiles = new MyArrayList<String[]>();
-
                 // new thread for finding
                 Thread t2 = new Thread(find);
                 t2.Start();
@@ -83,16 +80,17 @@ namespace MonitoringProtokolu {
             running = true;
             end = false;
             while (tree(path, size, lines)) {
-                
+                MessageBox.Show("opakovani");
                 //globální perioda
                 timer = DateTime.UtcNow;
-                while (DateTime.UtcNow - timer < TimeSpan.FromSeconds(globalPeriod)) {
+                while (DateTime.UtcNow - timer < TimeSpan.FromMilliseconds(globalPeriod)) { // TODO: je to v milisekundách, ale v GUI jsou sekudy, zmìnit GUI
                     if (end) {
                         break;
                     }
                 }
             }
             renameBack();
+            foundFiles.clear();
             running = false;
 
         }
@@ -277,7 +275,7 @@ namespace MonitoringProtokolu {
                     }
                     //souborová perioda
                     timer = DateTime.UtcNow;
-                    while (DateTime.UtcNow - timer < TimeSpan.FromSeconds(period)) {
+                    while (DateTime.UtcNow - timer < TimeSpan.FromMilliseconds(period)) { // TODO: je to v milisekundách, ale v GUI jsou sekudy, zmìnit GUI
                         if (end) {
                             break;
                         }
@@ -338,6 +336,7 @@ namespace MonitoringProtokolu {
         // remove prefix from files 
         private static void renameBack() {
             for (int i = 0; i < foundFiles.size(); i++) {
+                MessageBox.Show($"{foundFiles.get(i)[1]} na {foundFiles.get(i)[0]}");
                 File.Move(foundFiles.get(i)[1], foundFiles.get(i)[0]);
             }
         }
