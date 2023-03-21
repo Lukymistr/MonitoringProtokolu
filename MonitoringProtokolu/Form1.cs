@@ -8,6 +8,10 @@ namespace MonitoringProtokolu {
             InitializeComponent();
             radioBtnB.Checked = true;
             radioBtnSeconds.Checked = true;
+            if (!Directory.Exists(filesFolder)) {
+                Directory.CreateDirectory(filesFolder);
+            }
+            
         }
 
         // needed variables
@@ -22,11 +26,14 @@ namespace MonitoringProtokolu {
         // 0 = original path, 1 = path with prefix
         private static MyArrayList<String[]> foundFiles;
 
+        // create path for files (ini and log
+        static String filesFolder = @"cfg";
+
         // path for log email sent
-        static String logFile = @"../../../protocols.csv";
+        static String logFile = @"cfg/protocols.csv";
 
         // path for ini file
-        static String iniFilePath = @"../../../MonitoringProtokolu.ini";
+        static String iniFilePath = @"cfg/MonitoringProtokolu.ini";
         
         // for ini file work
         static IniFile MyIni = new IniFile(iniFilePath);
