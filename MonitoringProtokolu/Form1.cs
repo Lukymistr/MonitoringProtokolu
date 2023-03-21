@@ -337,9 +337,9 @@ namespace MonitoringProtokolu {
             }
             StreamWriter protocols = new StreamWriter(logFile, true);
             if (new FileInfo(logFile).Length == 0) {
-                protocols.WriteLine($"name;path;from;to");
+                protocols.WriteLine($"date;time;name;path;to;from");
             }
-            protocols.WriteLine($"{Path.GetFileName(path)};{path};{from};{to}");
+            protocols.WriteLine($"{DateTime.Now.ToString("dd.MM.yyyy;HH:mm:ss")};{Path.GetFileName(path)};{Path.GetDirectoryName(path)};{to};{from}");
             protocols.Close();
         }
 
