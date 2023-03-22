@@ -1,0 +1,61 @@
+﻿<Window x:Class="MonitoringProtokoluWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MonitoringProtokoluWPF"
+        mc:Ignorable="d"
+        Title="MonitoringProtokoluWPF" Height="450" Width="800" MinWidth="664" MinHeight="331" Background="#FF349BAF" Icon="https://pics.freeicons.io/uploads/icons/png/9167481041582962173-512.png">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" /> <!-- levá strana - navigace -->
+            <ColumnDefinition Width="3*" /> <!-- pravá strana - funkce -->
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" BorderBrush="Pink" BorderThickness="2,2,2,2">
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                <RowDefinition Height="5*" /> <!-- název -->
+                <RowDefinition Height="5*" /> <!-- soubor -->
+                <RowDefinition Height="5*" /> <!-- adresář -->
+                <RowDefinition Height="5*" /> <!-- obecné nastavení -->
+                <RowDefinition Height="5*" /> <!-- STMP -->
+                <RowDefinition Height="5*" /> <!-- sysTray -->
+                <RowDefinition Height="5*" /> <!-- konec -->
+            </Grid.RowDefinitions>
+                <Border Grid.Row="0" BorderBrush="Pink" BorderThickness="0,0,0,2">
+                    <Viewbox>
+                        <AccessText Text="Monitoring&#x0a;Protokolu" FontWeight="Bold" Foreground="Coral" TextAlignment="Center"/>
+                    </Viewbox>
+                </Border>
+            <Border Grid.Row="1" BorderBrush="Pink" BorderThickness="0,0,0,2">
+                <Button Content="Soubor" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+            </Border>
+            <Border Grid.Row="2" BorderBrush="Pink" BorderThickness="0,0,0,2">
+                <Button Content="Adresář" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+            </Border>
+            <Border Grid.Row="3" BorderBrush="Pink" BorderThickness="0,0,0,2">
+                <Button Content="obecné nastavení" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+            </Border>
+                <Border Grid.Row="4" BorderBrush="Pink" BorderThickness="0,0,0,2">
+                    <Button Content="SMTP nastavení" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+                </Border>
+                <Border Grid.Row="5" BorderBrush="Pink" BorderThickness="0,0,0,2">
+                <Button Content="minimalizovat" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+            </Border>
+                <Border Grid.Row="6" BorderBrush="Pink" BorderThickness="0,0,0,0">
+                    <Button Content="odejít" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+                </Border>
+            </Grid>
+        </Border>
+        <Grid Grid.Column="1">
+            <Grid x:Name="gridFile" Visibility="Hidden"> <!-- pro jeden soubor -->
+            </Grid>
+            <Grid x:Name="gridDirectory" Visibility="Hidden"> <!-- pro jeden soubor -->
+            </Grid>
+            <Grid x:Name="gridSettings" Visibility="Hidden"> <!-- Obecené nastavení -->
+            </Grid>
+            <Grid x:Name="gridSMTP" Visibility="Hidden"> <!-- nastavení odesílání přes SMTP -->
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
