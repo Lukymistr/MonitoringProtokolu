@@ -8,12 +8,12 @@
         Title="MonitoringProtokoluWPF" Height="450" Width="800" MinWidth="664" MinHeight="331" Background="#333" Icon="https://pics.freeicons.io/uploads/icons/png/9167481041582962173-512.png">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*" />
             <!-- levá strana - navigace -->
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="50*" />
             <!-- odělovací čára -->
-            <ColumnDefinition Width="150*" />
+            <ColumnDefinition Width="1*" />
             <!-- pravá strana - funkce -->
+            <ColumnDefinition Width="150*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.Resources>
@@ -47,7 +47,6 @@
                 </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
                 <!-- název -->
                 <RowDefinition Height="1*" />
                 <!-- soubor -->
@@ -56,15 +55,16 @@
                 <RowDefinition Height="1*" />
                 <!-- obecné nastavení -->
                 <RowDefinition Height="1*" />
-                <!-- STMP -->
+                <!-- SMTP -->
                 <RowDefinition Height="1*" />
                 <!-- sysTray -->
                 <RowDefinition Height="1*" />
                 <!-- konec -->
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Border Grid.Row="0">
                 <Viewbox>
-                    <AccessText Text="Monitoring&#x0a;Protokolu" FontWeight="Bold" Foreground="#ffa500" TextAlignment="Center"/>
+                    <Label Content="Monitoring&#x0a;Protokolu" FontWeight="Bold" Foreground="#ffa500" VerticalAlignment="Center"/>
                 </Viewbox>
             </Border>
             <Border Grid.Row="1">
@@ -74,12 +74,10 @@
                 <Button Content="Adresář"/>
             </Border>
             <Border Grid.Row="3" >
-                <Button Content="obecné nastavení">
-                </Button>
-
+                <Button Content="obecné nastavení"/>
             </Border>
             <Border Grid.Row="4">
-                <Button Content="SMTP nastavení" />
+                <Button Content="SMTP nastavení"/>
             </Border>
             <Border Grid.Row="5">
                 <Button Content="minimalizovat"/>
@@ -92,17 +90,17 @@
             <Border Background="#292929" BorderBrush="#2E2E2E" BorderThickness="2,0,2,0" Margin="0,2,0,2"/>
         </Grid>
         <Grid Grid.Column="2" Margin="2">
+            <!-- pro jeden soubor -->
             <Grid x:Name="gridFile" Visibility="Hidden">
-                <!-- pro jeden soubor -->
             </Grid>
+            <!-- pro jeden soubor -->
             <Grid x:Name="gridDirectory" Visibility="Hidden">
-                <!-- pro jeden soubor -->
             </Grid>
+            <!-- Obecené nastavení -->
             <Grid x:Name="gridSettings" Visibility="Hidden">
-                <!-- Obecené nastavení -->
             </Grid>
+            <!-- nastavení odesílání přes SMTP -->
             <Grid x:Name="gridSMTP" Visibility="Hidden">
-                <!-- nastavení odesílání přes SMTP -->
             </Grid>
         </Grid>
     </Grid>
