@@ -5,56 +5,104 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MonitoringProtokoluWPF"
         mc:Ignorable="d"
-        Title="MonitoringProtokoluWPF" Height="450" Width="800" MinWidth="664" MinHeight="331" Background="#FF349BAF" Icon="https://pics.freeicons.io/uploads/icons/png/9167481041582962173-512.png">
+        Title="MonitoringProtokoluWPF" Height="450" Width="800" MinWidth="664" MinHeight="331" Background="#333" Icon="https://pics.freeicons.io/uploads/icons/png/9167481041582962173-512.png">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" /> <!-- levá strana - navigace -->
-            <ColumnDefinition Width="3*" /> <!-- pravá strana - funkce -->
+            <ColumnDefinition Width="50*" />
+            <!-- levá strana - navigace -->
+            <ColumnDefinition Width="1*" />
+            <!-- odělovací čára -->
+            <ColumnDefinition Width="150*" />
+            <!-- pravá strana - funkce -->
         </Grid.ColumnDefinitions>
-        <Border Grid.Row="0" BorderBrush="Pink" BorderThickness="2,2,2,2">
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                <RowDefinition Height="5*" /> <!-- název -->
-                <RowDefinition Height="5*" /> <!-- soubor -->
-                <RowDefinition Height="5*" /> <!-- adresář -->
-                <RowDefinition Height="5*" /> <!-- obecné nastavení -->
-                <RowDefinition Height="5*" /> <!-- STMP -->
-                <RowDefinition Height="5*" /> <!-- sysTray -->
-                <RowDefinition Height="5*" /> <!-- konec -->
+        <Grid Grid.Column="0">
+            <Grid.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#333"/>
+                    <Setter Property="Cursor" Value="Pen"/>
+                    <!-- změnit -->
+                    <Setter Property="BorderBrush" Value="#ffa500"/>
+                    <Setter Property="Foreground" Value="#ffa500"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="2"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF222222"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <!-- název -->
+                <RowDefinition Height="1*" />
+                <!-- soubor -->
+                <RowDefinition Height="1*" />
+                <!-- adresář -->
+                <RowDefinition Height="1*" />
+                <!-- obecné nastavení -->
+                <RowDefinition Height="1*" />
+                <!-- STMP -->
+                <RowDefinition Height="1*" />
+                <!-- sysTray -->
+                <RowDefinition Height="1*" />
+                <!-- konec -->
             </Grid.RowDefinitions>
-                <Border Grid.Row="0" BorderBrush="Pink" BorderThickness="0,0,0,2">
-                    <Viewbox>
-                        <AccessText Text="Monitoring&#x0a;Protokolu" FontWeight="Bold" Foreground="Coral" TextAlignment="Center"/>
-                    </Viewbox>
-                </Border>
-            <Border Grid.Row="1" BorderBrush="Pink" BorderThickness="0,0,0,2">
-                <Button Content="Soubor" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+            <Border Grid.Row="0">
+                <Viewbox>
+                    <AccessText Text="Monitoring&#x0a;Protokolu" FontWeight="Bold" Foreground="#ffa500" TextAlignment="Center"/>
+                </Viewbox>
             </Border>
-            <Border Grid.Row="2" BorderBrush="Pink" BorderThickness="0,0,0,2">
-                <Button Content="Adresář" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+            <Border Grid.Row="1">
+                <Button Content="Soubor"/>
             </Border>
-            <Border Grid.Row="3" BorderBrush="Pink" BorderThickness="0,0,0,2">
-                <Button Content="obecné nastavení" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+            <Border Grid.Row="2">
+                <Button Content="Adresář"/>
             </Border>
-                <Border Grid.Row="4" BorderBrush="Pink" BorderThickness="0,0,0,2">
-                    <Button Content="SMTP nastavení" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
-                </Border>
-                <Border Grid.Row="5" BorderBrush="Pink" BorderThickness="0,0,0,2">
-                <Button Content="minimalizovat" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
+            <Border Grid.Row="3" >
+                <Button Content="obecné nastavení">
+                </Button>
+
             </Border>
-                <Border Grid.Row="6" BorderBrush="Pink" BorderThickness="0,0,0,0">
-                    <Button Content="odejít" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"/>
-                </Border>
-            </Grid>
-        </Border>
+            <Border Grid.Row="4">
+                <Button Content="SMTP nastavení" />
+            </Border>
+            <Border Grid.Row="5">
+                <Button Content="minimalizovat"/>
+            </Border>
+            <Border Grid.Row="6">
+                <Button Content="odejít"/>
+            </Border>
+        </Grid>
         <Grid Grid.Column="1">
-            <Grid x:Name="gridFile" Visibility="Hidden"> <!-- pro jeden soubor -->
+            <Border Background="#292929" BorderBrush="#2E2E2E" BorderThickness="2,0,2,0" Margin="0,2,0,2"/>
+        </Grid>
+        <Grid Grid.Column="2" Margin="2">
+            <Grid x:Name="gridFile" Visibility="Hidden">
+                <!-- pro jeden soubor -->
             </Grid>
-            <Grid x:Name="gridDirectory" Visibility="Hidden"> <!-- pro jeden soubor -->
+            <Grid x:Name="gridDirectory" Visibility="Hidden">
+                <!-- pro jeden soubor -->
             </Grid>
-            <Grid x:Name="gridSettings" Visibility="Hidden"> <!-- Obecené nastavení -->
+            <Grid x:Name="gridSettings" Visibility="Hidden">
+                <!-- Obecené nastavení -->
             </Grid>
-            <Grid x:Name="gridSMTP" Visibility="Hidden"> <!-- nastavení odesílání přes SMTP -->
+            <Grid x:Name="gridSMTP" Visibility="Hidden">
+                <!-- nastavení odesílání přes SMTP -->
             </Grid>
         </Grid>
     </Grid>

@@ -7,8 +7,4 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="pozadi.jpg" />
-  </ItemGroup>
-
 </Project>

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokoluWPF\\MonitoringProtokoluWPF.csproj",
+      "projectUniqueName": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokoluWPF\\MonitoringProtokoluWPF.csproj",
       "projectName": "MonitoringProtokoluWPF",
-      "projectPath": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokoluWPF\\MonitoringProtokoluWPF.csproj",
+      "projectPath": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokoluWPF\\MonitoringProtokoluWPF.csproj",
       "packagesPath": "C:\\Users\\Lukáš Patejdl\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokoluWPF\\obj\\",
+      "outputPath": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokoluWPF\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lukáš Patejdl\\AppData\\Roaming\\NuGet\\NuGet.Config",

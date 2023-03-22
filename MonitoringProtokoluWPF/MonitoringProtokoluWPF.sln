@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringProtokoluWPF", "MonitoringProtokoluWPF.csproj", "{5BA5093E-8EE3-4BC9-B656-C0B5BF673ECD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringProtokoluWPF", "MonitoringProtokoluWPF.csproj", "{BAD05D0D-D1AB-4C7D-93C8-8D75191D1922}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5BA5093E-8EE3-4BC9-B656-C0B5BF673ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BA5093E-8EE3-4BC9-B656-C0B5BF673ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BA5093E-8EE3-4BC9-B656-C0B5BF673ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BA5093E-8EE3-4BC9-B656-C0B5BF673ECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAD05D0D-D1AB-4C7D-93C8-8D75191D1922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAD05D0D-D1AB-4C7D-93C8-8D75191D1922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAD05D0D-D1AB-4C7D-93C8-8D75191D1922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAD05D0D-D1AB-4C7D-93C8-8D75191D1922}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {76D2D501-6C23-4111-B8AE-1C94114B619E}
+		SolutionGuid = {453D2DAE-3E0C-43B1-B143-73621D8A5912}
 	EndGlobalSection
 EndGlobal
