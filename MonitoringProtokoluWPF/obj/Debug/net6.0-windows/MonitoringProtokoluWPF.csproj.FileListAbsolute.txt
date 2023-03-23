@@ -7,7 +7,6 @@ C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokol
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokoluWPF\obj\Debug\net6.0-windows\MainWindow.g.cs
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokoluWPF\obj\Debug\net6.0-windows\App.g.cs
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokoluWPF\obj\Debug\net6.0-windows\MonitoringProtokoluWPF_MarkupCompile.cache
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokoluWPF\obj\Debug\net6.0-windows\MonitoringProtokoluWPF_MarkupCompile.lref
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokoluWPF\obj\Debug\net6.0-windows\MainWindow.baml
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokoluWPF\obj\Debug\net6.0-windows\MonitoringProtokoluWPF.g.resources
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokoluWPF\obj\Debug\net6.0-windows\MonitoringProtokoluWPF.GeneratedMSBuildEditorConfig.editorconfig
