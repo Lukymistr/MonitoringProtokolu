@@ -131,16 +131,177 @@
             </Border>
         </Grid>
         <Grid Grid.Column="1">
-            <Border Background="#313338" BorderBrush="#2b2d31" BorderThickness="0,0,2,0"/>
+            <Border Background="#2D2F33" BorderBrush="#2F3136" BorderThickness="0,0,2,0"/>
         </Grid>
         <Grid Grid.Column="2">
+            <Grid.Resources>
+                <Style TargetType="Grid">
+                    <Setter Property="Background" Value="#313338"/>
+                </Style>
+                <Style TargetType="Label">
+                    <Setter Property="Foreground" Value="#dbdee1"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Foreground" Value="#dbdee1"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Background" Value="#383a40"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="#383a40"/>
+                    <Setter Property="Margin" Value="5,3,10,3"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ScrollViewer x:Name="PART_ContentHost"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True"/>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="ComboBox">
+                    <Setter Property="Foreground" Value="#dbdee1"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Margin" Value="5,3,10,3"/>
+                    <Setter Property="SelectedIndex" Value="0"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ComboBox">
+                                <Grid>
+                                    <ToggleButton Grid.Column="2" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" >
+                                        <ToggleButton.Template>
+                                            <ControlTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="5*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border x:Name="Border" Grid.ColumnSpan="2" Background="#383a40"/>
+                                                    <Path x:Name="Arrow" Grid.Column="1"  Fill="#dbdee1" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
+                                    <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3"  />
+                                    <TextBox x:Name="PART_EditableTextBox" Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                                    <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True"  Focusable="False" PopupAnimation="Slide">
+                                        <Grid  Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                            <Border x:Name="DropDownBorder" Background="#383a40"/>
+                                            <ScrollViewer SnapsToDevicePixels="True">
+                                                <StackPanel IsItemsHost="True" />
+                                            </ScrollViewer>
+                                        </Grid>
+                                    </Popup>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ComboBoxItem">
+                                <Border Name="Border" Padding="2" SnapsToDevicePixels="True">
+                                    <ContentPresenter/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsHighlighted" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="CheckBox">
+                    <Setter Property="Foreground" Value="#dbdee1"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Background" Value="#383a40"/>
+                    <Setter Property="Margin" Value="5,3,10,3"/>
+                    <Setter Property="IsChecked" Value="False"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="BorderThickness" Value="0.5"/>
+                    <Setter Property="BorderBrush" Value="#383a40"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                                    <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" Width="15" Height="15">
+                                        <!--                                   your color here -->
+                                        <Path Stretch="Uniform" Width="15" Height="10" Fill="#dbdee1" Name="eliCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Visibility="Collapsed"/>
+                                    </Border>
+                                    <TextBlock VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}"></TextBlock>
+                                </StackPanel>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="BorderBrush" Value="#3a3c42" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="#3a3c42" />
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter TargetName="eliCheck" Property="Visibility" Value="Visible"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="#dbdddc"/>
+                    <Setter Property="Margin" Value="0,-7,0,0"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Foreground" Value="#dbdee1"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Background" Value="#383a40"/>
+                    <Setter Property="Margin" Value="5,3,10,3"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="#383a40"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#3a3c42"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Label" x:Key="info">
+                    <Setter Property="FontSize" Value="13"/>
+                    <Setter Property="Margin" Value="0,-7,0,0"/>
+                    <Setter Property="Foreground" Value="DimGray"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+            </Grid.Resources>
             <!-- pro jeden soubor -->
-            <Grid x:Name="gridFile" Visibility="Visible">
-                <Grid.Resources>
-                    <Style TargetType="Grid">
-                        <Setter Property="Background" Value="#313338"/>
-                    </Style>
-                </Grid.Resources>
+            <Grid x:Name="gridFile" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <!-- nahoře -->
                     <RowDefinition Height="400"/>
@@ -150,123 +311,9 @@
                     <RowDefinition Height="50*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <Grid.Resources>
-                        <Style TargetType="Label">
-                            <Setter Property="Foreground" Value="#dbdee1"/>
-                            <Setter Property="FontSize" Value="20"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                        </Style>
-                        <Style TargetType="TextBox">
-                            <Setter Property="Foreground" Value="#dbdee1"/>
-                            <Setter Property="FontSize" Value="20"/>
-                            <Setter Property="Background" Value="#383a40"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="BorderBrush" Value="#383a40"/>
-                            <Setter Property="Margin" Value="5,3,10,3"/>
-                            <Setter Property="OverridesDefaultStyle" Value="True"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TextBox}">
-                                        <Border Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ScrollViewer x:Name="PART_ContentHost"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                                        </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True"/>
-                                    </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style TargetType="ComboBox">
-                            <Setter Property="Foreground" Value="#dbdee1"/>
-                            <Setter Property="FontSize" Value="20"/>
-                            <Setter Property="Background" Value="#383a40"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="BorderBrush" Value="#383a40"/>
-                            <Setter Property="Margin" Value="5,3,10,3"/>
-                            <Setter Property="SelectedIndex" Value="0"/>
-                        </Style>
-                        <Style TargetType="CheckBox">
-                            <Setter Property="Foreground" Value="#dbdee1"/>
-                            <Setter Property="FontSize" Value="20"/>
-                            <Setter Property="Background" Value="#383a40"/>
-                            <Setter Property="Margin" Value="5,3,10,3"/>
-                            <Setter Property="IsChecked" Value="False"/>
-                            <Setter Property="VerticalAlignment" Value="Top"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="BorderThickness" Value="0.5"/>
-                            <Setter Property="BorderBrush" Value="#383a40"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type CheckBox}">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
-                                            <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" Width="15" Height="15">
-                                                <!--                                   your color here -->
-                                                <Path Stretch="Uniform" Width="15" Height="10" Fill="#dbdee1" Name="eliCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Visibility="Collapsed"/>
-                                            </Border>
-                                            <TextBlock VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}"></TextBlock>
-                                        </StackPanel>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="BorderBrush" Value="#3a3c42" />
-                                            </Trigger>
-                                            <Trigger Property="IsPressed" Value="True">
-                                                <Setter Property="Background" Value="#3a3c42" />
-                                            </Trigger>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="eliCheck" Property="Visibility" Value="Visible"></Setter>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#dbdddc"/>
-                            <Setter Property="Margin" Value="0,-7,0,0"/>
-                            <Setter Property="VerticalAlignment" Value="Top"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                        </Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Foreground" Value="#dbdee1"/>
-                            <Setter Property="FontSize" Value="20"/>
-                            <Setter Property="Background" Value="#383a40"/>
-                            <Setter Property="Margin" Value="5,3,10,3"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="BorderBrush" Value="#383a40"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#3a3c42"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                        <Style TargetType="Label" x:Key="info">
-                            <Setter Property="FontSize" Value="13"/>
-                            <Setter Property="Margin" Value="0,-7,0,0"/>
-                            <Setter Property="Foreground" Value="DimGray"/>
-                            <Setter Property="VerticalAlignment" Value="Top"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                        </Style>
-                    </Grid.Resources>
-                        <Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
                         <!-- popisky -->
-                        <ColumnDefinition Width="270"/>
+                        <ColumnDefinition Width="290"/>
                         <!-- oddělovač -->
                         <ColumnDefinition MaxWidth="450" Width="5*"/>
                         <!-- input -->
@@ -304,16 +351,16 @@
                     <Label Grid.Column="0" Grid.Row="7" Content="Zapnout testování"/>
                     <Label Grid.Column="0" Grid.Row="8" Content="Notifikační E-mail"/>
                     <!-- pravá strana -->
-                    <TextBox Grid.Column="2" Grid.Row="0"/>
-                    <TextBox Grid.Column="2" Grid.Row="1"/>
+                    <TextBox x:Name="txtBoxFilePath" Grid.Column="2" Grid.Row="0"/>
+                    <TextBox x:Name="txtBoxFileInterval" Grid.Column="2" Grid.Row="1"/>
                     <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="2" Content="Ve formátu DD:HH:MM:SS&#x0a;Při nevyplnění se použije globální interval"/>
                     <Grid Grid.Column="2" Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="5*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0"/>
-                        <ComboBox Grid.Column="1" >
+                        <TextBox x:Name="txtBoxFileMaxSize"  Grid.Column="0"/>
+                        <ComboBox x:Name="comBoxFileSizeUnits" Grid.Column="1" >
                             <ComboBoxItem>B</ComboBoxItem>
                             <ComboBoxItem>KB</ComboBoxItem>
                             <ComboBoxItem>MB</ComboBoxItem>
@@ -321,14 +368,14 @@
                         </ComboBox>
                     </Grid>
                     <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="4" Content="Při nevyplnění se použije globální limit"/>
-                    <TextBox Grid.Column="2" Grid.Row="5"/>
+                    <TextBox x:Name="txtBoxFileMaxLines"  Grid.Column="2" Grid.Row="5"/>
                     <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="6" Content="Při nevyplnění se použije globální limit"/>
-                    <CheckBox Grid.Column="2" Grid.Row="7">
+                    <CheckBox x:Name="CheckBoxFileTurnOn"  Grid.Column="2" Grid.Row="7">
                         <CheckBox.LayoutTransform>
                             <ScaleTransform ScaleX="2" ScaleY="2"/>
                         </CheckBox.LayoutTransform>
                     </CheckBox>
-                    <TextBox Grid.Column="2" Grid.Row="8"/>
+                    <TextBox x:Name="txtBoxFileEmail" Grid.Column="2" Grid.Row="8"/>
                     <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="9" Content="Při nevyplnění se použije globální e-mail"/>
                     <Grid Grid.Column="2" Grid.Row="10">
                         <Grid.ColumnDefinitions>
@@ -336,10 +383,8 @@
                             <ColumnDefinition Width="140"/>
                             <ColumnDefinition Width="140"/>
                         </Grid.ColumnDefinitions>
-                        <Grid.Resources>
-                        </Grid.Resources>
-                        <Button Grid.Column="1" Content="Zrušit"/>
-                        <Button Grid.Column="2" Content="Přidat"/>
+                        <Button x:Name="btnFileCancel"  Grid.Column="1" Content="Zrušit"/>
+                        <Button x:Name="btnFileAdd"  Grid.Column="2" Content="Přidat"/>
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="2">
@@ -348,14 +393,265 @@
                     </DataGrid>
                 </Grid>
             </Grid>
-            <!-- pro jeden soubor -->
+            <!-- pro adresář -->
             <Grid x:Name="gridDirectory" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <!-- nahoře -->
+                    <RowDefinition Height="400"/>
+                    <!-- oddělovací čára -->
+                    <RowDefinition Height="1*"/>
+                    <!-- logy -->
+                    <RowDefinition Height="50*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <!-- popisky -->
+                        <ColumnDefinition Width="290"/>
+                        <!-- oddělovač -->
+                        <ColumnDefinition MaxWidth="450" Width="5*"/>
+                        <!-- input -->
+                        <ColumnDefinition MinWidth="400" Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <!-- Soubory -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Interval testování -->
+                        <RowDefinition Height="5*"/>
+                        <!-- datum + Interval testování - popis -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Max velikost -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Max velikost - popis -->
+                        <RowDefinition Height="4*"/>
+                        <!-- Max řádky -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Max řádky - popis -->
+                        <RowDefinition Height="4*"/>
+                        <!-- zapnout testování -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Notifikační E-mail -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Notifikační E-mail - popis -->
+                        <RowDefinition Height="4*"/>
+                        <!-- tlačítka -->
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+                    <!-- levá strana -->
+                    <Label Grid.Column="0" Grid.Row="0" Content="Adresář"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Interval testování"/>
+                    <Label Grid.Column="0" Grid.Row="3" Content="Maximální velikost"/>
+                    <Label Grid.Column="0" Grid.Row="5" Content="Maximální počet řídek"/>
+                    <Label Grid.Column="0" Grid.Row="7" Content="Zapnout testování"/>
+                    <Label Grid.Column="0" Grid.Row="8" Content="Notifikační E-mail"/>
+                    <!-- pravá strana -->
+                    <TextBox x:Name="txtBoxDirectoryPath" Grid.Column="2" Grid.Row="0"/>
+                    <TextBox x:Name="txtBoxDirectoryInterval" Grid.Column="2" Grid.Row="1"/>
+                    <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="2" Content="Ve formátu DD:HH:MM:SS&#x0a;Při nevyplnění se použije globální interval"/>
+                    <Grid Grid.Column="2" Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="txtBoxDirectoryMaxSize"  Grid.Column="0"/>
+                        <ComboBox x:Name="comBoxDirectorySizeUnits" Grid.Column="1" >
+                            <ComboBoxItem>B</ComboBoxItem>
+                            <ComboBoxItem>KB</ComboBoxItem>
+                            <ComboBoxItem>MB</ComboBoxItem>
+                            <ComboBoxItem>GB</ComboBoxItem>
+                        </ComboBox>
+                    </Grid>
+                    <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="4" Content="Při nevyplnění se použije globální limit"/>
+                    <TextBox x:Name="txtBoxDirectoryMaxLines"  Grid.Column="2" Grid.Row="5"/>
+                    <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="6" Content="Při nevyplnění se použije globální limit"/>
+                    <CheckBox x:Name="CheckBoxDirectoryTurnOn"  Grid.Column="2" Grid.Row="7">
+                        <CheckBox.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2"/>
+                        </CheckBox.LayoutTransform>
+                    </CheckBox>
+                    <TextBox x:Name="txtBoxDirectoryEmail" Grid.Column="2" Grid.Row="8"/>
+                    <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="9" Content="Při nevyplnění se použije globální e-mail"/>
+                    <Grid Grid.Column="2" Grid.Row="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="140"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="btnDirectoryCancel"  Grid.Column="1" Content="Zrušit"/>
+                        <Button x:Name="btnDirectoryAdd"  Grid.Column="2" Content="Přidat"/>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <DataGrid Background="Transparent">
+
+                    </DataGrid>
+                </Grid>
             </Grid>
-            <!-- Obecené nastavení -->
-            <Grid x:Name="gridSettings" Visibility="Hidden">
+            <!-- Globální nastavení -->
+            <Grid x:Name="gridGlobalSettings" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <!-- nahoře -->
+                    <RowDefinition Height="400"/>
+                    <!-- oddělovací čára -->
+                    <RowDefinition Height="1*"/>
+                    <!-- logy -->
+                    <RowDefinition Height="50*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <!-- popisky -->
+                        <ColumnDefinition Width="290"/>
+                        <!-- oddělovač -->
+                        <ColumnDefinition MaxWidth="450" Width="5*"/>
+                        <!-- input -->
+                        <ColumnDefinition MinWidth="400" Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <!-- Interval testování -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Interval testování - popis -->
+                        <RowDefinition Height="4*"/>
+                        <!-- Limit velikosti -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Limit řádek -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Email pro upozornění -->
+                        <RowDefinition Height="5*"/>
+                        <!-- PŘedmět e-mailu -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Maximální počet řádek v e-mailu -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Umístění log souboru -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Ladící režim -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Ladící režim -popis -->
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>
+                    <!-- levá strana -->
+                    <Label Grid.Column="0" Grid.Row="0" Content="Interval testování"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Limit velikosti"/>
+                    <Label Grid.Column="0" Grid.Row="3" Content="Limit řádek"/>
+                    <Label Grid.Column="0" Grid.Row="4" Content="E-mail pro upozornění"/>
+                    <Label Grid.Column="0" Grid.Row="5" Content="Předmět e-mailu"/>
+                    <Label Grid.Column="0" Grid.Row="6" Content="Maximální počet řádek v emailu"/>
+                    <Label Grid.Column="0" Grid.Row="7" Content="Umístění log souboru"/>
+                    <Label Grid.Column="0" Grid.Row="8" Content="Ladící režim"/>
+                    <!-- pravá strana -->
+                    <TextBox x:Name="txtBoxGlobalSettingsInterval"  Grid.Column="2" Grid.Row="0"/>
+                    <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="1" Content="Ve formátu DD:HH:MM:SS"/>
+                    <Grid Grid.Column="2" Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="txtBoxGlobalSettingsMaxSize" Grid.Column="0"/>
+                        <ComboBox x:Name="comBoxGlobalSettingsSizeUnits" Grid.Column="1" >
+                            <ComboBoxItem>B</ComboBoxItem>
+                            <ComboBoxItem>KB</ComboBoxItem>
+                            <ComboBoxItem>MB</ComboBoxItem>
+                            <ComboBoxItem>GB</ComboBoxItem>
+                        </ComboBox>
+                    </Grid>
+                    <TextBox x:Name="txtBoxGlobalSettingsMaxLines" Grid.Column="2" Grid.Row="3"/>
+                    <TextBox x:Name="txtBoxGlobalSettingsEmailRecipient"  Grid.Column="2" Grid.Row="4"/>
+                    <TextBox x:Name="txtBoxGlobalSettingsEmailSubject"  Grid.Column="2" Grid.Row="5"/>
+                    <TextBox x:Name="txtBoxGlobalSettingsEmailMaxLines"  Grid.Column="2" Grid.Row="6"/>
+                    <TextBox x:Name="txtBoxGlobalSettingslogPath"  Grid.Column="2" Grid.Row="7"/>
+                    <CheckBox x:Name="CheckBoxGlobalSettingsTuningMode"  Grid.Column="2" Grid.Row="8">
+                        <CheckBox.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2"/>
+                        </CheckBox.LayoutTransform>
+                    </CheckBox>
+                    <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="9" Content="Při zapnutí je podrobnější výpis do logu"/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid Grid.Column="2" Grid.Row="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="140"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="btnGlobalSettingsSave" Grid.Column="2" Content="Uložit" Margin="5,0,10,5"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Grid>
             <!-- nastavení odesílání přes SMTP -->
             <Grid x:Name="gridSMTP" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <!-- nahoře -->
+                    <RowDefinition Height="400"/>
+                    <!-- oddělovací čára -->
+                    <RowDefinition Height="1*"/>
+                    <!-- logy -->
+                    <RowDefinition Height="50*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <!-- popisky -->
+                        <ColumnDefinition Width="290"/>
+                        <!-- oddělovač -->
+                        <ColumnDefinition MaxWidth="450" Width="5*"/>
+                        <!-- input -->
+                        <ColumnDefinition MinWidth="400" Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <!-- E-mail odesílatele -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Uživatel -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Heslo -->
+                        <RowDefinition Height="5*"/>
+                        <!-- mezera -->
+                        <RowDefinition Height="4*"/>
+                        <!-- Host -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Port -->
+                        <RowDefinition Height="5*"/>
+                        <!-- Používat SSL -->
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+                    <!-- levá strana -->
+                    <Label Grid.Column="0" Grid.Row="0" Content="E-mail odesílatele"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Uživatel"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Heslo"/>
+                    <Label Grid.Column="0" Grid.Row="4" Content="Host"/>
+                    <Label Grid.Column="0" Grid.Row="5" Content="Port"/>
+                    <Label Grid.Column="0" Grid.Row="6" Content="Použít SSL"/>
+                    <!-- pravá strana -->
+                    <TextBox x:Name="txtBoxSmtpSenderEmail" Grid.Column="2" Grid.Row="0"/>
+                    <TextBox x:Name="txtBoxSmtpUser"  Grid.Column="2" Grid.Row="1"/>
+                    <TextBox x:Name="txtBoxSmtpPassword"  Grid.Column="2" Grid.Row="2"/>
+                    <TextBox x:Name="txtBoxSmtpHost"  Grid.Column="2" Grid.Row="4"/>
+                    <TextBox x:Name="txtBoxSmtpPort"  Grid.Column="2" Grid.Row="5"/>
+                    <CheckBox x:Name="txtBoxSmtpSSL"  Grid.Column="2" Grid.Row="7">
+                        <CheckBox.LayoutTransform>
+                            <ScaleTransform ScaleX="2" ScaleY="2"/>
+                        </CheckBox.LayoutTransform>
+                    </CheckBox>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid Grid.Column="2" Grid.Row="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="210"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="140"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="btnSmtpSaveAndTry"  Grid.Column="0" Content="Uložit + Test odeslání" Margin="5,0,0,5"/>
+                            <Button x:Name="btnSmtpSave"  Grid.Column="2" Content="Uložit" Margin="5,0,10,5"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
