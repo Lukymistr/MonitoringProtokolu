@@ -18,3 +18,23 @@ C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokol
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.pdb
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.genruntimeconfig.cache
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\ref\MonitoringProtokolu.dll
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.exe
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.deps.json
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.runtimeconfig.json
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.dll
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.pdb
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.AssemblyReference.cache
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MainWindow.baml
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MainWindow.g.cs
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\App.g.cs
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu_MarkupCompile.cache
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.g.resources
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.AssemblyInfoInputs.cache
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.AssemblyInfo.cs
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.CoreCompileInputs.cache
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.dll
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\refint\MonitoringProtokolu.dll
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.pdb
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.genruntimeconfig.cache
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\ref\MonitoringProtokolu.dll

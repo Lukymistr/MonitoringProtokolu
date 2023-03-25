@@ -68,11 +68,11 @@
                 <ColumnDefinition Width="35"/>
             </Grid.ColumnDefinitions>
             <!-- minimalizovat -->
-            <Button Grid.Column="1" Content="🗕" FontSize="20" Margin="0,-17,0,0"/>
+            <Button x:Name="btnTitleBarMinimize"  Grid.Column="1" Content="🗕" FontSize="20" Margin="0,-17,0,0" Click="btnTitleBarMinimize_Click"/>
             <!-- zvětšit / zmenšit -->
-            <Button Grid.Column="2" Content="🗖" FontSize="15" Margin="0,-5,0,0"/>
+            <Button x:Name="btnTitleBarResize"  Grid.Column="2" Content="🗖" FontSize="15" Margin="0,-5,0,0" Click="btnTitleBarResize_Click"/>
             <!-- zavřít -->
-            <Button Grid.Column="3" Content="&#10060;"/>
+            <Button x:Name="btnTitleBarExit"  Grid.Column="3" Content="&#10060;" Click="btnTitleBarExit_Click"/>
         </Grid>
         <Grid Grid.Row="1">
             <!-- samotný program -->

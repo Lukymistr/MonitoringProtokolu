@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
-        private Point startPoint;
         public MainWindow() {
             InitializeComponent();
         }
@@ -16,13 +16,24 @@ namespace MonitoringProtokolu {
                         WindowState = WindowState.Normal;
                     }
                 } else {
-                    startPoint = e.GetPosition(this);
-                    if (WindowState == WindowState.Maximized) {
-                        WindowState = WindowState.Normal;
-                    }
                     DragMove();
                 }
             }
+        }
+
+        private void btnTitleBarMinimize_Click(object sender, RoutedEventArgs e) {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnTitleBarResize_Click(object sender, RoutedEventArgs e) {
+            if (WindowState == WindowState.Maximized) {
+                WindowState = WindowState.Normal;
+            } else {
+                WindowState = WindowState.Maximized;
+            }
+        }
+        private void btnTitleBarExit_Click(object sender, RoutedEventArgs e) {
+            Environment.Exit(0);
         }
     }
 }
