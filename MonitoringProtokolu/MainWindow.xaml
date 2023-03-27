@@ -85,6 +85,7 @@
                 <!-- pravá strana - funkce -->
                 <ColumnDefinition Width="150*" />
             </Grid.ColumnDefinitions>
+            <!-- levá strana - navigace -->
             <Grid Grid.Column="0">
                 <Grid.Resources>
                     <Style TargetType="Label">
@@ -190,9 +191,11 @@
                     <Button x:Name="btnExit" Content="Odejít" Click="btnExit_Click"/>
                 </Border>
             </Grid>
+            <!-- odělovací čára -->
             <Grid Grid.Column="1">
                 <Border Background="#2D2F33" BorderBrush="#2F3136" BorderThickness="0,0,2,0"/>
             </Grid>
+            <!-- pravá strana - funkce -->
             <Grid Grid.Column="2">
                 <Grid.Resources>
                     <Style TargetType="Grid">
@@ -354,9 +357,30 @@
                         <Setter Property="VerticalAlignment" Value="Top"/>
                         <Setter Property="HorizontalAlignment" Value="Left"/>
                     </Style>
+                    <Style TargetType="DataGrid">
+                        <Setter Property="Foreground" Value="#dbdee1"/>
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Margin" Value="5,3,10,3"/>
+                        <Setter Property="VerticalAlignment" Value="Top"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="#dbdee1"/>
+                        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+                    </Style>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Foreground" Value="#dbdee1"/>
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="BorderBrush" Value="#dbdee1"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,2"/>
+                    </Style>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Foreground" Value="#dbdee1"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="#dbdee1"/>
+                    </Style>
                 </Grid.Resources>
                 <!-- pro jeden soubor -->
-                <Grid x:Name="gridFile" Visibility="Hidden">
+                <Grid x:Name="gridFile" Visibility="Visible">
                     <Grid.RowDefinitions>
                         <!-- nahoře -->
                         <RowDefinition Height="400"/>
@@ -450,7 +474,19 @@
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="2">
-                        <DataGrid Background="Transparent">
+                        <DataGrid x:Name="dataGridFile">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding FileID}" Width="0.5*"/>
+                                <DataGridTextColumn Header="cesta" Binding="{Binding FilePath}" Width="5*"/>
+                                <DataGridTextColumn Header="Notifikační E-mail" Binding="{Binding FileEmail}" Width="1*"/>
+                                <DataGridTextColumn Header="Interval" Binding="{Binding FileInterval}" Width="1*"/>
+                                <DataGridTextColumn Header="Limit velikosti" Binding="{Binding FileMaxSize}" Width="1*"/>
+                                <DataGridTextColumn Header="Limit řádek" Binding="{Binding FileMaxLines}" Width="1*"/>
+                                <DataGridTextColumn Header="Zapnout testování" Binding="{Binding FileTurnOn}" Width="1*"/>
+                                <DataGridTextColumn Header="Upravit" Binding="{Binding FileEdit}" Width="1*"/>
+                                <DataGridTextColumn Header="Smazat" Binding="{Binding FileRemove}" Width="1*"/>
+                                <DataGridTextColumn Header="Kopírovat" Binding="{Binding FileCopy}" Width="1*"/>
+                            </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                 </Grid>

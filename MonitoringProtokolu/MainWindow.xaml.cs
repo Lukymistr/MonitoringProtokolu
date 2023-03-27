@@ -20,6 +20,21 @@ namespace MonitoringProtokolu {
             icon.Visible = false;
             icon.Click += new System.EventHandler(icon_Click);
 
+            DataGridFile John = new DataGridFile();
+            John.FileID = 1;
+            John.FilePath = "C:\\Users\\Lukáš Patejdl\\Pictures\\Saved Pictures\\thumb-1920-909641.png";
+            John.FileEmail = "kamo@kamo.cz";
+            John.FileInterval = "00:00:05:00";
+            John.FileMaxSize = 1;
+            John.FileMaxLines = 1;
+            John.FileTurnOn = new CheckBox();
+            John.FileEdit = new Button() {};
+            John.FileRemove = new Button() {};
+            John.FileCopy = new Button() {};
+            dataGridFile.Items.Add( John );
+            dataGridFile.Items.Add(John);
+            dataGridFile.Items.Add(John);
+
         }
 
         private void icon_Click(object sender, System.EventArgs e) {
@@ -151,5 +166,20 @@ namespace MonitoringProtokolu {
                 txtBoxGlobalSettingslogPath.Text = folderBrowserDialog.SelectedPath;
             }
         }
+    }
+    class DataGridFile {
+
+        public int FileID { get; set; }
+        public String FilePath { get; set; }
+        public String FileEmail { get; set; }
+        public String FileInterval { get; set; }
+
+        public int FileMaxSize { get; set; }
+        public int FileMaxLines { get; set; }
+        public CheckBox FileTurnOn { get; set; }
+        public Button FileEdit { get; set; }
+        public Button FileRemove { get; set; }
+        public Button FileCopy { get; set; }
+
     }
 }
