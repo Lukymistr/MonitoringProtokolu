@@ -1,18 +1,32 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
+using Microsoft.Win32;
+using System.Drawing;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Shell;
 
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
+        NotifyIcon icon = new NotifyIcon();
         public MainWindow() {
             InitializeComponent();
-            WindowChrome.SetWindowChrome(this, new WindowChrome {CaptionHeight = 0});
-            
+            WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0 });
+
             gridFile.Visibility = Visibility.Visible;
 
+            icon.Icon = new Icon("icon.ico");
+            icon.Text = "Monitoring Protokolu";
+            icon.Visible = false;
+            icon.Click += new System.EventHandler(icon_Click);
+
         }
+
+        private void icon_Click(object sender, System.EventArgs e) {
+            Show();
+            icon.Visible = false;
+        }
+
         private void Window_StateChanged(object sender, EventArgs e) {
             if (WindowState == WindowState.Maximized) {
                 WindowState = WindowState.Normal;
@@ -32,7 +46,7 @@ namespace MonitoringProtokolu {
                     if (!(Width == SystemParameters.PrimaryScreenWidth && Height == SystemParameters.PrimaryScreenHeight)) {
                         DragMove();
                     }
-                        
+
                 }
             }
         }
@@ -99,7 +113,7 @@ namespace MonitoringProtokolu {
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e) {
             Hide();
-            // Show(); inverze
+            icon.Visible = true;
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e) {
@@ -107,7 +121,7 @@ namespace MonitoringProtokolu {
         }
 
         private void btnFileChoosePath_Click(object sender, RoutedEventArgs e) {
-            OpenFileDialog openFileDialog = new OpenFileDialog() {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog() {
                 Title = "Vybrat soubor",
                 CheckFileExists = true,
                 CheckPathExists = true,
