@@ -27,11 +27,18 @@ namespace MonitoringProtokolu {
             John.FileInterval = "00:00:05:00";
             John.FileMaxSize = 1;
             John.FileMaxLines = 1;
+            CheckBox di = new CheckBox() {};
             John.FileTurnOn = new CheckBox();
-            John.FileEdit = new Button() {};
-            John.FileRemove = new Button() {};
-            John.FileCopy = new Button() {};
-            dataGridFile.Items.Add( John );
+            John.FileEdit = new Button() { };
+            John.FileRemove = new Button() { };
+            John.FileCopy = new Button() { };
+            dataGridFile.Items.Add(John);
+            dataGridFile.Items.Add(John);
+            dataGridFile.Items.Add(John);
+            dataGridFile.Items.Add(John);
+            dataGridFile.Items.Add(John);
+            dataGridFile.Items.Add(John);
+            dataGridFile.Items.Add(John);
             dataGridFile.Items.Add(John);
             dataGridFile.Items.Add(John);
 
