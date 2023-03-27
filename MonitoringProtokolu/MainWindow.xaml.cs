@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shell;
@@ -103,6 +104,38 @@ namespace MonitoringProtokolu {
 
         private void btnExit_Click(object sender, RoutedEventArgs e) {
             Close();
+        }
+
+        private void btnFileChoosePath_Click(object sender, RoutedEventArgs e) {
+            OpenFileDialog openFileDialog = new OpenFileDialog() {
+                Title = "Vybrat soubor",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Filter = "Files|*.*"
+            };
+            if (openFileDialog.ShowDialog() == true) {
+                txtBoxFilePath.Text = openFileDialog.FileName;
+            }
+        }
+
+        private void btnDirectoryChoosePath_Click(object sender, RoutedEventArgs e) {
+            System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+
+            System.Windows.Forms.DialogResult result = folderBrowserDialog.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                txtBoxDirectoryPath.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
+
+        private void btnGlobalSettingslogChoosePath_Click(object sender, RoutedEventArgs e) {
+            System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+
+            System.Windows.Forms.DialogResult result = folderBrowserDialog.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                txtBoxGlobalSettingslogPath.Text = folderBrowserDialog.SelectedPath;
+            }
         }
     }
 }

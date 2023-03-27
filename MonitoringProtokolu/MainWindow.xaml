@@ -212,6 +212,7 @@
                         <Setter Property="BorderBrush" Value="#383a40"/>
                         <Setter Property="Margin" Value="5,3,10,3"/>
                         <Setter Property="OverridesDefaultStyle" Value="True"/>
+                        <Setter Property="SelectionBrush" Value="#dbdee1"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -321,12 +322,6 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="#dbdddc"/>
-                        <Setter Property="Margin" Value="0,-7,0,0"/>
-                        <Setter Property="VerticalAlignment" Value="Top"/>
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                    </Style>
                     <Style TargetType="Button">
                         <Setter Property="Foreground" Value="#dbdee1"/>
                         <Setter Property="FontSize" Value="20"/>
@@ -411,7 +406,14 @@
                         <Label Grid.Column="0" Grid.Row="7" Content="Zapnout testování"/>
                         <Label Grid.Column="0" Grid.Row="8" Content="Notifikační E-mail"/>
                         <!-- pravá strana -->
-                        <TextBox x:Name="txtBoxFilePath" Grid.Column="2" Grid.Row="0"/>
+                        <Grid Grid.Column="2" Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="txtBoxFilePath" Grid.Column="0"/>
+                            <Button x:Name="btnFileChoosePath" Content="vybrat" Grid.Column="1" Click="btnFileChoosePath_Click"/>
+                        </Grid>
                         <TextBox x:Name="txtBoxFileInterval" Grid.Column="2" Grid.Row="1"/>
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="2" Content="Ve formátu DD:HH:MM:SS&#x0a;Při nevyplnění se použije globální interval"/>
                         <Grid Grid.Column="2" Grid.Row="3">
@@ -503,7 +505,14 @@
                         <Label Grid.Column="0" Grid.Row="7" Content="Zapnout testování"/>
                         <Label Grid.Column="0" Grid.Row="8" Content="Notifikační E-mail"/>
                         <!-- pravá strana -->
-                        <TextBox x:Name="txtBoxDirectoryPath" Grid.Column="2" Grid.Row="0"/>
+                        <Grid Grid.Column="2" Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="txtBoxDirectoryPath" Grid.Row="0"/>
+                            <Button x:Name="btnDirectoryChoosePath" Content="vybrat" Grid.Column="1" Click="btnDirectoryChoosePath_Click"/>
+                        </Grid>
                         <TextBox x:Name="txtBoxDirectoryInterval" Grid.Column="2" Grid.Row="1"/>
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="2" Content="Ve formátu DD:HH:MM:SS&#x0a;Při nevyplnění se použije globální interval"/>
                         <Grid Grid.Column="2" Grid.Row="3">
@@ -546,7 +555,7 @@
                     </Grid>
                 </Grid>
                 <!-- Globální nastavení -->
-                <Grid x:Name="gridGlobalSettings" Visibility="Hidden">
+                <Grid x:Name="gridGlobalSettings" Visibility="Visible">
                     <Grid.RowDefinitions>
                         <!-- nahoře -->
                         <RowDefinition Height="400"/>
@@ -617,7 +626,15 @@
                         <TextBox x:Name="txtBoxGlobalSettingsEmailRecipient"  Grid.Column="2" Grid.Row="4"/>
                         <TextBox x:Name="txtBoxGlobalSettingsEmailSubject"  Grid.Column="2" Grid.Row="5"/>
                         <TextBox x:Name="txtBoxGlobalSettingsEmailMaxLines"  Grid.Column="2" Grid.Row="6"/>
-                        <TextBox x:Name="txtBoxGlobalSettingslogPath"  Grid.Column="2" Grid.Row="7"/>
+                        <Grid Grid.Column="2" Grid.Row="7">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="txtBoxGlobalSettingslogPath"  Grid.Column="0"/>
+                            <Button x:Name="btnGlobalSettingslogChoosePath" Content="vybrat" Grid.Column="1" Click="btnGlobalSettingslogChoosePath_Click"/>
+                        </Grid>
+                        
                         <CheckBox x:Name="CheckBoxGlobalSettingsTuningMode"  Grid.Column="2" Grid.Row="8">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="2" ScaleY="2"/>
