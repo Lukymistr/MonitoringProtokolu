@@ -339,7 +339,7 @@
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}">
                                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                          VerticalAlignment="{TemplateBinding VerticalContentsAlignment}"/>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
@@ -366,6 +366,8 @@
                         <Setter Property="BorderThickness" Value="1"/>
                         <Setter Property="BorderBrush" Value="#dbdee1"/>
                         <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+                        <Setter Property="HorizontalGridLinesBrush" Value="#dbdee1"/>
+                        <Setter Property="VerticalGridLinesBrush" Value="#dbdee1"/>
                     </Style>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Foreground" Value="#dbdee1"/>
@@ -374,9 +376,7 @@
                         <Setter Property="BorderThickness" Value="0,0,1,2"/>
                     </Style>
                     <Style TargetType="DataGridRow">
-                        <Setter Property="Foreground" Value="#dbdee1"/>
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="BorderBrush" Value="#dbdee1"/>
                     </Style>
                 </Grid.Resources>
                 <!-- pro jeden soubor -->
