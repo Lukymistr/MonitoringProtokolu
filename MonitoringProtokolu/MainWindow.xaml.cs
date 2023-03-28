@@ -1,39 +1,93 @@
 ﻿using System;
-using Microsoft.Win32;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Shell;
 using System.IO;
+using System.Windows.Controls;
+using SQLite;
 using System.Collections.Generic;
 
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
         NotifyIcon icon = new NotifyIcon();
+        private static String DBPath = @"./data";
+        private static String DBFilePath = @$"{DBPath}/DBFile.db3";
+        private static String DBDirectoryPath = @$"{DBPath}/DBDirectory.db3";
         public MainWindow() {
             InitializeComponent();
             WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0 });
 
             gridFile.Visibility = Visibility.Visible;
 
+            doSystrayIcon();
+
+            createDBPath();
+
+            createDBFile();
+            createDBDirectory();
+
+            loadDBFile();
+            loadDBDirectory();
+            
+        }
+
+        private void createDBPath() {
+            if (!Directory.Exists(DBPath)) {
+                Directory.CreateDirectory(DBPath);
+            }
+        }
+
+        private void loadDBFile() {
+            dataGridFile.Items.Clear();
+            SQLiteConnection db = new SQLiteConnection(DBFilePath);
+            List<DBFile> DBs = db.Table<DBFile>().ToList();
+            if (DBs.Count > 0) {
+                foreach (DBFile DB in DBs) {
+                    dataGridFile.Items.Add(DB);
+                }
+            }
+            db.Close();
+        }
+
+        private void loadDBDirectory() {
+            dataGridDirectory.Items.Clear();
+            SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
+            List<DBDirectory> DBs = db.Table<DBDirectory>().ToList();
+            if (DBs.Count > 0) {
+                foreach (DBDirectory DB in DBs) {
+                    dataGridDirectory.Items.Add(DB);
+                }
+            }
+            db.Close();
+        }
+
+        private void doSystrayIcon() { 
             icon.Icon = new Icon("icon.ico");
             icon.Text = "Monitoring Protokolu";
             icon.Visible = false;
             icon.Click += new System.EventHandler(icon_Click);
+        }
 
-            for (int i = 0; i < 100; i++) {
-                DataGridFile item = new DataGridFile();
-                item.FileID = i + 1;
-                item.FilePath = $"C:\\Users\\Lukáš Patejdl\\Pictures\\Saved Pictures\\thumb-1920-{i}.png";
-                item.FileEmail = $"kamo{i}@kamo.cz";
-                item.FileInterval = "00:00:05:00";
-                item.FileMaxSize = 1;
-                item.FileMaxLines = 1;
-                item.FileTurnOn = true;
-                dataGridFile.Items.Add(item);
+        private void createDBFile() {
+            if (!File.Exists(DBFilePath)) {
+                SQLiteConnection db = new SQLiteConnection(DBFilePath);
+
+                db.CreateTable<DBFile>();
+
+                db.Close();
             }
+        }
 
+        private void createDBDirectory() {
+            if (!File.Exists(DBDirectoryPath)) {
+                SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
+
+                db.CreateTable<DBDirectory>();
+
+                db.Close();
+            }
         }
 
         private void icon_Click(object sender, System.EventArgs e) {
@@ -166,29 +220,57 @@ namespace MonitoringProtokolu {
             }
         }
 
-        private void FileEdit_Click(object sender, RoutedEventArgs e) {
+        private void btnFileEdit_Click(object sender, RoutedEventArgs e) {
 
         }
 
-        private void FileRemove_Click(object sender, RoutedEventArgs e) {
+        private void btnFileRemove_Click(object sender, RoutedEventArgs e) {
+            //DataGrid SelectedItem = (DataGrid)dataGridFile.SelectedItem;
+            //System.Windows.MessageBox.Show($"ID of selected row: {dataGridFile}");
+        }
+
+        private void btnFileCopy_Click(object sender, RoutedEventArgs e) {
+        }
+
+        private void btnFileCancel_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void btnFileAdd_Click(object sender, RoutedEventArgs e) {
+            DBFile tmp = new DBFile(txtBoxFilePath.Text, txtBoxFileEmail.Text, Int32.Parse(txtBoxFileInterval.Text), Int32.Parse(txtBoxFileMaxSize.Text), Int32.Parse(txtBoxFileMaxLines.Text), (Boolean)CheckBoxFileTurnOn.IsChecked);
+
+            SQLiteConnection db = new SQLiteConnection(DBFilePath);
+
+            db.Insert(tmp);
+
+            db.Close();
+            loadDBFile();
+        }
+
+        private void btnDirectoryEdit_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void btnDirectoryRemove_Click(object sender, RoutedEventArgs e) {
             
         }
 
-        private void FileCopy_Click(object sender, RoutedEventArgs e) {
-            DataGridFile selectedFile = (DataGridFile)dataGridFile.SelectedItem;
-            System.Windows.MessageBox.Show($"ID of selected row: {selectedFile.FileTurnOn}");
+        private void btnDirectoryCopy_Click(object sender, RoutedEventArgs e) {
         }
-    }
-    class DataGridFile {
 
-        public int FileID { get; set; }
-        public String FilePath { get; set; }
-        public String FileEmail { get; set; }
-        public String FileInterval { get; set; }
+        private void btnDirectoryCancel_Click(object sender, RoutedEventArgs e) {
 
-        public int FileMaxSize { get; set; }
-        public int FileMaxLines { get; set; }
-        public Boolean FileTurnOn { get; set; }
+        }
 
+        private void btnDirectoryAdd_Click(object sender, RoutedEventArgs e) {
+            DBDirectory tmp = new DBDirectory(txtBoxDirectoryPath.Text, txtBoxDirectoryEmail.Text, Int32.Parse(txtBoxDirectoryInterval.Text), Int32.Parse(txtBoxDirectoryMaxSize.Text), Int32.Parse(txtBoxDirectoryMaxLines.Text), (Boolean)CheckBoxDirectoryTurnOn.IsChecked);
+            
+            SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
+
+            db.Insert(tmp);
+
+            db.Close();
+            loadDBDirectory();
+        }
     }
 }

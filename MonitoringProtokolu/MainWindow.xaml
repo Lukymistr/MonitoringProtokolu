@@ -381,7 +381,7 @@
                     </Style>
                 </Grid.Resources>
                 <!-- pro jeden soubor -->
-                <Grid x:Name="gridFile" Visibility="Visible">
+                <Grid x:Name="gridFile" Visibility="Hidden">
                     <Grid.RowDefinitions>
                         <!-- nahoře -->
                         <RowDefinition Height="400"/>
@@ -470,44 +470,67 @@
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="btnFileCancel"  Grid.Column="1" Content="Zrušit"/>
-                            <Button x:Name="btnFileAdd"  Grid.Column="2" Content="Přidat"/>
+                            <Button x:Name="btnFileCancel"  Grid.Column="1" Content="Zrušit" Click="btnFileCancel_Click"/>
+                            <Button x:Name="btnFileAdd"  Grid.Column="2" Content="Přidat" Click="btnFileAdd_Click"/>
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="2">
                         <DataGrid x:Name="dataGridFile" AutoGenerateColumns="False">
+                            <DataGrid.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#dbdee1"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#3a3c42"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding FileID}" Width="0.5*" MaxWidth="25"/>
-                                <DataGridTextColumn Header="cesta" Binding="{Binding FilePath}" Width="5*"/>
-                                <DataGridTextColumn Header="Notifikační E-mail" Binding="{Binding FileEmail}" Width="1*"/>
-                                <DataGridTextColumn Header="Interval" Binding="{Binding FileInterval}" Width="1*" MaxWidth="110"/>
-                                <DataGridTextColumn Header="Limit velikosti" Binding="{Binding FileMaxSize}" Width="1*" MaxWidth="125"/>
-                                <DataGridTextColumn Header="Limit řádek" Binding="{Binding FileMaxLines}" Width="1*" MaxWidth="105"/>
+                                <DataGridTextColumn Header="ID" Binding="{Binding id}" Visibility="Hidden"/>
+                                <DataGridTextColumn Header="cesta" Binding="{Binding path}" Width="5*"/>
+                                <DataGridTextColumn Header="Notifikační E-mail" Binding="{Binding email}" Width="2.5*"/>
+                                <DataGridTextColumn Header="Interval" Binding="{Binding interval}" Width="1*" MaxWidth="110"/>
+                                <DataGridTextColumn Header="Limit velikosti" Binding="{Binding maxSize}" Width="1*" MaxWidth="125"/>
+                                <DataGridTextColumn Header="Limit řádek" Binding="{Binding maxLines}" Width="1*" MaxWidth="105"/>
                                 <DataGridTemplateColumn Header="Zapnout" Width="1*" MaxWidth="80">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox IsChecked="{Binding FileTurnOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Upravit">
+                                <DataGridTemplateColumn Header="Upravit" Width="1*" MaxWidth="67">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Upravit" Click="FileEdit_Click"/>
+                                            <Button Content="✎" Click="btnFileEdit_Click"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Smazat">
+                                <DataGridTemplateColumn Header="Smazat" Width="1*" MaxWidth="67">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Smazat" Click="FileRemove_Click"/>
+                                            <Button Content="🗑️" Click="btnFileRemove_Click"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Kopírovat">
+                                <DataGridTemplateColumn Header="Kopírovat" Width="1*" MaxWidth="88">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Kopírovat" Click="FileCopy_Click"/>
+                                            <Button Content="📄" Click="btnFileCopy_Click"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -605,13 +628,71 @@
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="btnDirectoryCancel"  Grid.Column="1" Content="Zrušit"/>
-                            <Button x:Name="btnDirectoryAdd"  Grid.Column="2" Content="Přidat"/>
+                            <Button x:Name="btnDirectoryCancel"  Grid.Column="1" Content="Zrušit" Click="btnDirectoryCancel_Click"/>
+                            <Button x:Name="btnDirectoryAdd"  Grid.Column="2" Content="Přidat" Click="btnDirectoryAdd_Click"/>
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="2">
-                        <DataGrid Background="Transparent">
-
+                        <DataGrid x:Name="dataGridDirectory" AutoGenerateColumns="False">
+                            <DataGrid.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="#dbdee1"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#3a3c42"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding id}" Visibility="Hidden"/>
+                                <DataGridTextColumn Header="cesta" Binding="{Binding path}" Width="5*"/>
+                                <DataGridTextColumn Header="Notifikační E-mail" Binding="{Binding email}" Width="2.5*"/>
+                                <DataGridTextColumn Header="Interval" Binding="{Binding interval}" Width="1*" MaxWidth="110"/>
+                                <DataGridTextColumn Header="Limit velikosti" Binding="{Binding maxSize}" Width="1*" MaxWidth="125"/>
+                                <DataGridTextColumn Header="Limit řádek" Binding="{Binding maxLines}" Width="1*" MaxWidth="105"/>
+                                <DataGridTemplateColumn Header="Zapnout" Width="1*" MaxWidth="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Upravit" Width="1*" MaxWidth="67">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="✎" Click="btnDirectoryEdit_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Smazat" Width="1*" MaxWidth="67">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="🗑️" Click="btnDirectoryRemove_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Kopírovat" Width="1*" MaxWidth="88">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="📄" Click="btnDirectoryCopy_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                 </Grid>
@@ -695,7 +776,7 @@
                             <TextBox x:Name="txtBoxGlobalSettingslogPath"  Grid.Column="0"/>
                             <Button x:Name="btnGlobalSettingslogChoosePath" Content="vybrat" Grid.Column="1" Click="btnGlobalSettingslogChoosePath_Click"/>
                         </Grid>
-                        
+
                         <CheckBox x:Name="CheckBoxGlobalSettingsTuningMode"  Grid.Column="2" Grid.Row="8">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="2" ScaleY="2"/>

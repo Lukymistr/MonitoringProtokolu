@@ -38,5 +38,22 @@ C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debu
 C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.pdb
 C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.genruntimeconfig.cache
 C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\ref\MonitoringProtokolu.dll
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\System.Data.SQLite.dll
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.CopyComplete
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLite-net.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.batteries_v2.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.nativelibrary.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.core.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.provider.dynamic_cdecl.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\alpine-x64\native\libe_sqlite3.so
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-x86\native\e_sqlite3.dll
