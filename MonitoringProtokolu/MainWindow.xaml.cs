@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Shell;
+using System.IO;
+using System.Collections.Generic;
 
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
@@ -20,27 +22,18 @@ namespace MonitoringProtokolu {
             icon.Visible = false;
             icon.Click += new System.EventHandler(icon_Click);
 
-            DataGridFile John = new DataGridFile();
-            John.FileID = 1;
-            John.FilePath = "C:\\Users\\Lukáš Patejdl\\Pictures\\Saved Pictures\\thumb-1920-909641.png";
-            John.FileEmail = "kamo@kamo.cz";
-            John.FileInterval = "00:00:05:00";
-            John.FileMaxSize = 1;
-            John.FileMaxLines = 1;
-            CheckBox di = new CheckBox() {};
-            John.FileTurnOn = new CheckBox();
-            John.FileEdit = new Button() { };
-            John.FileRemove = new Button() { };
-            John.FileCopy = new Button() { };
-            dataGridFile.Items.Add(John);
-            dataGridFile.Items.Add(John);
-            dataGridFile.Items.Add(John);
-            dataGridFile.Items.Add(John);
-            dataGridFile.Items.Add(John);
-            dataGridFile.Items.Add(John);
-            dataGridFile.Items.Add(John);
-            dataGridFile.Items.Add(John);
-            dataGridFile.Items.Add(John);
+            for (int i = 0; i < 100; i++) {
+                DataGridFile item = new DataGridFile();
+                item.FileID = i + 1;
+                item.FilePath = $"C:\\Users\\Lukáš Patejdl\\Pictures\\Saved Pictures\\thumb-1920-{i}.png";
+                item.FileEmail = $"kamo{i}@kamo.cz";
+                item.FileInterval = "00:00:05:00";
+                item.FileMaxSize = 1;
+                item.FileMaxLines = 1;
+                item.FileTurnOn = true;
+                dataGridFile.Items.Add(item);
+            }
+
 
         }
 
@@ -173,6 +166,19 @@ namespace MonitoringProtokolu {
                 txtBoxGlobalSettingslogPath.Text = folderBrowserDialog.SelectedPath;
             }
         }
+
+        private void FileEdit_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void FileRemove_Click(object sender, RoutedEventArgs e) {
+            
+        }
+
+        private void FileCopy_Click(object sender, RoutedEventArgs e) {
+            DataGridFile selectedFile = (DataGridFile)dataGridFile.SelectedItem;
+            System.Windows.MessageBox.Show($"ID of selected row: {selectedFile.FileTurnOn}");
+        }
     }
     class DataGridFile {
 
@@ -183,10 +189,7 @@ namespace MonitoringProtokolu {
 
         public int FileMaxSize { get; set; }
         public int FileMaxLines { get; set; }
-        public CheckBox FileTurnOn { get; set; }
-        public Button FileEdit { get; set; }
-        public Button FileRemove { get; set; }
-        public Button FileCopy { get; set; }
+        public Boolean FileTurnOn { get; set; }
 
     }
 }

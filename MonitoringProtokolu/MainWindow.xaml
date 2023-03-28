@@ -475,7 +475,7 @@
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="2">
-                        <DataGrid x:Name="dataGridFile">
+                        <DataGrid x:Name="dataGridFile" AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding FileID}" Width="0.5*" MaxWidth="25"/>
                                 <DataGridTextColumn Header="cesta" Binding="{Binding FilePath}" Width="5*"/>
@@ -483,10 +483,34 @@
                                 <DataGridTextColumn Header="Interval" Binding="{Binding FileInterval}" Width="1*" MaxWidth="110"/>
                                 <DataGridTextColumn Header="Limit velikosti" Binding="{Binding FileMaxSize}" Width="1*" MaxWidth="125"/>
                                 <DataGridTextColumn Header="Limit řádek" Binding="{Binding FileMaxLines}" Width="1*" MaxWidth="105"/>
-                                <DataGridTextColumn Header="Zapnout" Binding="{Binding FileTurnOn}" Width="1*" MaxWidth="80"/>
-                                <DataGridTextColumn Header="Upravit" Binding="{Binding FileEdit}" Width="1*" MaxWidth="70"/>
-                                <DataGridTextColumn Header="Smazat" Binding="{Binding FileRemove}" Width="1*" MaxWidth="70"/>
-                                <DataGridTextColumn Header="Kopírovat" Binding="{Binding FileCopy}" Width="1*" MaxWidth="90"/>
+                                <DataGridTemplateColumn Header="Zapnout" Width="1*" MaxWidth="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding FileTurnOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Upravit">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Upravit" Click="FileEdit_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Smazat">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Smazat" Click="FileRemove_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Kopírovat">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Kopírovat" Click="FileCopy_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

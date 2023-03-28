@@ -1,28 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lukym\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj": {}
+    "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lukym\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj": {
+    "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lukym\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj",
+        "projectUniqueName": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj",
         "projectName": "MonitoringProtokolu",
-        "projectPath": "C:\\Users\\Lukym\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj",
-        "packagesPath": "C:\\Users\\Lukym\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lukym\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\obj\\",
+        "projectPath": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj",
+        "packagesPath": "C:\\Users\\Lukáš Patejdl\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Lukym\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lukáš Patejdl\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0-windows"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {}
         },
         "frameworks": {
           "net6.0-windows7.0": {
@@ -58,7 +57,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
