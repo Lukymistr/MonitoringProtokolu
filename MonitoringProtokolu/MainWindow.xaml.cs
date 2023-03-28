@@ -34,7 +34,6 @@ namespace MonitoringProtokolu {
                 dataGridFile.Items.Add(item);
             }
 
-
         }
 
         private void icon_Click(object sender, System.EventArgs e) {
