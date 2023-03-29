@@ -297,7 +297,7 @@ namespace MonitoringProtokolu {
                 txtBoxFileEmail.Text = "E-mail není platný";
                 formated = false;
             }
-            if (!Int32.TryParse(size.Split(" ")[0], out _)) {
+            if (!(Int32.TryParse(size.Split(" ")[0], out _) && size.Split(" ").Length == 2)) {
                 txtBoxFileMaxSize.Text = "Nebylo zadáno číslo!";
                 formated = false;
             }
@@ -407,7 +407,7 @@ namespace MonitoringProtokolu {
                 txtBoxDirectoryEmail.Text = "E-mail není platný";
                 formated = false;
             }
-            if (!Int32.TryParse(size.Split(" ")[0], out _)) {
+            if (!(Int32.TryParse(size.Split(" ")[0], out _) && size.Split(" ").Length == 2)) {
                 txtBoxDirectoryMaxSize.Text = "Nebylo zadáno číslo!";
                 formated = false;
             }
