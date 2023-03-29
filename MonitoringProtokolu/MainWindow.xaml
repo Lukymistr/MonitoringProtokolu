@@ -368,6 +368,8 @@
                         <Setter Property="HorizontalGridLinesBrush" Value="#dbdee1"/>
                         <Setter Property="VerticalGridLinesBrush" Value="#dbdee1"/>
                         <Setter Property="IsReadOnly" Value="True"/>
+                        <Setter Property="SelectionUnit" Value="FullRow"/>
+                        <Setter Property="SelectionMode" Value="Single"/>
                     </Style>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Foreground" Value="#dbdee1"/>
