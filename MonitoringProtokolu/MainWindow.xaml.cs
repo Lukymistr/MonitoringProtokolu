@@ -176,7 +176,7 @@ namespace MonitoringProtokolu {
         }
 
         private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
-
+            // vše vypnout / zapnout
         }
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e) {
@@ -221,56 +221,203 @@ namespace MonitoringProtokolu {
         }
 
         private void btnFileEdit_Click(object sender, RoutedEventArgs e) {
-
+            btnFileCopy_Click(sender, e);
+            btnFileAdd.Content = "uložit";
         }
 
         private void btnFileRemove_Click(object sender, RoutedEventArgs e) {
-            //DataGrid SelectedItem = (DataGrid)dataGridFile.SelectedItem;
-            //System.Windows.MessageBox.Show($"ID of selected row: {dataGridFile}");
+            if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
+                var DBSelectedRow = (DBFile)dataGridFile.SelectedItem;
+                SQLiteConnection db = new SQLiteConnection(DBFilePath);
+                db.Delete(DBSelectedRow);
+                db.Close();
+                loadDBFile();
+            }
         }
 
         private void btnFileCopy_Click(object sender, RoutedEventArgs e) {
+            var DBSelectedRow = (DBFile)dataGridFile.SelectedItem;
+            txtBoxFilePath.Text = DBSelectedRow.path;
+            txtBoxFileEmail.Text = DBSelectedRow.email;
+            txtBoxFileInterval.Text = DBSelectedRow.interval.ToString();
+            txtBoxFileMaxSize.Text = DBSelectedRow.maxSize.Split(" ")[0];
+            comBoxFileSizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
+            txtBoxFileMaxLines.Text = DBSelectedRow.maxLines.ToString();
+            CheckBoxFileTurnOn.IsChecked = DBSelectedRow.turnOn;
+
         }
 
         private void btnFileCancel_Click(object sender, RoutedEventArgs e) {
-
+            txtBoxFilePath.Text = null;
+            txtBoxFileEmail.Text = null;
+            txtBoxFileInterval.Text = null;
+            txtBoxFileMaxSize.Text = null;
+            txtBoxFileMaxLines.Text = null;
+            CheckBoxFileTurnOn.IsChecked = null;
+            btnFileAdd.Content = "Přidat";
         }
 
         private void btnFileAdd_Click(object sender, RoutedEventArgs e) {
-            DBFile tmp = new DBFile(txtBoxFilePath.Text, txtBoxFileEmail.Text, Int32.Parse(txtBoxFileInterval.Text), Int32.Parse(txtBoxFileMaxSize.Text), Int32.Parse(txtBoxFileMaxLines.Text), (Boolean)CheckBoxFileTurnOn.IsChecked);
+            String path, email, interval, size, linesString;
+            int lines;
+            Boolean run, filled = true;
 
+            path = txtBoxFilePath.Text;
+            email = String.IsNullOrEmpty(txtBoxFileEmail.Text) ? txtBoxGlobalSettingsEmailRecipient.Text : txtBoxFileEmail.Text;
+            interval = String.IsNullOrEmpty(txtBoxFileInterval.Text) ? txtBoxGlobalSettingsInterval.Text : txtBoxFileInterval.Text;
+            size = $"{(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? txtBoxGlobalSettingsMaxSize.Text : txtBoxFileMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? (String.IsNullOrEmpty(txtBoxGlobalSettingsMaxSize.Text) ? "" : comBoxGlobalSettingsSizeUnits.Text) : comBoxFileSizeUnits.Text)}";
+            linesString = String.IsNullOrEmpty(txtBoxFileMaxLines.Text) ? txtBoxGlobalSettingsMaxLines.Text : txtBoxFileMaxLines.Text;
+            run = (Boolean)CheckBoxFileTurnOn.IsChecked;
+
+            if (String.IsNullOrEmpty(path) || path == "Nebylo vyplněno!") {
+                txtBoxFilePath.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+            if (String.IsNullOrEmpty(email) || email == "Nebylo vyplněno!") {
+                txtBoxFileEmail.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+            if (String.IsNullOrEmpty(interval) || interval == "Nebylo vyplněno!") {
+                txtBoxFileInterval.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+            if (size == "Nebylo vyplněno!" || size == " ") {
+                txtBoxFileMaxSize.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+            if (String.IsNullOrEmpty(linesString) || linesString == "Nebylo vyplněno!") {
+                txtBoxFileMaxLines.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+
+            if (!filled) {
+                System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                return;
+            }
+
+            lines = Int32.Parse(linesString);
+
+            if (btnFileAdd.Content.ToString() == "uložit") {
+                SQLiteConnection db2 = new SQLiteConnection(DBFilePath);
+                var DBSelectedRow = (DBFile)dataGridFile.SelectedItem;
+                db2.Update(new DBFile(DBSelectedRow.id, path, email, interval, size, lines, run));
+                db2.Close();
+                btnFileCancel_Click(sender, e);
+                btnFileAdd.Content = "Přidat";
+                loadDBFile();
+                return;
+            }
+
+            DBFile tmp = new DBFile(path, email, interval, size, lines, run);
             SQLiteConnection db = new SQLiteConnection(DBFilePath);
 
             db.Insert(tmp);
 
             db.Close();
             loadDBFile();
+
         }
 
         private void btnDirectoryEdit_Click(object sender, RoutedEventArgs e) {
-
+            btnDirectoryCopy_Click(sender, e);
+            btnDirectoryAdd.Content = "uložit";
         }
 
         private void btnDirectoryRemove_Click(object sender, RoutedEventArgs e) {
+            if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
+                var DBSelectedRow = (DBDirectory)dataGridDirectory.SelectedItem;
+                SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
+                db.Delete(DBSelectedRow);
+                db.Close();
+                loadDBDirectory();
+            }
             
         }
 
         private void btnDirectoryCopy_Click(object sender, RoutedEventArgs e) {
+            var DBSelectedRow = (DBDirectory)dataGridDirectory.SelectedItem;
+            txtBoxDirectoryPath.Text = DBSelectedRow.path;
+            txtBoxDirectoryEmail.Text = DBSelectedRow.email;
+            txtBoxDirectoryInterval.Text = DBSelectedRow.interval.ToString();
+            txtBoxDirectoryMaxSize.Text = DBSelectedRow.maxSize.Split(" ")[0];
+            comBoxDirectorySizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
+            txtBoxDirectoryMaxLines.Text = DBSelectedRow.maxLines.ToString();
+            CheckBoxDirectoryTurnOn.IsChecked = DBSelectedRow.turnOn;
         }
 
         private void btnDirectoryCancel_Click(object sender, RoutedEventArgs e) {
+            txtBoxDirectoryPath.Text = null;
+            txtBoxDirectoryEmail.Text = null;
+            txtBoxDirectoryInterval.Text = null;
+            txtBoxDirectoryMaxSize.Text = null;
+            txtBoxDirectoryMaxLines.Text = null;
+            CheckBoxDirectoryTurnOn.IsChecked = null;
+            btnDirectoryAdd.Content = "Přidat";
 
         }
 
         private void btnDirectoryAdd_Click(object sender, RoutedEventArgs e) {
-            DBDirectory tmp = new DBDirectory(txtBoxDirectoryPath.Text, txtBoxDirectoryEmail.Text, Int32.Parse(txtBoxDirectoryInterval.Text), Int32.Parse(txtBoxDirectoryMaxSize.Text), Int32.Parse(txtBoxDirectoryMaxLines.Text), (Boolean)CheckBoxDirectoryTurnOn.IsChecked);
-            
+            String path, email, interval, size, linesString;
+            int lines;
+            Boolean run, filled = true;
+
+            path = txtBoxDirectoryPath.Text;
+            email = String.IsNullOrEmpty(txtBoxDirectoryEmail.Text) ? txtBoxGlobalSettingsEmailRecipient.Text : txtBoxDirectoryEmail.Text;
+            interval = String.IsNullOrEmpty(txtBoxDirectoryInterval.Text) ? txtBoxGlobalSettingsInterval.Text : txtBoxDirectoryInterval.Text;
+            size = $"{(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? txtBoxGlobalSettingsMaxSize.Text : txtBoxDirectoryMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? (String.IsNullOrEmpty(txtBoxGlobalSettingsMaxSize.Text) ? "" : comBoxGlobalSettingsSizeUnits.Text) : comBoxDirectorySizeUnits.Text)}";
+            linesString = String.IsNullOrEmpty(txtBoxDirectoryMaxLines.Text) ? txtBoxGlobalSettingsMaxLines.Text : txtBoxDirectoryMaxLines.Text;
+            run = (Boolean)CheckBoxDirectoryTurnOn.IsChecked;
+
+            if (String.IsNullOrEmpty(path) || path == "Nebylo vyplněno!") {
+                txtBoxDirectoryPath.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+            if (String.IsNullOrEmpty(email) || email == "Nebylo vyplněno!") {
+                txtBoxDirectoryEmail.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+            if (String.IsNullOrEmpty(interval) || interval == "Nebylo vyplněno!") {
+                txtBoxDirectoryInterval.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+            if (String.IsNullOrEmpty(size) || size == "Nebylo vyplněno!" || size == " ") {
+                txtBoxDirectoryMaxSize.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+            if (String.IsNullOrEmpty(linesString) || linesString == "Nebylo vyplněno!") {
+                txtBoxDirectoryMaxLines.Text = "Nebylo vyplněno!";
+                filled = false;
+            }
+
+            if (!filled) {
+                System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                return;
+            }
+
+            lines = Int32.Parse(linesString);
+
             SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
 
-            db.Insert(tmp);
+            if (btnDirectoryAdd.Content.ToString() == "uložit") {
+                var DBSelectedRow = (DBDirectory)dataGridDirectory.SelectedItem;
+                db.Update(new DBDirectory(DBSelectedRow.id, path, email, interval, size, lines, run));
+                db.Close();
+                btnDirectoryCancel_Click(sender, e);
+                btnDirectoryAdd.Content = "Přidat";
+                loadDBDirectory();
+                return;
+            }
 
+            DBDirectory tmp = new DBDirectory(path, email, interval, size, lines, run);
+            db.Insert(tmp);
             db.Close();
             loadDBDirectory();
+        }
+
+        private Boolean checkAllFilled() {
+
+
+            return true;
         }
     }
 }

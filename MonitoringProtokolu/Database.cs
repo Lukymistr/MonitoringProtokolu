@@ -7,15 +7,25 @@ namespace MonitoringProtokolu {
         public int id { get; set; }
         public String path { get; set; }
         public String email { get; set; }
-        public int interval { get; set; }
+        public String interval { get; set; }
 
-        public int maxSize { get; set; }
+        public String maxSize { get; set; }
         public int maxLines { get; set; }
         public Boolean turnOn { get; set; }
 
         public DBFile() { }
 
-        public DBFile(String path, String email, int interval, int maxSize, int maxLines, Boolean turnOn) {
+        public DBFile(String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
+            this.path = path;
+            this.email = email;
+            this.interval = interval;
+            this.maxSize = maxSize;
+            this.maxLines = maxLines;
+            this.turnOn = turnOn;
+        }
+
+        public DBFile(int id, String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
+            this.id = id;
             this.path = path;
             this.email = email;
             this.interval = interval;
@@ -30,15 +40,25 @@ namespace MonitoringProtokolu {
         public int id { get; set; }
         public String path { get; set; }
         public String email { get; set; }
-        public int interval { get; set; }
+        public String interval { get; set; }
 
-        public int maxSize { get; set; }
+        public String maxSize { get; set; }
         public int maxLines { get; set; }
         public Boolean turnOn { get; set; }
 
         public DBDirectory() { }
 
-        public DBDirectory(String path, String email, int interval, int maxSize, int maxLines, Boolean turnOn) {
+        public DBDirectory(String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
+            this.path = path;
+            this.email = email;
+            this.interval = interval;
+            this.maxSize = maxSize;
+            this.maxLines = maxLines;
+            this.turnOn = turnOn;
+        }
+
+        public DBDirectory(int id, String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
+            this.id = id;
             this.path = path;
             this.email = email;
             this.interval = interval;
