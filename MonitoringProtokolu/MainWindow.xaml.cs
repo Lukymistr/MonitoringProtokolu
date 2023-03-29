@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Shell;
 using System.IO;
-using System.Windows.Controls;
 using SQLite;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -36,7 +35,9 @@ namespace MonitoringProtokolu {
 
         private void createDBPath() {
             if (!Directory.Exists(DBPath)) {
-                Directory.CreateDirectory(DBPath);
+                DirectoryInfo directory = new DirectoryInfo(DBPath);
+                directory.Create();
+                directory.Attributes |= FileAttributes.Hidden;
             }
         }
 
@@ -437,9 +438,13 @@ namespace MonitoringProtokolu {
         }
 
         private Boolean checkAllFilled() {
-
+            // tady se to bude kontrolovat, když se spustí zapnout
 
             return true;
+        }
+
+        private void btnGlobalSettingsSave_Click(object sender, RoutedEventArgs e) {
+            // ošetření inputu jako je u file a directory
         }
     }
 }

@@ -100,7 +100,6 @@
                     </Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="Cursor" Value="Pen"/>
                         <Setter Property="BorderBrush" Value="#81868f"/>
                         <Setter Property="Foreground" Value="#81868f"/>
                         <Setter Property="FontSize" Value="27"/>
@@ -300,6 +299,11 @@
                         <Setter Property="HorizontalAlignment" Value="Left"/>
                         <Setter Property="BorderThickness" Value="0.5"/>
                         <Setter Property="BorderBrush" Value="#383a40"/>
+                        <Setter Property="LayoutTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="2" ScaleY="2"/>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type CheckBox}">
@@ -357,6 +361,8 @@
                         <Setter Property="HorizontalAlignment" Value="Left"/>
                     </Style>
                     <Style TargetType="DataGrid">
+                        <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+                        <Setter Property="Background" Value="#313338"/>
                         <Setter Property="Foreground" Value="#dbdee1"/>
                         <Setter Property="FontSize" Value="20"/>
                         <Setter Property="Background" Value="Transparent"/>
@@ -379,6 +385,26 @@
                     </Style>
                     <Style TargetType="DataGridRow">
                         <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="#dbdee1"/>
+                        <Setter Property="Margin" Value="-6,0,0,0"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="#dbdee1"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#dbdee1"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="#dbdee1"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="#dbdee1"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="#dbdee1"/>
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
                 </Grid.Resources>
                 <!-- pro jeden soubor -->
@@ -458,11 +484,7 @@
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="4" Content="Při nevyplnění se použije globální limit"/>
                         <TextBox x:Name="txtBoxFileMaxLines"  Grid.Column="2" Grid.Row="5"/>
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="6" Content="Při nevyplnění se použije globální limit"/>
-                        <CheckBox x:Name="CheckBoxFileTurnOn"  Grid.Column="2" Grid.Row="7">
-                            <CheckBox.LayoutTransform>
-                                <ScaleTransform ScaleX="2" ScaleY="2"/>
-                            </CheckBox.LayoutTransform>
-                        </CheckBox>
+                        <CheckBox x:Name="CheckBoxFileTurnOn"  Grid.Column="2" Grid.Row="7"/>
                         <TextBox x:Name="txtBoxFileEmail" Grid.Column="2" Grid.Row="8"/>
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="9" Content="Při nevyplnění se použije globální e-mail"/>
                         <Grid Grid.Column="2" Grid.Row="10">
@@ -492,7 +514,37 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="#3a3c42"/>
+                                                        <Setter Property="Background" Value="#313338"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                                <Style TargetType="CheckBox">
+                                    <Setter Property="Foreground" Value="#dbdee1"/>
+                                    <Setter Property="Background" Value="#383a40"/>
+                                    <Setter Property="IsChecked" Value="False"/>
+                                    <Setter Property="BorderThickness" Value="0.5"/>
+                                    <Setter Property="BorderBrush" Value="#383a40"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                                                    <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" Width="15" Height="15">
+                                                        <Path Stretch="Uniform" Width="15" Height="10" Fill="#dbdee1" Name="eliCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Visibility="Collapsed"/>
+                                                    </Border>
+                                                    <TextBlock VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}"></TextBlock>
+                                                </StackPanel>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="BorderBrush" Value="#3a3c42" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter Property="Background" Value="#3a3c42" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="eliCheck" Property="Visibility" Value="Visible"></Setter>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -616,11 +668,7 @@
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="4" Content="Při nevyplnění se použije globální limit"/>
                         <TextBox x:Name="txtBoxDirectoryMaxLines"  Grid.Column="2" Grid.Row="5"/>
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="6" Content="Při nevyplnění se použije globální limit"/>
-                        <CheckBox x:Name="CheckBoxDirectoryTurnOn"  Grid.Column="2" Grid.Row="7">
-                            <CheckBox.LayoutTransform>
-                                <ScaleTransform ScaleX="2" ScaleY="2"/>
-                            </CheckBox.LayoutTransform>
-                        </CheckBox>
+                        <CheckBox x:Name="CheckBoxDirectoryTurnOn"  Grid.Column="2" Grid.Row="7"/>
                         <TextBox x:Name="txtBoxDirectoryEmail" Grid.Column="2" Grid.Row="8"/>
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="9" Content="Při nevyplnění se použije globální e-mail"/>
                         <Grid Grid.Column="2" Grid.Row="10">
@@ -650,7 +698,7 @@
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="#3a3c42"/>
+                                                        <Setter Property="Background" Value="#313338"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -668,7 +716,7 @@
                                 <DataGridTemplateColumn Header="Zapnout" Width="1*" MaxWidth="80">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -778,11 +826,7 @@
                             <Button x:Name="btnGlobalSettingslogChoosePath" Content="vybrat" Grid.Column="1" Click="btnGlobalSettingslogChoosePath_Click"/>
                         </Grid>
 
-                        <CheckBox x:Name="CheckBoxGlobalSettingsTuningMode"  Grid.Column="2" Grid.Row="8">
-                            <CheckBox.LayoutTransform>
-                                <ScaleTransform ScaleX="2" ScaleY="2"/>
-                            </CheckBox.LayoutTransform>
-                        </CheckBox>
+                        <CheckBox x:Name="CheckBoxGlobalSettingsTuningMode"  Grid.Column="2" Grid.Row="8"/>
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="9" Content="Při zapnutí je podrobnější výpis do logu"/>
                     </Grid>
                     <Grid Grid.Row="2">
@@ -797,7 +841,7 @@
                                     <ColumnDefinition Width="140"/>
                                     <ColumnDefinition Width="140"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="btnGlobalSettingsSave" Grid.Column="2" Content="Uložit" Margin="5,0,10,5"/>
+                                <Button x:Name="btnGlobalSettingsSave" Grid.Column="2" Content="Uložit" Margin="5,0,10,5" Click="btnGlobalSettingsSave_Click"/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -855,11 +899,7 @@
                         <TextBox x:Name="txtBoxSmtpPassword"  Grid.Column="2" Grid.Row="2"/>
                         <TextBox x:Name="txtBoxSmtpHost"  Grid.Column="2" Grid.Row="4"/>
                         <TextBox x:Name="txtBoxSmtpPort"  Grid.Column="2" Grid.Row="5"/>
-                        <CheckBox x:Name="txtBoxSmtpSSL"  Grid.Column="2" Grid.Row="6">
-                            <CheckBox.LayoutTransform>
-                                <ScaleTransform ScaleX="2" ScaleY="2"/>
-                            </CheckBox.LayoutTransform>
-                        </CheckBox>
+                        <CheckBox x:Name="txtBoxSmtpSSL"  Grid.Column="2" Grid.Row="6"/>
                     </Grid>
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
