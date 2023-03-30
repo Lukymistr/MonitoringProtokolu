@@ -12,9 +12,11 @@ using System.Net.Mail;
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
         NotifyIcon icon = new NotifyIcon();
-        private static String DBPath = @"./data";
-        private static String DBFilePath = @$"{DBPath}/DBFile.db3";
-        private static String DBDirectoryPath = @$"{DBPath}/DBDirectory.db3";
+        private readonly static String DBPath = @"./data";
+        private readonly static String DBGlobalSettingsPath = @$"{DBPath}/DBGlobalSettings.db3";
+        private readonly static String DBFilePath = @$"{DBPath}/DBFile.db3";
+        private readonly static String DBDirectoryPath = @$"{DBPath}/DBDirectory.db3";
+        private readonly static String DBSmtpPath = @$"{DBPath}/DBSmtp.db3";
         public MainWindow() {
             InitializeComponent();
             WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0 });
@@ -25,12 +27,52 @@ namespace MonitoringProtokolu {
 
             createDBPath();
 
-            createDBFile();
-            createDBDirectory();
+            createGlobalSettings();
+            loadGlobalSettings();
 
+            createSmtp();
+            loadSmtp();
+
+            createDBFile();
             loadDBFile();
+
+            createDBDirectory();
             loadDBDirectory();
 
+        }
+
+        private void createGlobalSettings() {
+            if (!File.Exists(DBGlobalSettingsPath)) {
+                SQLiteConnection db = new SQLiteConnection(DBGlobalSettingsPath);
+                db.CreateTable<DBGlobalSettings>();
+                db.Insert(new DBGlobalSettings("", "", int.MinValue, "", "", int.MinValue, "", false));
+                db.Close();
+            }
+        }
+
+        private void loadGlobalSettings() {
+            SQLiteConnection db = new SQLiteConnection(DBGlobalSettingsPath);
+            DBGlobalSettings DB = db.Table<DBGlobalSettings>().ElementAt(0);
+            txtBoxGlobalSettingsInterval.Text = DB.interval;
+            if (!String.IsNullOrEmpty(DB.maxSize)) {
+                txtBoxGlobalSettingsMaxSize.Text = DB.maxSize.Split(" ")[0];
+                comBoxGlobalSettingsSizeUnits.Text = DB.maxSize.Split(" ")[1];
+            }
+            txtBoxGlobalSettingsMaxLines.Text = (DB.maxLines == int.MinValue) ? default : DB.maxLines.ToString();
+            txtBoxGlobalSettingsEmailRecipient.Text = DB.email;
+            txtBoxGlobalSettingsEmailSubject.Text = DB.emailSubject;
+            txtBoxGlobalSettingsEmailMaxLines.Text = (DB.emailLines == int.MinValue) ? default : DB.emailLines.ToString();
+            txtBoxGlobalSettingslogPath.Text = DB.logPath;
+            CheckBoxGlobalSettingsTuningMode.IsChecked = DB.tuningMode;
+            db.Close();
+        }
+
+        private void createSmtp() { 
+        
+        }
+
+        private void loadSmtp() { 
+        
         }
 
         private void createDBPath() {
@@ -179,6 +221,7 @@ namespace MonitoringProtokolu {
 
         private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
             // vše vypnout / zapnout
+            if (!checkAllFilled()) { return; }; // nějaký chybový text
         }
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e) {
@@ -254,22 +297,27 @@ namespace MonitoringProtokolu {
             txtBoxFileEmail.Text = null;
             txtBoxFileInterval.Text = null;
             txtBoxFileMaxSize.Text = null;
+            comBoxFileSizeUnits.SelectedIndex = 0;
             txtBoxFileMaxLines.Text = null;
             CheckBoxFileTurnOn.IsChecked = false;
             btnFileAdd.Content = "Přidat";
         }
 
         private void btnFileAdd_Click(object sender, RoutedEventArgs e) {
+            SQLiteConnection dbGlobal = new SQLiteConnection(DBGlobalSettingsPath);
+            DBGlobalSettings DB = dbGlobal.Table<DBGlobalSettings>().ElementAt(0);
             String path, email, interval, size, linesString;
             int lines;
             Boolean run, formated = true;
 
             path = @txtBoxFilePath.Text;
-            email = @String.IsNullOrEmpty(txtBoxFileEmail.Text) ? txtBoxGlobalSettingsEmailRecipient.Text : txtBoxFileEmail.Text;
-            interval = @String.IsNullOrEmpty(txtBoxFileInterval.Text) ? txtBoxGlobalSettingsInterval.Text : txtBoxFileInterval.Text;
-            size = @$"{(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? txtBoxGlobalSettingsMaxSize.Text : txtBoxFileMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? (String.IsNullOrEmpty(txtBoxGlobalSettingsMaxSize.Text) ? "" : comBoxGlobalSettingsSizeUnits.Text) : comBoxFileSizeUnits.Text)}";
-            linesString = @String.IsNullOrEmpty(txtBoxFileMaxLines.Text) ? txtBoxGlobalSettingsMaxLines.Text : txtBoxFileMaxLines.Text;
+            email = @String.IsNullOrEmpty(txtBoxFileEmail.Text) ? DB.email : txtBoxFileEmail.Text;
+            interval = @String.IsNullOrEmpty(txtBoxFileInterval.Text) ? DB.interval : txtBoxFileInterval.Text;
+            size = @$"{(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DB.maxSize)) ? DB.maxSize.Split(" ")[0] : " ") : txtBoxFileMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DB.maxSize)) ? (String.IsNullOrEmpty(DB.maxSize.Split(" ")[0]) ? DB.maxSize.Split(" ")[1] : "") : txtBoxFileMaxSize.Text) : comBoxFileSizeUnits.Text)}";
+            linesString = @String.IsNullOrEmpty(txtBoxFileMaxLines.Text) ? DB.maxLines.ToString() : txtBoxFileMaxLines.Text;
             run = (Boolean)CheckBoxFileTurnOn.IsChecked;
+
+            dbGlobal.Close();
 
             if (!File.Exists(path)) {
                 txtBoxFilePath.Text = "Daná cesta nenalezena!";
@@ -301,10 +349,20 @@ namespace MonitoringProtokolu {
             if (!(Int32.TryParse(size.Split(" ")[0], out _) && size.Split(" ").Length == 2)) {
                 txtBoxFileMaxSize.Text = "Nebylo zadáno číslo!";
                 formated = false;
+            } else {
+                if (Int32.Parse(size.Split(" ")[0]) == int.MinValue) {
+                    txtBoxFileMaxSize.Text = "Nebylo zadáno číslo!";
+                    formated = false;
+                }
             }
             if (!Int32.TryParse(linesString, out lines)) {
                 txtBoxFileMaxLines.Text = "Nebylo zadáno číslo!";
                 formated = false;
+            } else {
+                if (lines == int.MinValue) {
+                    txtBoxFileMaxLines.Text = "Nebylo zadáno číslo!";
+                    formated = false;
+                }
             }
 
             if (!formated) {
@@ -364,6 +422,7 @@ namespace MonitoringProtokolu {
             txtBoxDirectoryEmail.Text = null;
             txtBoxDirectoryInterval.Text = null;
             txtBoxDirectoryMaxSize.Text = null;
+            comBoxDirectorySizeUnits.SelectedIndex = 0;
             txtBoxDirectoryMaxLines.Text = null;
             CheckBoxDirectoryTurnOn.IsChecked = false;
             btnDirectoryAdd.Content = "Přidat";
@@ -371,16 +430,20 @@ namespace MonitoringProtokolu {
         }
 
         private void btnDirectoryAdd_Click(object sender, RoutedEventArgs e) {
+            SQLiteConnection dbGlobal = new SQLiteConnection(DBGlobalSettingsPath);
+            DBGlobalSettings DB = dbGlobal.Table<DBGlobalSettings>().ElementAt(0);
             String path, email, interval, size, linesString;
             int lines;
             Boolean run, formated = true;
 
             path = @txtBoxDirectoryPath.Text;
-            email = @String.IsNullOrEmpty(txtBoxDirectoryEmail.Text) ? txtBoxGlobalSettingsEmailRecipient.Text : txtBoxDirectoryEmail.Text;
-            interval = @String.IsNullOrEmpty(txtBoxDirectoryInterval.Text) ? txtBoxGlobalSettingsInterval.Text : txtBoxDirectoryInterval.Text;
-            size = @$"{(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? txtBoxGlobalSettingsMaxSize.Text : txtBoxDirectoryMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? (String.IsNullOrEmpty(txtBoxGlobalSettingsMaxSize.Text) ? "" : comBoxGlobalSettingsSizeUnits.Text) : comBoxDirectorySizeUnits.Text)}";
-            linesString = @String.IsNullOrEmpty(txtBoxDirectoryMaxLines.Text) ? txtBoxGlobalSettingsMaxLines.Text : txtBoxDirectoryMaxLines.Text;
+            email = @String.IsNullOrEmpty(txtBoxDirectoryEmail.Text) ? DB.email : txtBoxDirectoryEmail.Text;
+            interval = @String.IsNullOrEmpty(txtBoxDirectoryInterval.Text) ? DB.interval : txtBoxDirectoryInterval.Text;
+            size = @$"{(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DB.maxSize)) ? DB.maxSize.Split(" ")[0] : "") : txtBoxDirectoryMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DB.maxSize)) ? (String.IsNullOrEmpty(DB.maxSize.Split(" ")[0]) ? "" : DB.maxSize.Split(" ")[1]) : txtBoxDirectoryMaxSize.Text) : comBoxDirectorySizeUnits.Text)}";
+            linesString = @String.IsNullOrEmpty(txtBoxDirectoryMaxLines.Text) ? DB.maxLines.ToString() : txtBoxDirectoryMaxLines.Text;
             run = (Boolean)CheckBoxDirectoryTurnOn.IsChecked;
+
+            dbGlobal.Close();
 
             if (!Directory.Exists(path)) {
                 txtBoxDirectoryPath.Text = "Daná cesta nenalezena!";
@@ -411,10 +474,20 @@ namespace MonitoringProtokolu {
             if (!(Int32.TryParse(size.Split(" ")[0], out _) && size.Split(" ").Length == 2)) {
                 txtBoxDirectoryMaxSize.Text = "Nebylo zadáno číslo!";
                 formated = false;
+            } else {
+                if (Int32.Parse(size.Split(" ")[0]) == int.MinValue) {
+                    txtBoxDirectoryMaxSize.Text = "Nebylo zadáno číslo!";
+                    formated = false;
+                }
             }
             if (!Int32.TryParse(linesString, out lines)) {
                 txtBoxDirectoryMaxLines.Text = "Nebylo zadáno číslo!";
                 formated = false;
+            } else {
+                if (lines == int.MinValue) {
+                    txtBoxDirectoryMaxLines.Text = "Nebylo zadáno číslo!";
+                    formated = false;
+                }
             }
 
             if (!formated) {
@@ -444,7 +517,96 @@ namespace MonitoringProtokolu {
         }
 
         private void btnGlobalSettingsSave_Click(object sender, RoutedEventArgs e) {
-            // ošetření inputu jako je u file a directory
+            String interval, size, emailAddress, emailSubject, emailLinesString, logPath, linesString;
+            int lines = int.MinValue, emailLines = int.MinValue;
+            Boolean tuningMode, formated = true;
+
+            interval = txtBoxGlobalSettingsInterval.Text;
+            size = txtBoxGlobalSettingsMaxSize.Text;
+            linesString = txtBoxGlobalSettingsMaxLines.Text;
+            emailAddress = txtBoxGlobalSettingsEmailRecipient.Text;
+            emailSubject = txtBoxGlobalSettingsEmailSubject.Text;
+            emailLinesString = txtBoxGlobalSettingsEmailMaxLines.Text;
+            logPath = @txtBoxGlobalSettingslogPath.Text;
+            tuningMode = (Boolean)CheckBoxGlobalSettingsTuningMode.IsChecked;
+
+            if (!String.IsNullOrEmpty(interval)) {
+                if (interval.Split(":").Length == 4) {
+                    String[] tmpIntervalArray = interval.Split(":");
+                    for (int i = 0; i < tmpIntervalArray.Length; i++) {
+                        if (!(tmpIntervalArray[i].Length == 2 && Int32.TryParse(tmpIntervalArray[i], out _))) {
+                            txtBoxGlobalSettingsInterval.Text = "Nebyl zadán správný formát";
+                            formated = false;
+                            break;
+                        }
+                    }
+                } else {
+                    txtBoxGlobalSettingsInterval.Text = "Nebyl zadán správný formát";
+                    formated = false;
+                }
+            }
+            if (!String.IsNullOrEmpty(size.Split(" ")[0])) {
+                if (!(Int32.TryParse(size.Split(" ")[0], out _))) {
+                    txtBoxGlobalSettingsMaxSize.Text = "Nebylo zadáno číslo!";
+                    formated = false;
+                } else {
+                    size = $"{txtBoxGlobalSettingsMaxSize.Text} {comBoxGlobalSettingsSizeUnits.Text}";
+                }
+            }
+            if (!String.IsNullOrEmpty(linesString)) {
+                if (!Int32.TryParse(linesString, out lines)) {
+                    txtBoxGlobalSettingsMaxLines.Text = "Nebylo zadáno číslo!";
+                    formated = false;
+                } else {
+                    lines = Int32.Parse(linesString);
+                }
+                if (!String.IsNullOrEmpty(emailAddress)) {
+                    try {
+                        MailAddress mailAddress = new MailAddress(emailAddress);
+                    } catch (FormatException) {
+                        txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný";
+                        formated = false;
+                    } catch (System.ArgumentException) {
+                        txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný";
+                        formated = false;
+                    }
+                }
+            }
+            if (!String.IsNullOrEmpty(emailLinesString)) {
+                if (!Int32.TryParse(emailLinesString, out _)) {
+                    txtBoxGlobalSettingsEmailMaxLines.Text = "Nebylo zadáno číslo!";
+                    formated = false;
+                } else {
+                    emailLines = Int32.Parse(emailLinesString);
+
+                }
+            }
+            if (!String.IsNullOrEmpty(logPath)) {
+                if (!Directory.Exists(logPath)) {
+                    txtBoxGlobalSettingslogPath.Text = "Daná cesta nenalezena!";
+                    formated = false;
+                }
+            }
+
+            if (!formated) {
+                System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                return;
+            }
+            SQLiteConnection db = new SQLiteConnection(DBGlobalSettingsPath);
+            db.Update(new DBGlobalSettings(1, interval, size, lines, emailAddress, emailSubject, emailLines, logPath, tuningMode));
+            db.Close();
+
+            loadGlobalSettings();
         }
+
+        private void btnSmtpSaveAndTry_Click(object sender, RoutedEventArgs e) {
+            btnSmtpSave_Click(sender, e);
+
+        }
+
+        private void btnSmtpSave_Click(object sender, RoutedEventArgs e) {
+
+        }
+
     }
 }
