@@ -80,7 +80,7 @@ namespace MonitoringProtokolu {
         public Boolean tuningMode { get; set; }
         public DBGlobalSettings() { }
 
-        public DBGlobalSettings(string interval, string maxSize, int maxLines, string email, string emailSubject, int emailLines, string logPath, bool tuningMode) {
+        public DBGlobalSettings(String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, Boolean tuningMode) {
             this.interval = interval;
             this.maxSize = maxSize;
             this.maxLines = maxLines;
@@ -91,7 +91,7 @@ namespace MonitoringProtokolu {
             this.tuningMode = tuningMode;
         }
 
-        public DBGlobalSettings(int id, string interval, string maxSize, int maxLines, string email, string emailSubject, int emailLines, string logPath, bool tuningMode) {
+        public DBGlobalSettings(int id, String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, Boolean tuningMode) {
             this.id = id;
             this.interval = interval;
             this.maxSize = maxSize;
@@ -107,9 +107,32 @@ namespace MonitoringProtokolu {
     internal class DBSmtp {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
+        public String senderEmail { get; set; }
+        public String user { get; set; }
+        public String password { get; set; }
+        public String host { get; set; }
+        public int port { get; set; }
+        public Boolean SSL { get; set; }
 
         public DBSmtp() { }
 
+        public DBSmtp(String senderEmail, String user, String password, String host, int port, Boolean SSL) {
+            this.senderEmail = senderEmail;
+            this.user = user;
+            this.password = password;
+            this.host = host;
+            this.port = port;
+            this.SSL = SSL;
+        }
 
+        public DBSmtp(int id, String senderEmail, String user, String password, String host, int port, Boolean SSL) {
+            this.id = id;
+            this.senderEmail = senderEmail;
+            this.user = user;
+            this.password = password;
+            this.host = host;
+            this.port = port;
+            this.SSL = SSL;
+        }
     }
 }

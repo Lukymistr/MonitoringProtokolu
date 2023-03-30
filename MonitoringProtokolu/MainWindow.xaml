@@ -877,7 +877,7 @@
                     </Grid>
                 </Grid>
                 <!-- nastavení odesílání přes SMTP -->
-                <Grid x:Name="gridSMTP" Visibility="Visible">
+                <Grid x:Name="gridSMTP" Visibility="Hidden">
                     <Grid.RowDefinitions>
                         <!-- nahoře -->
                         <RowDefinition Height="400"/>
@@ -929,7 +929,7 @@
                         <TextBox x:Name="txtBoxSmtpPassword"  Grid.Column="2" Grid.Row="2"/>
                         <TextBox x:Name="txtBoxSmtpHost"  Grid.Column="2" Grid.Row="4"/>
                         <TextBox x:Name="txtBoxSmtpPort"  Grid.Column="2" Grid.Row="5"/>
-                        <CheckBox x:Name="txtBoxSmtpSSL"  Grid.Column="2" Grid.Row="6"/>
+                        <CheckBox x:Name="CheckBoxSmtpSSL"  Grid.Column="2" Grid.Row="6"/>
                     </Grid>
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>

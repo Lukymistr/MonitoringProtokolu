@@ -8,6 +8,9 @@ using System.IO;
 using SQLite;
 using System.Collections.Generic;
 using System.Net.Mail;
+using System.Net;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Runtime.Intrinsics.X86;
 
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
@@ -67,12 +70,25 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
-        private void createSmtp() { 
-        
+        private void createSmtp() {
+            if (!File.Exists(DBSmtpPath)) {
+                SQLiteConnection db = new SQLiteConnection(DBSmtpPath);
+                db.CreateTable<DBSmtp>();
+                db.Insert(new DBSmtp("", "", "", "", int.MinValue, false));
+                db.Close();
+            }
         }
 
-        private void loadSmtp() { 
-        
+        private void loadSmtp() {
+            SQLiteConnection db = new SQLiteConnection(DBSmtpPath);
+            DBSmtp DB = db.Table<DBSmtp>().ElementAt(0);
+            txtBoxSmtpSenderEmail.Text = DB.senderEmail;
+            txtBoxSmtpUser.Text = DB.user;
+            txtBoxSmtpPassword.Text = DB.password;
+            txtBoxSmtpHost.Text = DB.host;
+            txtBoxSmtpPort.Text = (DB.port == int.MinValue) ? default : DB.port.ToString();
+            CheckBoxSmtpSSL.IsChecked = DB.SSL;
+            db.Close();
         }
 
         private void createDBPath() {
@@ -328,22 +344,22 @@ namespace MonitoringProtokolu {
                 String[] tmpIntervalArray = interval.Split(":");
                 for (int i = 0; i < tmpIntervalArray.Length; i++) {
                     if (!(tmpIntervalArray[i].Length == 2 && Int32.TryParse(tmpIntervalArray[i], out _))) {
-                        txtBoxFileInterval.Text = "Nebyl zadán správný formát";
+                        txtBoxFileInterval.Text = "Nebyl zadán správný formát!";
                         formated = false;
                         break;
                     }
                 }
             } else {
-                txtBoxFileInterval.Text = "Nebyl zadán správný formát";
+                txtBoxFileInterval.Text = "Nebyl zadán správný formát!";
                 formated = false;
             }
             try {
                 MailAddress mailAddress = new MailAddress(email);
             } catch (FormatException) {
-                txtBoxFileEmail.Text = "E-mail není platný";
+                txtBoxFileEmail.Text = "E-mail není platný!";
                 formated = false;
             } catch (System.ArgumentException) {
-                txtBoxFileEmail.Text = "E-mail není platný";
+                txtBoxFileEmail.Text = "E-mail není platný!";
                 formated = false;
             }
             if (!(Int32.TryParse(size.Split(" ")[0], out _) && size.Split(" ").Length == 2)) {
@@ -453,22 +469,22 @@ namespace MonitoringProtokolu {
                 String[] tmpIntervalArray = interval.Split(":");
                 for (int i = 0; i < tmpIntervalArray.Length; i++) {
                     if (!(tmpIntervalArray[i].Length == 2 && Int32.TryParse(tmpIntervalArray[i], out _))) {
-                        txtBoxDirectoryInterval.Text = "Nebyl zadán správný formát";
+                        txtBoxDirectoryInterval.Text = "Nebyl zadán správný formát!";
                         formated = false;
                         break;
                     }
                 }
             } else {
-                txtBoxDirectoryInterval.Text = "Nebyl zadán správný formát";
+                txtBoxDirectoryInterval.Text = "Nebyl zadán správný formát!";
                 formated = false;
             }
             try {
                 MailAddress mailAddress = new MailAddress(email);
             } catch (FormatException) {
-                txtBoxDirectoryEmail.Text = "E-mail není platný";
+                txtBoxDirectoryEmail.Text = "E-mail není platný!";
                 formated = false;
             } catch (System.ArgumentException) {
-                txtBoxDirectoryEmail.Text = "E-mail není platný";
+                txtBoxDirectoryEmail.Text = "E-mail není platný!";
                 formated = false;
             }
             if (!(Int32.TryParse(size.Split(" ")[0], out _) && size.Split(" ").Length == 2)) {
@@ -535,13 +551,13 @@ namespace MonitoringProtokolu {
                     String[] tmpIntervalArray = interval.Split(":");
                     for (int i = 0; i < tmpIntervalArray.Length; i++) {
                         if (!(tmpIntervalArray[i].Length == 2 && Int32.TryParse(tmpIntervalArray[i], out _))) {
-                            txtBoxGlobalSettingsInterval.Text = "Nebyl zadán správný formát";
+                            txtBoxGlobalSettingsInterval.Text = "Nebyl zadán správný formát!";
                             formated = false;
                             break;
                         }
                     }
                 } else {
-                    txtBoxGlobalSettingsInterval.Text = "Nebyl zadán správný formát";
+                    txtBoxGlobalSettingsInterval.Text = "Nebyl zadán správný formát!";
                     formated = false;
                 }
             }
@@ -564,10 +580,10 @@ namespace MonitoringProtokolu {
                     try {
                         MailAddress mailAddress = new MailAddress(emailAddress);
                     } catch (FormatException) {
-                        txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný";
+                        txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný!";
                         formated = false;
                     } catch (System.ArgumentException) {
-                        txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný";
+                        txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný!";
                         formated = false;
                     }
                 }
@@ -600,12 +616,99 @@ namespace MonitoringProtokolu {
         }
 
         private void btnSmtpSaveAndTry_Click(object sender, RoutedEventArgs e) {
-            btnSmtpSave_Click(sender, e);
+            if (!smtpSave()) {
+                return;
+            }
+            SQLiteConnection db = new SQLiteConnection(DBSmtpPath);
+            DBSmtp DB = db.Table<DBSmtp>().ElementAt(0);
+            SQLiteConnection dbGlobalConfig = new SQLiteConnection(DBGlobalSettingsPath);
+            DBGlobalSettings DBGlobalConfig = new DBGlobalSettings();
+            try {
+                DBGlobalConfig = dbGlobalConfig.Table<DBGlobalSettings>().ElementAt(0);
+            } catch (Exception) {
+                btnGlobalSettings_Click(sender, e);
+                txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný!";
+                return;
+            }
 
+            SmtpClient client = new SmtpClient(DB.host);
+            client.Port = DB.port;
+            client.Credentials = new NetworkCredential(DB.user, DB.password);
+            client.EnableSsl = DB.SSL;
+
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(DB.senderEmail);
+            message.To.Add(DBGlobalConfig.email);
+            message.Subject = "Monitoring Protokolu";
+            message.Body = "Teto je test od Monitoringu Protokolu";
+
+            client.Send(message);
+            db.Close();
+            dbGlobalConfig.Close();
+            System.Windows.MessageBox.Show("Email byl poslán!");
+        }
+
+        private Boolean smtpSave() {
+            String senderEmail, user, password, host, portString;
+            int port = int.MinValue;
+            Boolean SSL, formated = true;
+
+            senderEmail = txtBoxSmtpSenderEmail.Text;
+            user = txtBoxSmtpUser.Text;
+            password = txtBoxSmtpPassword.Text;
+            host = txtBoxSmtpHost.Text;
+            portString = txtBoxSmtpPort.Text;
+            SSL = (Boolean)CheckBoxSmtpSSL.IsChecked;
+
+
+            try {
+                MailAddress mailAddress = new MailAddress(senderEmail);
+            } catch (FormatException) {
+                txtBoxSmtpSenderEmail.Text = "E-mail není platný!";
+                formated = false;
+            } catch (System.ArgumentException) {
+                txtBoxSmtpSenderEmail.Text = "E-mail není platný!";
+                formated = false;
+
+            }
+            if (String.IsNullOrEmpty(user) || user == "Nebylo zadáno!") {
+                txtBoxSmtpUser.Text = "Nebylo zadáno!";
+                formated = false;
+            }
+            if (String.IsNullOrEmpty(password) || password == "Nebylo zadáno!") {
+                txtBoxSmtpPassword.Text = "Nebylo zadáno!";
+                formated = false;
+            }
+            if (String.IsNullOrEmpty(host) || host == "Nebylo zadáno!") {
+                txtBoxSmtpHost.Text = "Nebylo zadáno!";
+                formated = false;
+            }
+            if (!Int32.TryParse(portString, out _)) {
+                txtBoxSmtpPort.Text = "Nebylo zadáno číslo!";
+                formated = false;
+            } else {
+                port = Int32.Parse(portString);
+                if (port == Int32.MinValue) {
+                    txtBoxSmtpPort.Text = "Nebylo zadáno číslo!";
+                    formated = false;
+                }
+            }
+
+
+            if (!formated) {
+                System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                return false;
+            }
+            SQLiteConnection db = new SQLiteConnection(DBSmtpPath);
+            db.Update(new DBSmtp(1, senderEmail, user, password, host, port, SSL));
+            db.Close();
+
+            loadSmtp();
+            return true;
         }
 
         private void btnSmtpSave_Click(object sender, RoutedEventArgs e) {
-
+            smtpSave();
         }
 
     }
