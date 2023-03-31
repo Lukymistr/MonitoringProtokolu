@@ -2,137 +2,98 @@
 using SQLite;
 
 namespace MonitoringProtokolu {
-    internal class DBFile {
+    internal class Database {
         [PrimaryKey, AutoIncrement]
-        public int id { get; set; }
-        public String path { get; set; }
-        public String email { get; set; }
-        public String interval { get; set; }
 
-        public String maxSize { get; set; }
-        public int maxLines { get; set; }
-        public Boolean turnOn { get; set; }
+        // file / directory
+        public int id { get; set; } //
+        public String path_logPath { get; set; } // g: logPath, 
+        public String emailRecipient_senderEmail { get; set; } // g: emailRecipient, s: senderEmail
+        public String interval { get; set; } // g: interval, 
 
-        public DBFile() { }
+        public String maxSize { get; set; } // g: maxSize, 
+        public int maxLines { get; set; } // g: maxLines, 
+        public Boolean turnOn_tuningMode_SSL { get; set; } // g: tuningMode, s: SSL
 
-        public DBFile(String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
-            this.path = path;
-            this.email = email;
-            this.interval = interval;
-            this.maxSize = maxSize;
-            this.maxLines = maxLines;
-            this.turnOn = turnOn;
-        }
+        // global
+        // public String interval { get; set; }
+        // public String maxSize { get; set; }
+        // public int maxLines { get; set; }
+        // public String emailRecipient { get; set; }
+        public String emailSubject { get; set; } //
+        public int emailLines { get; set; } //
+        // public String logPath { get; set; }
+        // public Boolean tuningMode { get; set; }
 
-        public DBFile(int id, String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
-            this.id = id;
-            this.path = path;
-            this.email = email;
-            this.interval = interval;
-            this.maxSize = maxSize;
-            this.maxLines = maxLines;
-            this.turnOn = turnOn;
-        }
-    }
-
-    internal class DBDirectory {
-        [PrimaryKey, AutoIncrement]
-        public int id { get; set; }
-        public String path { get; set; }
-        public String email { get; set; }
-        public String interval { get; set; }
-
-        public String maxSize { get; set; }
-        public int maxLines { get; set; }
-        public Boolean turnOn { get; set; }
-
-        public DBDirectory() { }
-
-        public DBDirectory(String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
-            this.path = path;
-            this.email = email;
-            this.interval = interval;
-            this.maxSize = maxSize;
-            this.maxLines = maxLines;
-            this.turnOn = turnOn;
-        }
-
-        public DBDirectory(int id, String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
-            this.id = id;
-            this.path = path;
-            this.email = email;
-            this.interval = interval;
-            this.maxSize = maxSize;
-            this.maxLines = maxLines;
-            this.turnOn = turnOn;
-        }
-    }
-    internal class DBGlobalSettings {
-        [PrimaryKey, AutoIncrement]
-        public int id { get; set; }
-        public String interval { get; set; }
-        public String maxSize { get; set; }
-        public int maxLines { get; set; }
-        public String email { get; set; }
-        public String emailSubject { get; set; }
-        public int emailLines { get; set; }
-        public String logPath { get; set; }
-        public Boolean tuningMode { get; set; }
-        public DBGlobalSettings() { }
-
-        public DBGlobalSettings(String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, Boolean tuningMode) {
-            this.interval = interval;
-            this.maxSize = maxSize;
-            this.maxLines = maxLines;
-            this.email = email;
-            this.emailSubject = emailSubject;
-            this.emailLines = emailLines;
-            this.logPath = logPath;
-            this.tuningMode = tuningMode;
-        }
-
-        public DBGlobalSettings(int id, String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, Boolean tuningMode) {
-            this.id = id;
-            this.interval = interval;
-            this.maxSize = maxSize;
-            this.maxLines = maxLines;
-            this.email = email;
-            this.emailSubject = emailSubject;
-            this.emailLines = emailLines;
-            this.logPath = logPath;
-            this.tuningMode = tuningMode;
-        }
-    }
-
-    internal class DBSmtp {
-        [PrimaryKey, AutoIncrement]
-        public int id { get; set; }
-        public String senderEmail { get; set; }
-        public String user { get; set; }
-        public String password { get; set; }
-        public String host { get; set; }
+        // SMTP
+        // public String senderEmail { get; set; }
+        public String user { get; set; } //
+        public String password { get; set; } //
+        public String host { get; set; } //
         public int port { get; set; }
-        public Boolean SSL { get; set; }
+        // public Boolean SSL { get; set; }
 
-        public DBSmtp() { }
+        public Database() { }
 
-        public DBSmtp(String senderEmail, String user, String password, String host, int port, Boolean SSL) {
-            this.senderEmail = senderEmail;
-            this.user = user;
-            this.password = password;
-            this.host = host;
-            this.port = port;
-            this.SSL = SSL;
+        public Database(String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
+            this.path_logPath = path;
+            this.emailRecipient_senderEmail = email;
+            this.interval = interval;
+            this.maxSize = maxSize;
+            this.maxLines = maxLines;
+            this.turnOn_tuningMode_SSL = turnOn;
         }
 
-        public DBSmtp(int id, String senderEmail, String user, String password, String host, int port, Boolean SSL) {
-            this.id = id;
-            this.senderEmail = senderEmail;
+        public Database(String senderEmail, String user, String password, String host, int port, Boolean SSL, Boolean SMTP) {
+            this.emailRecipient_senderEmail = senderEmail;
             this.user = user;
             this.password = password;
             this.host = host;
             this.port = port;
-            this.SSL = SSL;
+            this.turnOn_tuningMode_SSL = SSL;
+        }
+
+        public Database(int id, String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
+            this.id = id;
+            this.path_logPath = path;
+            this.emailRecipient_senderEmail = email;
+            this.interval = interval;
+            this.maxSize = maxSize;
+            this.maxLines = maxLines;
+            this.turnOn_tuningMode_SSL = turnOn;
+        }
+
+        public Database(int id, String senderEmail, String user, String password, String host, int port, Boolean SSL, Boolean SMTP) {
+            this.id = id;
+            this.emailRecipient_senderEmail = senderEmail;
+            this.user = user;
+            this.password = password;
+            this.host = host;
+            this.port = port;
+            this.turnOn_tuningMode_SSL = SSL;
+        }
+
+        public Database(String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, Boolean tuningMode) {
+            this.interval = interval;
+            this.maxSize = maxSize;
+            this.maxLines = maxLines;
+            this.emailRecipient_senderEmail = email;
+            this.emailSubject = emailSubject;
+            this.emailLines = emailLines;
+            this.path_logPath = logPath;
+            this.turnOn_tuningMode_SSL = tuningMode;
+        }
+
+        public Database(int id, String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, Boolean tuningMode) {
+            this.id = id;
+            this.interval = interval;
+            this.maxSize = maxSize;
+            this.maxLines = maxLines;
+            this.emailRecipient_senderEmail = email;
+            this.emailSubject = emailSubject;
+            this.emailLines = emailLines;
+            this.path_logPath = logPath;
+            this.turnOn_tuningMode_SSL = tuningMode;
         }
     }
 }

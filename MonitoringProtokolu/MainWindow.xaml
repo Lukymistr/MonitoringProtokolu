@@ -443,9 +443,9 @@
                             <RowDefinition Height="4*"/>
                             <!-- zapnout testování -->
                             <RowDefinition Height="5*"/>
-                            <!-- Notifikační E-mail -->
+                            <!-- Notifikační e-mail -->
                             <RowDefinition Height="5*"/>
-                            <!-- Notifikační E-mail - popis -->
+                            <!-- Notifikační e-mail - popis -->
                             <RowDefinition Height="4*"/>
                             <!-- tlačítka -->
                             <RowDefinition Height="5*"/>
@@ -456,7 +456,7 @@
                         <Label Grid.Column="0" Grid.Row="3" Content="Maximální velikost"/>
                         <Label Grid.Column="0" Grid.Row="5" Content="Maximální počet řádek"/>
                         <Label Grid.Column="0" Grid.Row="7" Content="Zapnout testování"/>
-                        <Label Grid.Column="0" Grid.Row="8" Content="Notifikační E-mail"/>
+                        <Label Grid.Column="0" Grid.Row="8" Content="Notifikační e-mail"/>
                         <!-- pravá strana -->
                         <Grid Grid.Column="2" Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -554,15 +554,15 @@
                             </DataGrid.Resources>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding id}" Visibility="Hidden"/>
-                                <DataGridTextColumn Header="cesta" Binding="{Binding path}" Width="5*"/>
-                                <DataGridTextColumn Header="Notifikační E-mail" Binding="{Binding email}" Width="2.5*"/>
+                                <DataGridTextColumn Header="cesta" Binding="{Binding path_logPath}" Width="5*"/>
+                                <DataGridTextColumn Header="Notifikační e-mail" Binding="{Binding emailRecipient_senderEmail}" Width="2.5*"/>
                                 <DataGridTextColumn Header="Interval" Binding="{Binding interval}" Width="1*" MaxWidth="110"/>
                                 <DataGridTextColumn Header="Limit velikosti" Binding="{Binding maxSize}" Width="1*" MaxWidth="125"/>
                                 <DataGridTextColumn Header="Limit řádek" Binding="{Binding maxLines}" Width="1*" MaxWidth="105"/>
                                 <DataGridTemplateColumn Header="Zapnout" Width="1*" MaxWidth="80">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                            <CheckBox Checked="CheckBoxFileTurnOn_Checked" Unchecked="CheckBoxFileTurnOn_Unchecked" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn_tuningMode_SSL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -627,9 +627,9 @@
                             <RowDefinition Height="4*"/>
                             <!-- zapnout testování -->
                             <RowDefinition Height="5*"/>
-                            <!-- Notifikační E-mail -->
+                            <!-- Notifikační e-mail -->
                             <RowDefinition Height="5*"/>
-                            <!-- Notifikační E-mail - popis -->
+                            <!-- Notifikační e-mail - popis -->
                             <RowDefinition Height="4*"/>
                             <!-- tlačítka -->
                             <RowDefinition Height="5*"/>
@@ -640,7 +640,7 @@
                         <Label Grid.Column="0" Grid.Row="3" Content="Maximální velikost"/>
                         <Label Grid.Column="0" Grid.Row="5" Content="Maximální počet řádek"/>
                         <Label Grid.Column="0" Grid.Row="7" Content="Zapnout testování"/>
-                        <Label Grid.Column="0" Grid.Row="8" Content="Notifikační E-mail"/>
+                        <Label Grid.Column="0" Grid.Row="8" Content="Notifikační e-mail"/>
                         <!-- pravá strana -->
                         <Grid Grid.Column="2" Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -738,15 +738,15 @@
                             </DataGrid.Resources>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding id}" Visibility="Hidden"/>
-                                <DataGridTextColumn Header="cesta" Binding="{Binding path}" Width="5*"/>
-                                <DataGridTextColumn Header="Notifikační E-mail" Binding="{Binding email}" Width="2.5*"/>
+                                <DataGridTextColumn Header="cesta" Binding="{Binding path_logPath}" Width="5*"/>
+                                <DataGridTextColumn Header="Notifikační e-mail" Binding="{Binding emailRecipient_senderEmail}" Width="2.5*"/>
                                 <DataGridTextColumn Header="Interval" Binding="{Binding interval}" Width="1*" MaxWidth="110"/>
                                 <DataGridTextColumn Header="Limit velikosti" Binding="{Binding maxSize}" Width="1*" MaxWidth="125"/>
                                 <DataGridTextColumn Header="Limit řádek" Binding="{Binding maxLines}" Width="1*" MaxWidth="105"/>
                                 <DataGridTemplateColumn Header="Zapnout" Width="1*" MaxWidth="80">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                            <CheckBox Checked="CheckBoxDirectoryTurnOn_Checked" Unchecked="CheckBoxDirectoryTurnOn_Unchecked" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn_tuningMode_SSL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -803,7 +803,7 @@
                             <RowDefinition Height="5*"/>
                             <!-- Limit řádek -->
                             <RowDefinition Height="5*"/>
-                            <!-- Notifikační E-mail -->
+                            <!-- Notifikační e-mail -->
                             <RowDefinition Height="5*"/>
                             <!-- PŘedmět e-mailu -->
                             <RowDefinition Height="5*"/>
@@ -822,7 +822,7 @@
                         <Label Grid.Column="0" Grid.Row="0" Content="Interval testování"/>
                         <Label Grid.Column="0" Grid.Row="2" Content="Limit velikosti"/>
                         <Label Grid.Column="0" Grid.Row="3" Content="Limit řádek"/>
-                        <Label Grid.Column="0" Grid.Row="4" Content="Notifikační E-mail"/>
+                        <Label Grid.Column="0" Grid.Row="4" Content="Notifikační e-mail"/>
                         <Label Grid.Column="0" Grid.Row="5" Content="Předmět e-mailu"/>
                         <Label Grid.Column="0" Grid.Row="6" Content="Maximální počet řádek v emailu"/>
                         <Label Grid.Column="0" Grid.Row="7" Content="Umístění log souboru"/>

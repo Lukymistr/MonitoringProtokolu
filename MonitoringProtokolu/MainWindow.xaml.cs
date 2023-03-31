@@ -9,17 +9,18 @@ using SQLite;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net;
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Runtime.Intrinsics.X86;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Security.Policy;
+using System.Windows.Documents;
+using System.Windows.Shapes;
+using static System.Windows.Forms.LinkLabel;
+using System.Text;
 
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
         NotifyIcon icon = new NotifyIcon();
         private readonly static String DBPath = @"./data";
-        private readonly static String DBGlobalSettingsPath = @$"{DBPath}/DBGlobalSettings.db3";
-        private readonly static String DBFilePath = @$"{DBPath}/DBFile.db3";
-        private readonly static String DBDirectoryPath = @$"{DBPath}/DBDirectory.db3";
-        private readonly static String DBSmtpPath = @$"{DBPath}/DBSmtp.db3";
+        private readonly static String DatabasePath = @$"{DBPath}/Database.db3";
         public MainWindow() {
             InitializeComponent();
             WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0 });
@@ -30,64 +31,68 @@ namespace MonitoringProtokolu {
 
             createDBPath();
 
+            createDatabase();
+
             createGlobalSettings();
             loadGlobalSettings();
 
             createSmtp();
             loadSmtp();
 
-            createDBFile();
-            loadDBFile();
-
-            createDBDirectory();
-            loadDBDirectory();
+            loadDataGrids();
 
         }
 
-        private void createGlobalSettings() {
-            if (!File.Exists(DBGlobalSettingsPath)) {
-                SQLiteConnection db = new SQLiteConnection(DBGlobalSettingsPath);
-                db.CreateTable<DBGlobalSettings>();
-                db.Insert(new DBGlobalSettings("", "", int.MinValue, "", "", int.MinValue, "", false));
+        private void createDatabase() {
+            if (!File.Exists(DatabasePath)) {
+                SQLiteConnection db = new SQLiteConnection(DatabasePath);
+                db.CreateTable<Database>();
                 db.Close();
             }
         }
 
+        private void createGlobalSettings() {
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            if (db.Table<Database>().Count() == 0) {
+                db.Insert(new Database("", "", int.MinValue, "", "", int.MinValue, "", false));
+            }
+            db.Close();
+        }
+
         private void loadGlobalSettings() {
-            SQLiteConnection db = new SQLiteConnection(DBGlobalSettingsPath);
-            DBGlobalSettings DB = db.Table<DBGlobalSettings>().ElementAt(0);
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            Database DB = db.Table<Database>().ElementAt(0);
             txtBoxGlobalSettingsInterval.Text = DB.interval;
             if (!String.IsNullOrEmpty(DB.maxSize)) {
                 txtBoxGlobalSettingsMaxSize.Text = DB.maxSize.Split(" ")[0];
                 comBoxGlobalSettingsSizeUnits.Text = DB.maxSize.Split(" ")[1];
             }
             txtBoxGlobalSettingsMaxLines.Text = (DB.maxLines == int.MinValue) ? default : DB.maxLines.ToString();
-            txtBoxGlobalSettingsEmailRecipient.Text = DB.email;
+            txtBoxGlobalSettingsEmailRecipient.Text = DB.emailRecipient_senderEmail;
             txtBoxGlobalSettingsEmailSubject.Text = DB.emailSubject;
             txtBoxGlobalSettingsEmailMaxLines.Text = (DB.emailLines == int.MinValue) ? default : DB.emailLines.ToString();
-            txtBoxGlobalSettingslogPath.Text = DB.logPath;
-            CheckBoxGlobalSettingsTuningMode.IsChecked = DB.tuningMode;
+            txtBoxGlobalSettingslogPath.Text = DB.path_logPath;
+            CheckBoxGlobalSettingsTuningMode.IsChecked = DB.turnOn_tuningMode_SSL;
             db.Close();
         }
 
         private void createSmtp() {
-            if (!File.Exists(DBSmtpPath)) {
-                SQLiteConnection db = new SQLiteConnection(DBSmtpPath);
-                db.CreateTable<DBSmtp>();
-                db.Insert(new DBSmtp("", "", "", "", int.MinValue, false));
-                db.Close();
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            if (db.Table<Database>().Count() == 1) {
+                db.Insert(new Database("", "", "", "", int.MinValue, false, true));
             }
+            db.Close();
         }
 
         private void loadSmtp() {
-            SQLiteConnection db = new SQLiteConnection(DBSmtpPath);
-            DBSmtp DB = db.Table<DBSmtp>().ElementAt(0);
-            txtBoxSmtpSenderEmail.Text = DB.senderEmail;
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            Database DB = db.Table<Database>().ElementAt(1);
+            txtBoxSmtpSenderEmail.Text = DB.emailRecipient_senderEmail;
             txtBoxSmtpUser.Text = DB.user;
             txtBoxSmtpPassword.Text = DB.password;
             txtBoxSmtpHost.Text = DB.host;
             txtBoxSmtpPort.Text = (DB.port == int.MinValue) ? default : DB.port.ToString();
-            CheckBoxSmtpSSL.IsChecked = DB.SSL;
+            CheckBoxSmtpSSL.IsChecked = DB.turnOn_tuningMode_SSL;
             db.Close();
         }
 
@@ -99,24 +104,16 @@ namespace MonitoringProtokolu {
             }
         }
 
-        private void loadDBFile() {
+        private void loadDataGrids() {
             dataGridFile.Items.Clear();
-            SQLiteConnection db = new SQLiteConnection(DBFilePath);
-            List<DBFile> DBs = db.Table<DBFile>().ToList();
-            if (DBs.Count > 0) {
-                foreach (DBFile DB in DBs) {
-                    dataGridFile.Items.Add(DB);
-                }
-            }
-            db.Close();
-        }
-
-        private void loadDBDirectory() {
             dataGridDirectory.Items.Clear();
-            SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
-            List<DBDirectory> DBs = db.Table<DBDirectory>().ToList();
-            if (DBs.Count > 0) {
-                foreach (DBDirectory DB in DBs) {
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            List<Database> DBs = db.Table<Database>().ToList();
+            for (int i = 2; i < DBs.Count; i++) {
+                Database DB = DBs[i];
+                if (File.Exists(DB.path_logPath)) {
+                    dataGridFile.Items.Add(DB);
+                } else {
                     dataGridDirectory.Items.Add(DB);
                 }
             }
@@ -128,26 +125,6 @@ namespace MonitoringProtokolu {
             icon.Text = "Monitoring Protokolu";
             icon.Visible = false;
             icon.Click += new System.EventHandler(icon_Click);
-        }
-
-        private void createDBFile() {
-            if (!File.Exists(DBFilePath)) {
-                SQLiteConnection db = new SQLiteConnection(DBFilePath);
-
-                db.CreateTable<DBFile>();
-
-                db.Close();
-            }
-        }
-
-        private void createDBDirectory() {
-            if (!File.Exists(DBDirectoryPath)) {
-                SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
-
-                db.CreateTable<DBDirectory>();
-
-                db.Close();
-            }
         }
 
         private void icon_Click(object sender, System.EventArgs e) {
@@ -288,23 +265,23 @@ namespace MonitoringProtokolu {
 
         private void btnFileRemove_Click(object sender, RoutedEventArgs e) {
             if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
-                var DBSelectedRow = (DBFile)dataGridFile.SelectedItem;
-                SQLiteConnection db = new SQLiteConnection(DBFilePath);
+                Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
+                SQLiteConnection db = new SQLiteConnection(DatabasePath);
                 db.Delete(DBSelectedRow);
                 db.Close();
-                loadDBFile();
+                loadDataGrids();
             }
         }
 
         private void btnFileCopy_Click(object sender, RoutedEventArgs e) {
-            var DBSelectedRow = (DBFile)dataGridFile.SelectedItem;
-            txtBoxFilePath.Text = DBSelectedRow.path;
-            txtBoxFileEmail.Text = DBSelectedRow.email;
+            Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
+            txtBoxFilePath.Text = DBSelectedRow.path_logPath;
+            txtBoxFileEmail.Text = DBSelectedRow.emailRecipient_senderEmail;
             txtBoxFileInterval.Text = DBSelectedRow.interval.ToString();
             txtBoxFileMaxSize.Text = DBSelectedRow.maxSize.Split(" ")[0];
             comBoxFileSizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
             txtBoxFileMaxLines.Text = DBSelectedRow.maxLines.ToString();
-            CheckBoxFileTurnOn.IsChecked = DBSelectedRow.turnOn;
+            CheckBoxFileTurnOn.IsChecked = DBSelectedRow.turnOn_tuningMode_SSL;
 
         }
 
@@ -320,20 +297,18 @@ namespace MonitoringProtokolu {
         }
 
         private void btnFileAdd_Click(object sender, RoutedEventArgs e) {
-            SQLiteConnection dbGlobal = new SQLiteConnection(DBGlobalSettingsPath);
-            DBGlobalSettings DB = dbGlobal.Table<DBGlobalSettings>().ElementAt(0);
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            Database DBGlobal = db.Table<Database>().ElementAt(0);
             String path, email, interval, size, linesString;
             int lines;
             Boolean run, formated = true;
 
             path = @txtBoxFilePath.Text;
-            email = @String.IsNullOrEmpty(txtBoxFileEmail.Text) ? DB.email : txtBoxFileEmail.Text;
-            interval = @String.IsNullOrEmpty(txtBoxFileInterval.Text) ? DB.interval : txtBoxFileInterval.Text;
-            size = @$"{(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DB.maxSize)) ? DB.maxSize.Split(" ")[0] : " ") : txtBoxFileMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DB.maxSize)) ? (String.IsNullOrEmpty(DB.maxSize.Split(" ")[0]) ? DB.maxSize.Split(" ")[1] : "") : txtBoxFileMaxSize.Text) : comBoxFileSizeUnits.Text)}";
-            linesString = @String.IsNullOrEmpty(txtBoxFileMaxLines.Text) ? DB.maxLines.ToString() : txtBoxFileMaxLines.Text;
+            email = @String.IsNullOrEmpty(txtBoxFileEmail.Text) ? DBGlobal.emailRecipient_senderEmail : txtBoxFileEmail.Text;
+            interval = @String.IsNullOrEmpty(txtBoxFileInterval.Text) ? DBGlobal.interval : txtBoxFileInterval.Text;
+            size = @$"{(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? DBGlobal.maxSize.Split(" ")[0] : "") : txtBoxFileMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? (String.IsNullOrEmpty(DBGlobal.maxSize.Split(" ")[0]) ? "" : DBGlobal.maxSize.Split(" ")[1]) : txtBoxFileMaxSize.Text) : comBoxDirectorySizeUnits.Text)}";
+            linesString = @String.IsNullOrEmpty(txtBoxFileMaxLines.Text) ? DBGlobal.maxLines.ToString() : txtBoxFileMaxLines.Text;
             run = (Boolean)CheckBoxFileTurnOn.IsChecked;
-
-            dbGlobal.Close();
 
             if (!File.Exists(path)) {
                 txtBoxFilePath.Text = "Daná cesta nenalezena!";
@@ -386,23 +361,20 @@ namespace MonitoringProtokolu {
                 return;
             }
 
-            SQLiteConnection db = new SQLiteConnection(DBFilePath);
-
             if (btnFileAdd.Content.ToString() == "uložit") {
-                var DBSelectedRow = (DBFile)dataGridFile.SelectedItem;
-                db.Update(new DBFile(DBSelectedRow.id, path, email, interval, size, lines, run));
-                db.Close();
+                Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
+                db.Update(new Database(DBSelectedRow.id, path, email, interval, size, lines, run));
                 btnFileAdd.Content = "Přidat";
 
 
             } else {
-                DBFile tmp = new DBFile(path, email, interval, size, lines, run);
-                db.Insert(tmp);
+                Database DBnewRow = new Database(path, email, interval, size, lines, run);
+                db.Insert(DBnewRow);
             }
 
             db.Close();
             btnFileCancel_Click(sender, e);
-            loadDBFile();
+            loadDataGrids();
 
         }
 
@@ -413,24 +385,24 @@ namespace MonitoringProtokolu {
 
         private void btnDirectoryRemove_Click(object sender, RoutedEventArgs e) {
             if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
-                var DBSelectedRow = (DBDirectory)dataGridDirectory.SelectedItem;
-                SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
+                Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
+                SQLiteConnection db = new SQLiteConnection(DatabasePath);
                 db.Delete(DBSelectedRow);
                 db.Close();
-                loadDBDirectory();
+                loadDataGrids();
             }
 
         }
 
         private void btnDirectoryCopy_Click(object sender, RoutedEventArgs e) {
-            var DBSelectedRow = (DBDirectory)dataGridDirectory.SelectedItem;
-            txtBoxDirectoryPath.Text = DBSelectedRow.path;
-            txtBoxDirectoryEmail.Text = DBSelectedRow.email;
+            Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
+            txtBoxDirectoryPath.Text = DBSelectedRow.path_logPath;
+            txtBoxDirectoryEmail.Text = DBSelectedRow.emailRecipient_senderEmail;
             txtBoxDirectoryInterval.Text = DBSelectedRow.interval.ToString();
             txtBoxDirectoryMaxSize.Text = DBSelectedRow.maxSize.Split(" ")[0];
             comBoxDirectorySizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
             txtBoxDirectoryMaxLines.Text = DBSelectedRow.maxLines.ToString();
-            CheckBoxDirectoryTurnOn.IsChecked = DBSelectedRow.turnOn;
+            CheckBoxDirectoryTurnOn.IsChecked = DBSelectedRow.turnOn_tuningMode_SSL;
         }
 
         private void btnDirectoryCancel_Click(object sender, RoutedEventArgs e) {
@@ -446,20 +418,18 @@ namespace MonitoringProtokolu {
         }
 
         private void btnDirectoryAdd_Click(object sender, RoutedEventArgs e) {
-            SQLiteConnection dbGlobal = new SQLiteConnection(DBGlobalSettingsPath);
-            DBGlobalSettings DB = dbGlobal.Table<DBGlobalSettings>().ElementAt(0);
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            Database DBGlobal = db.Table<Database>().ElementAt(0);
             String path, email, interval, size, linesString;
             int lines;
             Boolean run, formated = true;
 
             path = @txtBoxDirectoryPath.Text;
-            email = @String.IsNullOrEmpty(txtBoxDirectoryEmail.Text) ? DB.email : txtBoxDirectoryEmail.Text;
-            interval = @String.IsNullOrEmpty(txtBoxDirectoryInterval.Text) ? DB.interval : txtBoxDirectoryInterval.Text;
-            size = @$"{(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DB.maxSize)) ? DB.maxSize.Split(" ")[0] : "") : txtBoxDirectoryMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DB.maxSize)) ? (String.IsNullOrEmpty(DB.maxSize.Split(" ")[0]) ? "" : DB.maxSize.Split(" ")[1]) : txtBoxDirectoryMaxSize.Text) : comBoxDirectorySizeUnits.Text)}";
-            linesString = @String.IsNullOrEmpty(txtBoxDirectoryMaxLines.Text) ? DB.maxLines.ToString() : txtBoxDirectoryMaxLines.Text;
+            email = @String.IsNullOrEmpty(txtBoxDirectoryEmail.Text) ? DBGlobal.emailRecipient_senderEmail : txtBoxDirectoryEmail.Text;
+            interval = @String.IsNullOrEmpty(txtBoxDirectoryInterval.Text) ? DBGlobal.interval : txtBoxDirectoryInterval.Text;
+            size = @$"{(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? DBGlobal.maxSize.Split(" ")[0] : "") : txtBoxDirectoryMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? (String.IsNullOrEmpty(DBGlobal.maxSize.Split(" ")[0]) ? "" : DBGlobal.maxSize.Split(" ")[1]) : txtBoxDirectoryMaxSize.Text) : comBoxDirectorySizeUnits.Text)}";
+            linesString = @String.IsNullOrEmpty(txtBoxDirectoryMaxLines.Text) ? DBGlobal.maxLines.ToString() : txtBoxDirectoryMaxLines.Text;
             run = (Boolean)CheckBoxDirectoryTurnOn.IsChecked;
-
-            dbGlobal.Close();
 
             if (!Directory.Exists(path)) {
                 txtBoxDirectoryPath.Text = "Daná cesta nenalezena!";
@@ -511,25 +481,63 @@ namespace MonitoringProtokolu {
                 return;
             }
 
-            SQLiteConnection db = new SQLiteConnection(DBDirectoryPath);
-
             if (btnDirectoryAdd.Content.ToString() == "uložit") {
-                var DBSelectedRow = (DBDirectory)dataGridDirectory.SelectedItem;
-                db.Update(new DBDirectory(DBSelectedRow.id, path, email, interval, size, lines, run));
+                Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
+                db.Update(new Database(DBSelectedRow.id, path, email, interval, size, lines, run));
                 btnDirectoryAdd.Content = "Přidat";
             } else {
-                DBDirectory tmp = new DBDirectory(path, email, interval, size, lines, run);
-                db.Insert(tmp);
+                Database DBnewRow = new Database(path, email, interval, size, lines, run);
+                db.Insert(DBnewRow);
             }
             db.Close();
             btnDirectoryCancel_Click(sender, e);
-            loadDBDirectory();
+            loadDataGrids();
         }
 
         private Boolean checkAllFilled() {
             // tady se to bude kontrolovat, když se spustí zapnout
 
             return true;
+        }
+        public void CheckBoxFileTurnOn_Checked(object sender, RoutedEventArgs e) {
+            Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
+            if (DBSelectedRow == null) {
+                return;
+            }
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.emailRecipient_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, true));
+            db.Close();
+        }
+
+        public void CheckBoxFileTurnOn_Unchecked(object sender, RoutedEventArgs e) {
+            Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
+            if (DBSelectedRow == null) {
+                return;
+            }
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.emailRecipient_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, false));
+            db.Close();
+        }
+
+
+        public void CheckBoxDirectoryTurnOn_Checked(object sender, RoutedEventArgs e) {
+            Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
+            if (DBSelectedRow == null) {
+                return;
+            }
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.emailRecipient_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, true));
+            db.Close();
+        }
+
+        public void CheckBoxDirectoryTurnOn_Unchecked(object sender, RoutedEventArgs e) {
+            Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
+            if (DBSelectedRow == null) {
+                return;
+            }
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.emailRecipient_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, false));
+            db.Close();
         }
 
         private void btnGlobalSettingsSave_Click(object sender, RoutedEventArgs e) {
@@ -608,8 +616,8 @@ namespace MonitoringProtokolu {
                 System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
                 return;
             }
-            SQLiteConnection db = new SQLiteConnection(DBGlobalSettingsPath);
-            db.Update(new DBGlobalSettings(1, interval, size, lines, emailAddress, emailSubject, emailLines, logPath, tuningMode));
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            db.Update(new Database(1, interval, size, lines, emailAddress, emailSubject, emailLines, logPath, tuningMode));
             db.Close();
 
             loadGlobalSettings();
@@ -619,33 +627,36 @@ namespace MonitoringProtokolu {
             if (!smtpSave()) {
                 return;
             }
-            SQLiteConnection db = new SQLiteConnection(DBSmtpPath);
-            DBSmtp DB = db.Table<DBSmtp>().ElementAt(0);
-            SQLiteConnection dbGlobalConfig = new SQLiteConnection(DBGlobalSettingsPath);
-            DBGlobalSettings DBGlobalConfig = new DBGlobalSettings();
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            Database DB = db.Table<Database>().ElementAt(1);
+            Database DBGlobalConfig = new Database();
             try {
-                DBGlobalConfig = dbGlobalConfig.Table<DBGlobalSettings>().ElementAt(0);
+                DBGlobalConfig = db.Table<Database>().ElementAt(0);
             } catch (Exception) {
                 btnGlobalSettings_Click(sender, e);
                 txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný!";
                 return;
             }
+            try {
+                SmtpClient client = new SmtpClient(DB.host);
+                client.Port = DB.port;
+                client.Credentials = new NetworkCredential(DB.user, DB.password);
+                client.EnableSsl = DB.turnOn_tuningMode_SSL;
 
-            SmtpClient client = new SmtpClient(DB.host);
-            client.Port = DB.port;
-            client.Credentials = new NetworkCredential(DB.user, DB.password);
-            client.EnableSsl = DB.SSL;
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress(DB.emailRecipient_senderEmail);
+                message.To.Add(DBGlobalConfig.emailRecipient_senderEmail);
+                message.Subject = "Monitoring Protokolu";
+                message.Body = "Teto je test od Monitoringu Protokolu";
 
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress(DB.senderEmail);
-            message.To.Add(DBGlobalConfig.email);
-            message.Subject = "Monitoring Protokolu";
-            message.Body = "Teto je test od Monitoringu Protokolu";
+                client.Send(message);
+                System.Windows.MessageBox.Show("E-mail byl odeslán!");
+            } catch (SmtpException) {
+                System.Windows.MessageBox.Show("konfigurace byla uložena, ale E-mail nemohl být poslán!");
+            }
 
-            client.Send(message);
             db.Close();
-            dbGlobalConfig.Close();
-            System.Windows.MessageBox.Show("Email byl poslán!");
+
         }
 
         private Boolean smtpSave() {
@@ -699,8 +710,8 @@ namespace MonitoringProtokolu {
                 System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
                 return false;
             }
-            SQLiteConnection db = new SQLiteConnection(DBSmtpPath);
-            db.Update(new DBSmtp(1, senderEmail, user, password, host, port, SSL));
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            db.Update(new Database(2, senderEmail, user, password, host, port, SSL, true));
             db.Close();
 
             loadSmtp();
