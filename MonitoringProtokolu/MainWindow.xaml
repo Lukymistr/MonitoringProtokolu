@@ -75,8 +75,8 @@
             <!-- zavřít -->
             <Button x:Name="btnTitleBarExit"  Grid.Column="3" Content="&#10060;" Click="btnTitleBarExit_Click"/>
         </Grid>
+        <!-- samotný program -->
         <Grid Grid.Row="1">
-            <!-- samotný program -->
             <Grid.ColumnDefinitions>
                 <!-- levá strana - navigace -->
                 <ColumnDefinition Width="250" />
@@ -181,7 +181,7 @@
                     <Label x:Name="lblTime" Grid.Column="2" Content="8:23:31" HorizontalAlignment="Left"/>
                 </Grid>
                 <Border Grid.Row="7">
-                    <Button x:Name="btnTurnOnOff" Content="Zapnout monitoring"/>
+                    <Button x:Name="btnTurnOnOff" Content="Zapnout monitoring" Click="btnTurnOnOff_Click"/>
                 </Border>
                 <Border Grid.Row="8">
                     <Button x:Name="btnMinimize" Content="Minimalizovat" Click="btnMinimize_Click"/>

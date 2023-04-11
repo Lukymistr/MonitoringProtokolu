@@ -9,12 +9,8 @@ using SQLite;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Security.Policy;
-using System.Windows.Documents;
-using System.Windows.Shapes;
-using static System.Windows.Forms.LinkLabel;
-using System.Text;
+using System.Windows.Controls;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
@@ -184,37 +180,29 @@ namespace MonitoringProtokolu {
             Close();
         }
 
-        private void btnFiles_Click(object sender, RoutedEventArgs e) {
-            gridFile.Visibility = Visibility.Visible;
+        private void VisibilityHiddenOneVisible(Grid visibleGrid) {
+            gridFile.Visibility = Visibility.Hidden;
             gridDirectory.Visibility = Visibility.Hidden;
             gridGlobalSettings.Visibility = Visibility.Hidden;
             gridSMTP.Visibility = Visibility.Hidden;
+            visibleGrid.Visibility = Visibility.Visible;
+        }
+
+        private void btnFiles_Click(object sender, RoutedEventArgs e) {
+            VisibilityHiddenOneVisible(gridFile);
+            
         }
 
         private void btnDirectory_Click(object sender, RoutedEventArgs e) {
-            gridFile.Visibility = Visibility.Hidden;
-            gridDirectory.Visibility = Visibility.Visible;
-            gridGlobalSettings.Visibility = Visibility.Hidden;
-            gridSMTP.Visibility = Visibility.Hidden;
+            VisibilityHiddenOneVisible(gridDirectory);
         }
 
         private void btnGlobalSettings_Click(object sender, RoutedEventArgs e) {
-            gridFile.Visibility = Visibility.Hidden;
-            gridDirectory.Visibility = Visibility.Hidden;
-            gridGlobalSettings.Visibility = Visibility.Visible;
-            gridSMTP.Visibility = Visibility.Hidden;
+            VisibilityHiddenOneVisible(gridGlobalSettings);
         }
 
         private void btnSmtpSettings_Click(object sender, RoutedEventArgs e) {
-            gridFile.Visibility = Visibility.Hidden;
-            gridDirectory.Visibility = Visibility.Hidden;
-            gridGlobalSettings.Visibility = Visibility.Hidden;
-            gridSMTP.Visibility = Visibility.Visible;
-        }
-
-        private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
-            // vše vypnout / zapnout
-            if (!checkAllFilled()) { return; }; // nějaký chybový text
+            VisibilityHiddenOneVisible(gridSMTP);
         }
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e) {
@@ -494,11 +482,6 @@ namespace MonitoringProtokolu {
             loadDataGrids();
         }
 
-        private Boolean checkAllFilled() {
-            // tady se to bude kontrolovat, když se spustí zapnout
-
-            return true;
-        }
         public void CheckBoxFileTurnOn_Checked(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
             if (DBSelectedRow == null) {
@@ -541,6 +524,10 @@ namespace MonitoringProtokolu {
         }
 
         private void btnGlobalSettingsSave_Click(object sender, RoutedEventArgs e) {
+            GlobalSettingsSave(false);
+        }
+
+        private Boolean GlobalSettingsSave(Boolean onlyTry) {
             String interval, size, emailAddress, emailSubject, emailLinesString, logPath, linesString;
             int lines = int.MinValue, emailLines = int.MinValue;
             Boolean tuningMode, formated = true;
@@ -596,35 +583,40 @@ namespace MonitoringProtokolu {
                     }
                 }
             }
-            if (!String.IsNullOrEmpty(emailLinesString)) {
-                if (!Int32.TryParse(emailLinesString, out _)) {
+            if (!Int32.TryParse(emailLinesString, out _)) {
                     txtBoxGlobalSettingsEmailMaxLines.Text = "Nebylo zadáno číslo!";
                     formated = false;
                 } else {
                     emailLines = Int32.Parse(emailLinesString);
 
                 }
-            }
-            if (!String.IsNullOrEmpty(logPath)) {
                 if (!Directory.Exists(logPath)) {
                     txtBoxGlobalSettingslogPath.Text = "Daná cesta nenalezena!";
                     formated = false;
                 }
-            }
 
             if (!formated) {
                 System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
-                return;
+                if (onlyTry) {
+                    VisibilityHiddenOneVisible(gridGlobalSettings);
+                }
+                return false;
             }
+
+            if (onlyTry) {
+                return true;
+            }
+
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             db.Update(new Database(1, interval, size, lines, emailAddress, emailSubject, emailLines, logPath, tuningMode));
             db.Close();
 
             loadGlobalSettings();
+            return true;
         }
 
         private void btnSmtpSaveAndTry_Click(object sender, RoutedEventArgs e) {
-            if (!smtpSave()) {
+            if (!smtpSave(false)) {
                 return;
             }
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
@@ -659,7 +651,7 @@ namespace MonitoringProtokolu {
 
         }
 
-        private Boolean smtpSave() {
+        private Boolean smtpSave(Boolean onlyTry) {
             String senderEmail, user, password, host, portString;
             int port = int.MinValue;
             Boolean SSL, formated = true;
@@ -708,7 +700,13 @@ namespace MonitoringProtokolu {
 
             if (!formated) {
                 System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                if (onlyTry) {
+                    VisibilityHiddenOneVisible(gridSMTP);
+                }
                 return false;
+            }
+            if (onlyTry) {
+                return true;
             }
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             db.Update(new Database(2, senderEmail, user, password, host, port, SSL, true));
@@ -719,8 +717,32 @@ namespace MonitoringProtokolu {
         }
 
         private void btnSmtpSave_Click(object sender, RoutedEventArgs e) {
-            smtpSave();
+            smtpSave(false);
         }
 
+        private Boolean checkAllFilled() {
+            // tady se to bude kontrolovat, když se spustí zapnout
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            if (db.Table<Database>().Count() <= 2) {
+                System.Windows.MessageBox.Show("V databaázi není žádný prvek");
+                return false;
+            }
+            db.Close();
+
+            if (!smtpSave(true)) {
+                return false;
+            }
+
+            if (!GlobalSettingsSave(true)) {
+                return false;
+            }
+            return true;
+        }
+
+        private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
+                // vše vypnout / zapnout
+                if (!checkAllFilled()) { return; };
+            System.Windows.MessageBox.Show("vše ok");
+        }
     }
 }
