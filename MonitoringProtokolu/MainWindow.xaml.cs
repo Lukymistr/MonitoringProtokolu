@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Windows.Controls;
 using Microsoft.VisualBasic.ApplicationServices;
+using System.Text;
 
 namespace MonitoringProtokolu {
     public partial class MainWindow : Window {
@@ -61,7 +62,10 @@ namespace MonitoringProtokolu {
             txtBoxGlobalSettingsInterval.Text = DB.interval;
             if (!String.IsNullOrEmpty(DB.maxSize)) {
                 txtBoxGlobalSettingsMaxSize.Text = DB.maxSize.Split(" ")[0];
-                comBoxGlobalSettingsSizeUnits.Text = DB.maxSize.Split(" ")[1];
+                if (DB.maxSize.Split(" ").Length != 1) {
+                    comBoxGlobalSettingsSizeUnits.Text = DB.maxSize.Split(" ")[1];
+                }
+                
             }
             txtBoxGlobalSettingsMaxLines.Text = (DB.maxLines == int.MinValue) ? default : DB.maxLines.ToString();
             txtBoxGlobalSettingsEmailRecipient.Text = DB.emailRecipient_senderEmail;
@@ -190,7 +194,7 @@ namespace MonitoringProtokolu {
 
         private void btnFiles_Click(object sender, RoutedEventArgs e) {
             VisibilityHiddenOneVisible(gridFile);
-            
+
         }
 
         private void btnDirectory_Click(object sender, RoutedEventArgs e) {
@@ -269,7 +273,9 @@ namespace MonitoringProtokolu {
             txtBoxFileEmail.Text = DBSelectedRow.emailRecipient_senderEmail;
             txtBoxFileInterval.Text = DBSelectedRow.interval.ToString();
             txtBoxFileMaxSize.Text = DBSelectedRow.maxSize.Split(" ")[0];
-            comBoxFileSizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
+            if (DBSelectedRow.maxSize.Split(" ").Length != 1) {
+                comBoxFileSizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
+            }
             txtBoxFileMaxLines.Text = DBSelectedRow.maxLines.ToString();
             CheckBoxFileTurnOn.IsChecked = DBSelectedRow.turnOn_tuningMode_SSL;
 
@@ -390,7 +396,9 @@ namespace MonitoringProtokolu {
             txtBoxDirectoryEmail.Text = DBSelectedRow.emailRecipient_senderEmail;
             txtBoxDirectoryInterval.Text = DBSelectedRow.interval.ToString();
             txtBoxDirectoryMaxSize.Text = DBSelectedRow.maxSize.Split(" ")[0];
-            comBoxDirectorySizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
+            if (DBSelectedRow.maxSize.Split(" ").Length != 1) {
+                comBoxDirectorySizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
+            }
             txtBoxDirectoryMaxLines.Text = DBSelectedRow.maxLines.ToString();
             CheckBoxDirectoryTurnOn.IsChecked = DBSelectedRow.turnOn_tuningMode_SSL;
         }
@@ -586,16 +594,16 @@ namespace MonitoringProtokolu {
                 }
             }
             if (!Int32.TryParse(emailLinesString, out _)) {
-                    txtBoxGlobalSettingsEmailMaxLines.Text = "Nebylo zadáno číslo!";
-                    formated = false;
-                } else {
-                    emailLines = Int32.Parse(emailLinesString);
+                txtBoxGlobalSettingsEmailMaxLines.Text = "Nebylo zadáno číslo!";
+                formated = false;
+            } else {
+                emailLines = Int32.Parse(emailLinesString);
 
-                }
-                if (!Directory.Exists(logPath)) {
-                    txtBoxGlobalSettingslogPath.Text = "Daná cesta nenalezena!";
-                    formated = false;
-                }
+            }
+            if (!Directory.Exists(logPath)) {
+                txtBoxGlobalSettingslogPath.Text = "Daná cesta nenalezena!";
+                formated = false;
+            }
 
             if (!formated) {
                 System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
@@ -693,8 +701,8 @@ namespace MonitoringProtokolu {
                 formated = false;
             } else {
                 port = Int32.Parse(portString);
-                if (port == Int32.MinValue) {
-                    txtBoxSmtpPort.Text = "Nebylo zadáno číslo!";
+                if (port == Int32.MinValue || !(port >= 1 && port <= 65535)) {
+                    txtBoxSmtpPort.Text = "Nebylo zadáno správný port!";
                     formated = false;
                 }
             }
@@ -721,13 +729,31 @@ namespace MonitoringProtokolu {
         private void btnSmtpSave_Click(object sender, RoutedEventArgs e) {
             smtpSave(false);
         }
+        private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
+            Boolean running;
+            if (btnTurnOnOff.Content.ToString() == "Zapnout monitoring") {
+                running = true;
+            } else { 
+                running = false; 
+            }
+            OnOffMonitoring(running);
+        }
 
-        private Boolean checkAllFilled() {
-            // tady se to bude kontrolovat, když se spustí zapnout
+        /// <summary>
+        /// This support method check if every input is in corect format
+        /// </summary>
+        private Boolean checkAllFits() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             if (db.Table<Database>().Count() <= 2) {
-                System.Windows.MessageBox.Show("V databaázi není žádný prvek");
+                System.Windows.MessageBox.Show("V databázi není žádný prvek");
                 return false;
+            }
+            for (int i = 2; i < db.Table<Database>().Count(); i++) {
+                Database DB = db.Table<Database>().ElementAt(i);
+                if (!checkDatabase(DB, DB.path_logPath, DB.interval, DB.emailRecipient_senderEmail, DB.maxSize, DB.maxLines.ToString())) {
+                    return false;
+                }
+
             }
             db.Close();
 
@@ -744,10 +770,71 @@ namespace MonitoringProtokolu {
             return true;
         }
 
-        private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
-                // vše vypnout / zapnout
-                if (!checkAllFilled()) { return; };
-            System.Windows.MessageBox.Show("vše ok");
+        /// <summary>
+        /// This support method check if every cell in the rows in database is correct
+        /// </summary
+        private Boolean checkDatabase(Database DB, String path, String interval, String email, String size, String linesString) {
+            int lines;
+            String error = "našli se tyto chybné imputy: \n";
+
+            StringBuilder errorStringBuilder = new StringBuilder();
+
+            if (!(Directory.Exists(path) || File.Exists(path))) {
+                errorStringBuilder.AppendLine($"Daná cesta nenalezena: {DB.path_logPath}");
+
+            }
+            if (interval.Split(":").Length == 4) {
+                String[] tmpIntervalArray = interval.Split(":");
+                for (int i = 0; i < tmpIntervalArray.Length; i++) {
+                    if (!(tmpIntervalArray[i].Length == 2 && Int32.TryParse(tmpIntervalArray[i], out _))) {
+                        errorStringBuilder.AppendLine($"Nebyl zadán správný formát intervalu: {DB.interval}");
+                    }
+                }
+            } else {
+                errorStringBuilder.AppendLine($"Nebyl zadán správný formát intervalu: {DB.interval}");
+            }
+            try {
+                MailAddress mailAddress = new MailAddress(email);
+            } catch (FormatException) {
+                errorStringBuilder.AppendLine($"Nebyl zadán správný formát e-mailu: {DB.emailRecipient_senderEmail}");
+            } catch (System.ArgumentException) {
+                errorStringBuilder.AppendLine($"E-mail není platný: {DB.emailRecipient_senderEmail}");
+            }
+            if (!(Int32.TryParse(size.Split(" ")[0], out _) && size.Split(" ").Length == 2)) {
+                errorStringBuilder.AppendLine($"Nebylo zadáno číslo maximální velikosti: {DB.maxSize}");
+            } else {
+                if (Int32.Parse(size.Split(" ")[0]) == int.MinValue) {
+                    errorStringBuilder.AppendLine($"Nebylo zadáno číslo s jednotkami pro velikost: {DB.maxSize}");
+                }
+            }
+            if (!Int32.TryParse(linesString, out lines)) {
+                errorStringBuilder.AppendLine($"Nebylo zadáno číslo pro počet řádek: {DB.maxLines}");
+            } else {
+                if (lines == int.MinValue) {
+                    errorStringBuilder.AppendLine($"Nebylo zadáno číslo pro počet řádek: {DB.maxLines}");
+                }
+            }
+
+            error += errorStringBuilder.ToString();
+            if (error != "našli se tyto chybné imputy: \n") {
+                System.Windows.MessageBox.Show(error);
+                return false;
+            }
+            return true;
+        }
+
+        private void OnOffMonitoring(Boolean running) {
+            if (running) {
+                // vše zapnout
+                if (!checkAllFits()) { return; };
+                System.Windows.MessageBox.Show("Monitoring byl spuštěn");
+                btnTurnOnOff.Content = "Vypnout monitoring";
+            } else {
+                // vše ukončit
+                System.Windows.MessageBox.Show("Monitoring byl ukončen");
+                btnTurnOnOff.Content = "Zapnout monitoring";
+            }
+            
         }
     }
 }
