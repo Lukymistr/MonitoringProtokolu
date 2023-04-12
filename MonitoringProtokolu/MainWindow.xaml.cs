@@ -198,10 +198,12 @@ namespace MonitoringProtokolu {
         }
 
         private void btnGlobalSettings_Click(object sender, RoutedEventArgs e) {
+            loadGlobalSettings();
             VisibilityHiddenOneVisible(gridGlobalSettings);
         }
 
         private void btnSmtpSettings_Click(object sender, RoutedEventArgs e) {
+            loadSmtp();
             VisibilityHiddenOneVisible(gridSMTP);
         }
 
@@ -729,13 +731,16 @@ namespace MonitoringProtokolu {
             }
             db.Close();
 
+            loadGlobalSettings();
+            if (!GlobalSettingsSave(true)) {
+                return false;
+            }
+
+            loadSmtp();
             if (!smtpSave(true)) {
                 return false;
             }
 
-            if (!GlobalSettingsSave(true)) {
-                return false;
-            }
             return true;
         }
 
