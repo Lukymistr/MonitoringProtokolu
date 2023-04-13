@@ -827,11 +827,11 @@ namespace MonitoringProtokolu {
             if (running) {
                 // vše zapnout
                 if (!checkAllFits()) { return; };
-                System.Windows.MessageBox.Show("Monitoring byl spuštěn");
+                System.Windows.MessageBox.Show("Monitoring byl spuštěn"); // SMAZAT!!!
                 btnTurnOnOff.Content = "Vypnout monitoring";
             } else {
                 // vše ukončit
-                System.Windows.MessageBox.Show("Monitoring byl ukončen");
+                System.Windows.MessageBox.Show("Monitoring byl ukončen"); // SMAZAT!!!
                 btnTurnOnOff.Content = "Zapnout monitoring";
             }
             
