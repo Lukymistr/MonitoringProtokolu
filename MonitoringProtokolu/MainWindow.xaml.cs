@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net;
 using System.Windows.Controls;
-using Microsoft.VisualBasic.ApplicationServices;
 using System.Text;
 
 namespace MonitoringProtokolu {
@@ -20,6 +19,9 @@ namespace MonitoringProtokolu {
         private readonly static String DatabasePath = @$"{DBPath}/Database.db3";
         public MainWindow() {
             InitializeComponent();
+
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0 });
 
             gridFile.Visibility = Visibility.Visible;
@@ -729,14 +731,12 @@ namespace MonitoringProtokolu {
         private void btnSmtpSave_Click(object sender, RoutedEventArgs e) {
             smtpSave(false);
         }
+
+        private Boolean monitoringRunning = false;
         private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
-            Boolean running;
-            if (btnTurnOnOff.Content.ToString() == "Zapnout monitoring") {
-                running = true;
-            } else { 
-                running = false; 
-            }
-            OnOffMonitoring(running);
+            monitoringRunning = !monitoringRunning;
+            OnOffMonitoring(monitoringRunning);
+            
         }
 
         /// <summary>
@@ -825,16 +825,25 @@ namespace MonitoringProtokolu {
 
         private void OnOffMonitoring(Boolean running) {
             if (running) {
-                // vše zapnout
+                // celková kontrola před spuštěním
                 if (!checkAllFits()) { return; };
-                System.Windows.MessageBox.Show("Monitoring byl spuštěn"); // SMAZAT!!!
+                // vše zapnout
+                turnOn();
                 btnTurnOnOff.Content = "Vypnout monitoring";
             } else {
                 // vše ukončit
-                System.Windows.MessageBox.Show("Monitoring byl ukončen"); // SMAZAT!!!
+                turnOff();
                 btnTurnOnOff.Content = "Zapnout monitoring";
             }
             
+        }
+
+        private void turnOn() {
+            //System.Windows.MessageBox.Show("Monitoring byl spuštěn"); // SMAZAT!!!
+        }
+
+        private void turnOff() {
+            //System.Windows.MessageBox.Show("Monitoring byl ukončen"); // SMAZAT!!!
         }
     }
 }
