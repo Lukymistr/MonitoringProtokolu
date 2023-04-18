@@ -13,10 +13,19 @@ using System.Windows.Controls;
 using System.Text;
 
 namespace MonitoringProtokolu {
+    /// <summary>
+    /// The main window.
+    /// </summary>
     public partial class MainWindow : Window {
         NotifyIcon icon = new NotifyIcon();
         private readonly static String DBPath = @"./data";
         private readonly static String DatabasePath = @$"{DBPath}/Database.db3";
+
+        private Boolean monitoringRunning = false;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow() {
             InitializeComponent();
 
@@ -28,7 +37,7 @@ namespace MonitoringProtokolu {
 
             doSystrayIcon();
 
-            createDBPath();
+            createDatabaseDirectory();
 
             createDatabase();
 
@@ -42,6 +51,9 @@ namespace MonitoringProtokolu {
 
         }
 
+        /// <summary>
+        /// Creates the database.
+        /// </summary>
         private void createDatabase() {
             if (!File.Exists(DatabasePath)) {
                 SQLiteConnection db = new SQLiteConnection(DatabasePath);
@@ -50,6 +62,9 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Creates the global settings record in database.
+        /// </summary>
         private void createGlobalSettings() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             if (db.Table<Database>().Count() == 0) {
@@ -58,6 +73,9 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
+        /// <summary>
+        /// Loads the global settings.
+        /// </summary>
         private void loadGlobalSettings() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             Database DB = db.Table<Database>().ElementAt(0);
@@ -78,6 +96,9 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
+        /// <summary>
+        /// Creates the smtp record in database.
+        /// </summary>
         private void createSmtp() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             if (db.Table<Database>().Count() == 1) {
@@ -86,6 +107,9 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
+        /// <summary>
+        /// Loads the smtp.
+        /// </summary>
         private void loadSmtp() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             Database DB = db.Table<Database>().ElementAt(1);
@@ -98,7 +122,11 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
-        private void createDBPath() {
+
+        /// <summary>
+        /// Creates the database directory.
+        /// </summary>
+        private void createDatabaseDirectory() {
             if (!Directory.Exists(DBPath)) {
                 DirectoryInfo directory = new DirectoryInfo(DBPath);
                 directory.Create();
@@ -106,6 +134,9 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Loads the data grids with values from database.
+        /// </summary>
         private void loadDataGrids() {
             dataGridFile.Items.Clear();
             dataGridDirectory.Items.Clear();
@@ -122,18 +153,27 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
+        /// <summary>
+        /// Does the systray icon object.
+        /// </summary>
         private void doSystrayIcon() {
             icon.Icon = new Icon("icon.ico");
             icon.Text = "Monitoring Protokolu";
             icon.Visible = false;
-            icon.Click += new System.EventHandler(icon_Click);
+            icon.Click += new System.EventHandler(Icon_Click);
         }
 
-        private void icon_Click(object sender, System.EventArgs e) {
+        /// <summary>
+        /// When click on icon in systray.
+        /// </summary>
+        private void Icon_Click(object sender, System.EventArgs e) {
             Show();
             icon.Visible = false;
         }
 
+        /// <summary>
+        /// Window state changed.
+        /// </summary>
         private void Window_StateChanged(object sender, EventArgs e) {
             if (WindowState == WindowState.Maximized) {
                 WindowState = WindowState.Normal;
@@ -145,6 +185,9 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Mouse down in title bar.
+        /// </summary>
         private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ChangedButton == MouseButton.Left) {
                 if (e.ClickCount == 2) {
@@ -158,6 +201,9 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Changes the size of the window.
+        /// </summary>
         private void changeSize() {
             if (Width == SystemParameters.PrimaryScreenWidth && Height == SystemParameters.PrimaryScreenHeight) {
                 Width = MinWidth;
@@ -175,17 +221,31 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Button for window minimize.
+        /// </summary>
         private void btnTitleBarMinimize_Click(object sender, RoutedEventArgs e) {
             WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// Button for maximaze / minimalize the window.
+        /// </summary>
         private void btnTitleBarResize_Click(object sender, RoutedEventArgs e) {
             changeSize();
         }
+        /// <summary>
+        /// Button for ends running of the aplication
+        /// </summary>
         private void btnTitleBarExit_Click(object sender, RoutedEventArgs e) {
             Close();
         }
 
+
+        /// <summary>
+        /// Switch visibility of content.
+        /// </summary>
+        /// <param name="visibleGrid">The visible grid.</param>
         private void VisibilityHiddenOneVisible(Grid visibleGrid) {
             gridFile.Visibility = Visibility.Hidden;
             gridDirectory.Visibility = Visibility.Hidden;
@@ -194,34 +254,55 @@ namespace MonitoringProtokolu {
             visibleGrid.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Button that switches visibility to file content.
+        /// </summary>
         private void btnFiles_Click(object sender, RoutedEventArgs e) {
             VisibilityHiddenOneVisible(gridFile);
 
         }
 
+        /// <summary>
+        /// Button that switches visibility to directory content.
+        /// </summary>
         private void btnDirectory_Click(object sender, RoutedEventArgs e) {
             VisibilityHiddenOneVisible(gridDirectory);
         }
 
+        /// <summary>
+        /// Button that switches visibility to global settings content.
+        /// </summary>
         private void btnGlobalSettings_Click(object sender, RoutedEventArgs e) {
             loadGlobalSettings();
             VisibilityHiddenOneVisible(gridGlobalSettings);
         }
 
+        /// <summary>
+        /// Button that switches visibility to SMTP content.
+        /// </summary>
         private void btnSmtpSettings_Click(object sender, RoutedEventArgs e) {
             loadSmtp();
             VisibilityHiddenOneVisible(gridSMTP);
         }
 
+        /// <summary>
+        /// Button that minimize the window
+        /// </summary>
         private void btnMinimize_Click(object sender, RoutedEventArgs e) {
             Hide();
             icon.Visible = true;
         }
 
+        /// <summary>
+        /// Button that ends running of the aplication
+        /// </summary>
         private void btnExit_Click(object sender, RoutedEventArgs e) {
             Close();
         }
 
+        /// <summary>
+        /// Button that chooses file path.
+        /// </summary>
         private void btnFileChoosePath_Click(object sender, RoutedEventArgs e) {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog() {
                 Title = "Vybrat soubor",
@@ -234,6 +315,9 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Button that chooses directory path.
+        /// </summary>
         private void btnDirectoryChoosePath_Click(object sender, RoutedEventArgs e) {
             System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 
@@ -244,6 +328,9 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Button that chooses log file path.
+        /// </summary>
         private void btnGlobalSettingslogChoosePath_Click(object sender, RoutedEventArgs e) {
             System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 
@@ -254,11 +341,17 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Button that edits the content of the row in database.
+        /// </summary>
         private void btnFileEdit_Click(object sender, RoutedEventArgs e) {
             btnFileCopy_Click(sender, e);
             btnFileAdd.Content = "uložit";
         }
 
+        /// <summary>
+        /// Button that removes the row in database.
+        /// </summary>
         private void btnFileRemove_Click(object sender, RoutedEventArgs e) {
             if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
                 Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
@@ -269,6 +362,9 @@ namespace MonitoringProtokolu {
             }
         }
 
+        /// <summary>
+        /// Button that copies the content of the row in database into user input.
+        /// </summary>
         private void btnFileCopy_Click(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
             txtBoxFilePath.Text = DBSelectedRow.path_logPath;
@@ -283,6 +379,9 @@ namespace MonitoringProtokolu {
 
         }
 
+        /// <summary>
+        /// Button that removes all content from user inout.
+        /// </summary>
         private void btnFileCancel_Click(object sender, RoutedEventArgs e) {
             txtBoxFilePath.Text = null;
             txtBoxFileEmail.Text = null;
@@ -294,6 +393,9 @@ namespace MonitoringProtokolu {
             btnFileAdd.Content = "Přidat";
         }
 
+        /// <summary>
+        /// Button that adds the the row into database.
+        /// </summary>
         private void btnFileAdd_Click(object sender, RoutedEventArgs e) {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             Database DBGlobal = db.Table<Database>().ElementAt(0);
@@ -376,11 +478,17 @@ namespace MonitoringProtokolu {
 
         }
 
+        /// <summary>
+        /// Button that edits the content of the row in database.
+        /// </summary>
         private void btnDirectoryEdit_Click(object sender, RoutedEventArgs e) {
             btnDirectoryCopy_Click(sender, e);
             btnDirectoryAdd.Content = "uložit";
         }
 
+        /// <summary>
+        /// Button that removes the row in database.
+        /// </summary>
         private void btnDirectoryRemove_Click(object sender, RoutedEventArgs e) {
             if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
                 Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
@@ -392,6 +500,9 @@ namespace MonitoringProtokolu {
 
         }
 
+        /// <summary>
+        /// Button that copies the content of the row in database into user input.
+        /// </summary>
         private void btnDirectoryCopy_Click(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
             txtBoxDirectoryPath.Text = DBSelectedRow.path_logPath;
@@ -405,6 +516,9 @@ namespace MonitoringProtokolu {
             CheckBoxDirectoryTurnOn.IsChecked = DBSelectedRow.turnOn_tuningMode_SSL;
         }
 
+        /// <summary>
+        /// Button that removes all content from user inout.
+        /// </summary>
         private void btnDirectoryCancel_Click(object sender, RoutedEventArgs e) {
             txtBoxDirectoryPath.Text = null;
             txtBoxDirectoryEmail.Text = null;
@@ -417,6 +531,9 @@ namespace MonitoringProtokolu {
 
         }
 
+        /// <summary>
+        /// Button that adds the the row into database.
+        /// </summary>
         private void btnDirectoryAdd_Click(object sender, RoutedEventArgs e) {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             Database DBGlobal = db.Table<Database>().ElementAt(0);
@@ -494,6 +611,9 @@ namespace MonitoringProtokolu {
             loadDataGrids();
         }
 
+        /// <summary>
+        /// CheckBox that swaps the state to start monitoring that record.
+        /// </summary>
         public void CheckBoxFileTurnOn_Checked(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
             if (DBSelectedRow == null) {
@@ -504,6 +624,9 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
+        /// <summary>
+        /// CheckBox that swaps the state to do not start monitoring that record.
+        /// </summary>
         public void CheckBoxFileTurnOn_Unchecked(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
             if (DBSelectedRow == null) {
@@ -514,7 +637,9 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
-
+        /// <summary>
+        /// CheckBox that swaps the state to start monitoring that record.
+        /// </summary>
         public void CheckBoxDirectoryTurnOn_Checked(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
             if (DBSelectedRow == null) {
@@ -525,6 +650,9 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
+        /// <summary>
+        /// CheckBox that swaps the state to do not start monitoring that record.
+        /// </summary>
         public void CheckBoxDirectoryTurnOn_Unchecked(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
             if (DBSelectedRow == null) {
@@ -535,10 +663,18 @@ namespace MonitoringProtokolu {
             db.Close();
         }
 
+        /// <summary>
+        /// Button for saves the user input into first row in database.
+        /// </summary>
         private void btnGlobalSettingsSave_Click(object sender, RoutedEventArgs e) {
             GlobalSettingsSave(false);
         }
 
+        /// <summary>
+        /// Saves the user input into first row in database.
+        /// </summary>
+        /// <param name="onlyTry">Only checks values. Do not save them.</param>
+        /// <returns>Boolean if was saved</returns>
         private Boolean GlobalSettingsSave(Boolean onlyTry) {
             String interval, size, emailAddress, emailSubject, emailLinesString, logPath, linesString;
             int lines = int.MinValue, emailLines = int.MinValue;
@@ -627,6 +763,10 @@ namespace MonitoringProtokolu {
             return true;
         }
 
+
+        /// <summary>
+        /// Button for saves the user input into first row in database and tries the the SMTP configuration.
+        /// </summary>
         private void btnSmtpSaveAndTry_Click(object sender, RoutedEventArgs e) {
             if (!smtpSave(false)) {
                 return;
@@ -663,6 +803,11 @@ namespace MonitoringProtokolu {
 
         }
 
+        /// <summary>
+        /// Saves the user input into second row in database.
+        /// </summary>
+        /// <param name="onlyTry">Only checks values. Do not save them.</param>
+        /// <returns>Boolean if was saved</returns>
         private Boolean smtpSave(Boolean onlyTry) {
             String senderEmail, user, password, host, portString;
             int port = int.MinValue;
@@ -728,11 +873,16 @@ namespace MonitoringProtokolu {
             return true;
         }
 
+        /// <summary>
+        /// Button that Saves the user input into second row in database.
+        /// </summary>
         private void btnSmtpSave_Click(object sender, RoutedEventArgs e) {
             smtpSave(false);
         }
 
-        private Boolean monitoringRunning = false;
+        /// <summary>
+        /// Button that starts or ends monitoring.
+        /// </summary>
         private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
             monitoringRunning = !monitoringRunning;
             OnOffMonitoring(monitoringRunning);
@@ -740,7 +890,7 @@ namespace MonitoringProtokolu {
         }
 
         /// <summary>
-        /// This support method check if every input is in corect format
+        /// Checks if every input is in corect format
         /// </summary>
         private Boolean checkAllFits() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
@@ -771,7 +921,7 @@ namespace MonitoringProtokolu {
         }
 
         /// <summary>
-        /// This support method check if every cell in the rows in database is correct
+        /// Checks if every record in database is correct
         /// </summary
         private Boolean checkDatabase(Database DB, String path, String interval, String email, String size, String linesString) {
             int lines;
@@ -823,6 +973,11 @@ namespace MonitoringProtokolu {
             return true;
         }
 
+
+        /// <summary>
+        /// Starts or ends monitoring.
+        /// </summary>
+        /// <param name="running">Is already running.</param>
         private void OnOffMonitoring(Boolean running) {
             if (running) {
                 // celková kontrola před spuštěním
@@ -838,10 +993,16 @@ namespace MonitoringProtokolu {
             
         }
 
+        /// <summary>
+        /// turns the monitoring on.
+        /// </summary>
         private void turnOn() {
             //System.Windows.MessageBox.Show("Monitoring byl spuštěn"); // SMAZAT!!!
         }
 
+        /// <summary>
+        /// turns the monitoring off.
+        /// </summary>
         private void turnOff() {
             //System.Windows.MessageBox.Show("Monitoring byl ukončen"); // SMAZAT!!!
         }

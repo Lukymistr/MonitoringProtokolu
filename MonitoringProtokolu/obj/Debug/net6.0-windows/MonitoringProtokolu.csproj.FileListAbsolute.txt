@@ -1,8 +1,3 @@
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.exe
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.deps.json
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.runtimeconfig.json
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.dll
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.pdb
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.AssemblyReference.cache
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MainWindow.baml
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MainWindow.g.cs
@@ -13,32 +8,11 @@ C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokol
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.AssemblyInfoInputs.cache
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.AssemblyInfo.cs
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.CoreCompileInputs.cache
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.dll
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\refint\MonitoringProtokolu.dll
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.pdb
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.genruntimeconfig.cache
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\ref\MonitoringProtokolu.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.exe
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.deps.json
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.runtimeconfig.json
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.pdb
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.AssemblyReference.cache
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MainWindow.baml
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MainWindow.g.cs
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\App.g.cs
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu_MarkupCompile.cache
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.g.resources
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.AssemblyInfoInputs.cache
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.AssemblyInfo.cs
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.CoreCompileInputs.cache
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\refint\MonitoringProtokolu.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.pdb
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.genruntimeconfig.cache
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\ref\MonitoringProtokolu.dll
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.CopyComplete
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.exe
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.deps.json
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.runtimeconfig.json
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\MonitoringProtokolu.pdb
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLite-net.dll
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.batteries_v2.dll
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.nativelibrary.dll
@@ -57,22 +31,9 @@ C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokol
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-x86\native\e_sqlite3.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLite-net.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.batteries_v2.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.nativelibrary.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.core.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\SQLitePCLRaw.provider.dynamic_cdecl.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\alpine-x64\native\libe_sqlite3.so
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-arm\native\e_sqlite3.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-x64\native\e_sqlite3.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\bin\Debug\net6.0-windows\runtimes\win-x86\native\e_sqlite3.dll
-C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.CopyComplete
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.csproj.CopyComplete
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\refint\MonitoringProtokolu.dll
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.pdb
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu.genruntimeconfig.cache
+C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\ref\MonitoringProtokolu.dll
