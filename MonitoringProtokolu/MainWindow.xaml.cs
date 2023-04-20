@@ -11,6 +11,11 @@ using System.Net.Mail;
 using System.Net;
 using System.Windows.Controls;
 using System.Text;
+using System.Collections;
+using System.Threading;
+using System.Windows.Threading;
+using System.Timers;
+using System.Linq;
 
 namespace MonitoringProtokolu {
     /// <summary>
@@ -21,7 +26,7 @@ namespace MonitoringProtokolu {
         private readonly static String DBPath = @"./data";
         private readonly static String DatabasePath = @$"{DBPath}/Database.db3";
 
-        private Boolean monitoringRunning = false;
+        private bool monitoringRunning = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -85,7 +90,7 @@ namespace MonitoringProtokolu {
                 if (DB.maxSize.Split(" ").Length != 1) {
                     comBoxGlobalSettingsSizeUnits.Text = DB.maxSize.Split(" ")[1];
                 }
-                
+
             }
             txtBoxGlobalSettingsMaxLines.Text = (DB.maxLines == int.MinValue) ? default : DB.maxLines.ToString();
             txtBoxGlobalSettingsEmailRecipient.Text = DB.emailRecipient_senderEmail;
@@ -401,14 +406,14 @@ namespace MonitoringProtokolu {
             Database DBGlobal = db.Table<Database>().ElementAt(0);
             String path, email, interval, size, linesString;
             int lines;
-            Boolean run, formated = true;
+            bool run, formated = true;
 
             path = @txtBoxFilePath.Text;
             email = @String.IsNullOrEmpty(txtBoxFileEmail.Text) ? DBGlobal.emailRecipient_senderEmail : txtBoxFileEmail.Text;
             interval = @String.IsNullOrEmpty(txtBoxFileInterval.Text) ? DBGlobal.interval : txtBoxFileInterval.Text;
             size = @$"{(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? DBGlobal.maxSize.Split(" ")[0] : "") : txtBoxFileMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? (String.IsNullOrEmpty(DBGlobal.maxSize.Split(" ")[0]) ? "" : DBGlobal.maxSize.Split(" ")[1]) : txtBoxFileMaxSize.Text) : comBoxDirectorySizeUnits.Text)}";
             linesString = @String.IsNullOrEmpty(txtBoxFileMaxLines.Text) ? DBGlobal.maxLines.ToString() : txtBoxFileMaxLines.Text;
-            run = (Boolean)CheckBoxFileTurnOn.IsChecked;
+            run = (bool)CheckBoxFileTurnOn.IsChecked;
 
             if (!File.Exists(path)) {
                 txtBoxFilePath.Text = "Daná cesta nenalezena!";
@@ -539,14 +544,14 @@ namespace MonitoringProtokolu {
             Database DBGlobal = db.Table<Database>().ElementAt(0);
             String path, email, interval, size, linesString;
             int lines;
-            Boolean run, formated = true;
+            bool run, formated = true;
 
             path = @txtBoxDirectoryPath.Text;
             email = @String.IsNullOrEmpty(txtBoxDirectoryEmail.Text) ? DBGlobal.emailRecipient_senderEmail : txtBoxDirectoryEmail.Text;
             interval = @String.IsNullOrEmpty(txtBoxDirectoryInterval.Text) ? DBGlobal.interval : txtBoxDirectoryInterval.Text;
             size = @$"{(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? DBGlobal.maxSize.Split(" ")[0] : "") : txtBoxDirectoryMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? (String.IsNullOrEmpty(DBGlobal.maxSize.Split(" ")[0]) ? "" : DBGlobal.maxSize.Split(" ")[1]) : txtBoxDirectoryMaxSize.Text) : comBoxDirectorySizeUnits.Text)}";
             linesString = @String.IsNullOrEmpty(txtBoxDirectoryMaxLines.Text) ? DBGlobal.maxLines.ToString() : txtBoxDirectoryMaxLines.Text;
-            run = (Boolean)CheckBoxDirectoryTurnOn.IsChecked;
+            run = (bool)CheckBoxDirectoryTurnOn.IsChecked;
 
             if (!Directory.Exists(path)) {
                 txtBoxDirectoryPath.Text = "Daná cesta nenalezena!";
@@ -674,11 +679,11 @@ namespace MonitoringProtokolu {
         /// Saves the user input into first row in database.
         /// </summary>
         /// <param name="onlyTry">Only checks values. Do not save them.</param>
-        /// <returns>Boolean if was saved</returns>
-        private Boolean GlobalSettingsSave(Boolean onlyTry) {
+        /// <returns>bool if was saved</returns>
+        private bool GlobalSettingsSave(bool onlyTry) {
             String interval, size, emailAddress, emailSubject, emailLinesString, logPath, linesString;
             int lines = int.MinValue, emailLines = int.MinValue;
-            Boolean tuningMode, formated = true;
+            bool tuningMode, formated = true;
 
             interval = txtBoxGlobalSettingsInterval.Text;
             size = txtBoxGlobalSettingsMaxSize.Text;
@@ -687,7 +692,7 @@ namespace MonitoringProtokolu {
             emailSubject = txtBoxGlobalSettingsEmailSubject.Text;
             emailLinesString = txtBoxGlobalSettingsEmailMaxLines.Text;
             logPath = @txtBoxGlobalSettingslogPath.Text;
-            tuningMode = (Boolean)CheckBoxGlobalSettingsTuningMode.IsChecked;
+            tuningMode = (bool)CheckBoxGlobalSettingsTuningMode.IsChecked;
 
             if (!String.IsNullOrEmpty(interval)) {
                 if (interval.Split(":").Length == 4) {
@@ -807,18 +812,18 @@ namespace MonitoringProtokolu {
         /// Saves the user input into second row in database.
         /// </summary>
         /// <param name="onlyTry">Only checks values. Do not save them.</param>
-        /// <returns>Boolean if was saved</returns>
-        private Boolean smtpSave(Boolean onlyTry) {
+        /// <returns>Bool if was saved</returns>
+        private bool smtpSave(bool onlyTry) {
             String senderEmail, user, password, host, portString;
             int port = int.MinValue;
-            Boolean SSL, formated = true;
+            bool SSL, formated = true;
 
             senderEmail = txtBoxSmtpSenderEmail.Text;
             user = txtBoxSmtpUser.Text;
             password = txtBoxSmtpPassword.Text;
             host = txtBoxSmtpHost.Text;
             portString = txtBoxSmtpPort.Text;
-            SSL = (Boolean)CheckBoxSmtpSSL.IsChecked;
+            SSL = (bool)CheckBoxSmtpSSL.IsChecked;
 
 
             try {
@@ -884,17 +889,16 @@ namespace MonitoringProtokolu {
         /// Button that starts or ends monitoring.
         /// </summary>
         private void btnTurnOnOff_Click(object sender, RoutedEventArgs e) {
-            monitoringRunning = !monitoringRunning;
             OnOffMonitoring(monitoringRunning);
-            
+
         }
 
 
         /// <summary>
         /// Checks if every input is in corect format
         /// </summary>
-        /// <returns>Boolean if all fits</returns>
-        private Boolean checkAllFits() {
+        /// <returns>Bool if all fits</returns>
+        private bool checkAllFits() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             if (db.Table<Database>().Count() <= 2) {
                 System.Windows.MessageBox.Show("V databázi není žádný prvek");
@@ -925,7 +929,7 @@ namespace MonitoringProtokolu {
         /// <summary>
         /// Checks if every record in database is correct
         /// </summary
-        private Boolean checkDatabase(Database DB, String path, String interval, String email, String size, String linesString) {
+        private bool checkDatabase(Database DB, String path, String interval, String email, String size, String linesString) {
             int lines;
             String error = "našli se tyto chybné imputy: \n";
 
@@ -980,30 +984,43 @@ namespace MonitoringProtokolu {
         /// Starts or ends monitoring.
         /// </summary>
         /// <param name="running">Is already running.</param>
-        private void OnOffMonitoring(Boolean running) {
-            if (running) {
+        private void OnOffMonitoring(bool running) {
+            if (!running) {
                 // celková kontrola před spuštěním
                 if (!checkAllFits()) { return; };
+                monitoringRunning = !monitoringRunning;
                 // vše zapnout
-                turnOn();
+                Thread run = new Thread(turnOn);
+                run.Start();
                 btnTurnOnOff.Content = "Vypnout monitoring";
             } else {
                 // vše ukončit
+                monitoringRunning = !monitoringRunning;
                 turnOff();
                 btnTurnOnOff.Content = "Zapnout monitoring";
             }
-            
+
         }
 
         /// <summary>
         /// turns the monitoring on.
         /// </summary>
         private void turnOn() {
-            System.Windows.MessageBox.Show("Monitoring byl spuštěn"); // SMAZAT!!!
+            List<MonitoringRun> monitoringRuns = loadData();
+            for (int i = 0; i < monitoringRuns.Count; i++) {
+                int[] numbers = monitoringRuns[i].data.interval.Split(':').Select(int.Parse).ToArray();
+                int time = numbers[0] + numbers[1] * 60 + numbers[2] * 60 * 60 + numbers[3] * 60 * 60 * 60;
+                monitoringRuns[i].timer.Interval = TimeSpan.FromSeconds(time); // tady je chyba, Prynych určitě poradí ;)
+                monitoringRuns[i].timer.Tick += Timer_Tick;
+                monitoringRuns[i].timer.Start();
+                if (!monitoringRunning) {
+                    break;
+                }
+            }
+            while (monitoringRunning) {
+
+            }
             /*
-             * postupně vytahovat záznamy z databáze elementAt(2) - elementAt(n)
-             * pokud je checkBox true, tak to uložit někam i s boolean hodnotou o běhu, udělat třídu s boolean a řádkou
-             * až se to vše provede, tak pomocí
              * DispatcherTimer timer = new DispatcherTimer(); s časovač vzatého z řádky záznamu
              * udělat to časovač u všech. Všechny zapnout
              * volat metodu pri find jako new Thread
@@ -1011,11 +1028,34 @@ namespace MonitoringProtokolu {
              */
         }
 
+        private void Timer_Tick(object sender, EventArgs e) {
+            // TODO: potřebuji, aby to znalo monitoringRuns který to volá, pro ověření running.
+            // TODO: pokud running false, tak new Thread nové metody (něco jako check)
+            // TODO: pokud running true, tak nic
+            System.Windows.MessageBox.Show("kámo");
+        }
+
+        /// <summary>
+        /// loads the data from database.
+        /// </summary>
+        /// <returns>A list of enable protocols.</returns>
+        private List<MonitoringRun> loadData() {
+            List<MonitoringRun> monitoringRuns = new List<MonitoringRun>();
+            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            for (int i = 2; i < db.Table<Database>().Count(); i++) {
+                Database DB = db.Table<Database>().ElementAt(i);
+                if (DB.turnOn_tuningMode_SSL) {
+                    monitoringRuns.Add(new MonitoringRun(false, DB, new DispatcherTimer()));
+                }
+            }
+            return monitoringRuns;
+        }
+
         /// <summary>
         /// turns the monitoring off.
         /// </summary>
         private void turnOff() {
-            System.Windows.MessageBox.Show("Monitoring byl ukončen"); // SMAZAT!!!
+
         }
     }
 }

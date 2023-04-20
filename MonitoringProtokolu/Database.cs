@@ -13,7 +13,7 @@ namespace MonitoringProtokolu {
 
         public String maxSize { get; set; } // g: maxSize, 
         public int maxLines { get; set; } // g: maxLines, 
-        public Boolean turnOn_tuningMode_SSL { get; set; } // g: tuningMode, s: SSL
+        public bool turnOn_tuningMode_SSL { get; set; } // g: tuningMode, s: SSL
 
         // global
         // public String interval { get; set; }
@@ -35,7 +35,7 @@ namespace MonitoringProtokolu {
 
         public Database() { }
 
-        public Database(String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
+        public Database(String path, String email, String interval, String maxSize, int maxLines, bool turnOn) {
             this.path_logPath = path;
             this.emailRecipient_senderEmail = email;
             this.interval = interval;
@@ -44,7 +44,7 @@ namespace MonitoringProtokolu {
             this.turnOn_tuningMode_SSL = turnOn;
         }
 
-        public Database(String senderEmail, String user, String password, String host, int port, Boolean SSL, Boolean SMTP) {
+        public Database(String senderEmail, String user, String password, String host, int port, bool SSL, bool SMTP) {
             this.emailRecipient_senderEmail = senderEmail;
             this.user = user;
             this.password = password;
@@ -53,7 +53,7 @@ namespace MonitoringProtokolu {
             this.turnOn_tuningMode_SSL = SSL;
         }
 
-        public Database(int id, String path, String email, String interval, String maxSize, int maxLines, Boolean turnOn) {
+        public Database(int id, String path, String email, String interval, String maxSize, int maxLines, bool turnOn) {
             this.id = id;
             this.path_logPath = path;
             this.emailRecipient_senderEmail = email;
@@ -63,7 +63,7 @@ namespace MonitoringProtokolu {
             this.turnOn_tuningMode_SSL = turnOn;
         }
 
-        public Database(int id, String senderEmail, String user, String password, String host, int port, Boolean SSL, Boolean SMTP) {
+        public Database(int id, String senderEmail, String user, String password, String host, int port, bool SSL, bool SMTP) {
             this.id = id;
             this.emailRecipient_senderEmail = senderEmail;
             this.user = user;
@@ -73,7 +73,7 @@ namespace MonitoringProtokolu {
             this.turnOn_tuningMode_SSL = SSL;
         }
 
-        public Database(String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, Boolean tuningMode) {
+        public Database(String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, bool tuningMode) {
             this.interval = interval;
             this.maxSize = maxSize;
             this.maxLines = maxLines;
@@ -84,7 +84,7 @@ namespace MonitoringProtokolu {
             this.turnOn_tuningMode_SSL = tuningMode;
         }
 
-        public Database(int id, String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, Boolean tuningMode) {
+        public Database(int id, String interval, String maxSize, int maxLines, String email, String emailSubject, int emailLines, String logPath, bool tuningMode) {
             this.id = id;
             this.interval = interval;
             this.maxSize = maxSize;
