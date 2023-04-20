@@ -889,9 +889,11 @@ namespace MonitoringProtokolu {
             
         }
 
+
         /// <summary>
         /// Checks if every input is in corect format
         /// </summary>
+        /// <returns>Boolean if all fits</returns>
         private Boolean checkAllFits() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             if (db.Table<Database>().Count() <= 2) {
@@ -997,14 +999,23 @@ namespace MonitoringProtokolu {
         /// turns the monitoring on.
         /// </summary>
         private void turnOn() {
-            //System.Windows.MessageBox.Show("Monitoring byl spuštěn"); // SMAZAT!!!
+            System.Windows.MessageBox.Show("Monitoring byl spuštěn"); // SMAZAT!!!
+            /*
+             * postupně vytahovat záznamy z databáze elementAt(2) - elementAt(n)
+             * pokud je checkBox true, tak to uložit někam i s boolean hodnotou o běhu, udělat třídu s boolean a řádkou
+             * až se to vše provede, tak pomocí
+             * DispatcherTimer timer = new DispatcherTimer(); s časovač vzatého z řádky záznamu
+             * udělat to časovač u všech. Všechny zapnout
+             * volat metodu pri find jako new Thread
+             * zvít věci z needed
+             */
         }
 
         /// <summary>
         /// turns the monitoring off.
         /// </summary>
         private void turnOff() {
-            //System.Windows.MessageBox.Show("Monitoring byl ukončen"); // SMAZAT!!!
+            System.Windows.MessageBox.Show("Monitoring byl ukončen"); // SMAZAT!!!
         }
     }
 }
