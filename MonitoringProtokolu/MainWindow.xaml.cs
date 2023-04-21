@@ -1009,7 +1009,7 @@ namespace MonitoringProtokolu {
             List<MonitoringRun> monitoringRuns = loadData();
             for (int i = 0; i < monitoringRuns.Count; i++) {
                 int[] numbers = monitoringRuns[i].data.interval.Split(':').Select(int.Parse).ToArray();
-                int time = numbers[0] + numbers[1] * 60 + numbers[2] * 60 * 60 + numbers[3] * 60 * 60 * 60;
+                int time = numbers[3] + numbers[2] * 60 + numbers[1] * 60 * 60 + numbers[0] * 60 * 60 * 60;
                 monitoringRuns[i].timer.Interval = TimeSpan.FromSeconds(time); // tady je chyba, Prynych určitě poradí ;)
                 monitoringRuns[i].timer.Tick += Timer_Tick;
                 monitoringRuns[i].timer.Start();
