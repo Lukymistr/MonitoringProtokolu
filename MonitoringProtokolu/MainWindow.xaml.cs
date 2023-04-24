@@ -11,10 +11,8 @@ using System.Net.Mail;
 using System.Net;
 using System.Windows.Controls;
 using System.Text;
-using System.Collections;
 using System.Threading;
 using System.Windows.Threading;
-using System.Timers;
 using System.Linq;
 
 namespace MonitoringProtokolu {
@@ -243,6 +241,7 @@ namespace MonitoringProtokolu {
         /// Button for ends running of the aplication
         /// </summary>
         private void btnTitleBarExit_Click(object sender, RoutedEventArgs e) {
+            monitoringRunning = false;
             Close();
         }
 
@@ -302,6 +301,7 @@ namespace MonitoringProtokolu {
         /// Button that ends running of the aplication
         /// </summary>
         private void btnExit_Click(object sender, RoutedEventArgs e) {
+            monitoringRunning = false;
             Close();
         }
 
@@ -1010,7 +1010,7 @@ namespace MonitoringProtokolu {
             for (int i = 0; i < monitoringRuns.Count; i++) {
                 int[] numbers = monitoringRuns[i].data.interval.Split(':').Select(int.Parse).ToArray();
                 int time = numbers[3] + numbers[2] * 60 + numbers[1] * 60 * 60 + numbers[0] * 60 * 60 * 60;
-                monitoringRuns[i].timer.Interval = TimeSpan.FromSeconds(time); // tady je chyba, Prynych určitě poradí ;)
+                monitoringRuns[i].timer.Interval = TimeSpan.FromSeconds(time); // tady je chyba
                 monitoringRuns[i].timer.Tick += Timer_Tick;
                 monitoringRuns[i].timer.Start();
                 if (!monitoringRunning) {
@@ -1028,6 +1028,9 @@ namespace MonitoringProtokolu {
              */
         }
 
+        /// <summary>
+        /// ticks evokes (předělat)
+        /// </summary>
         private void Timer_Tick(object sender, EventArgs e) {
             // TODO: potřebuji, aby to znalo monitoringRuns který to volá, pro ověření running.
             // TODO: pokud running false, tak new Thread nové metody (něco jako check)
@@ -1055,7 +1058,7 @@ namespace MonitoringProtokolu {
         /// turns the monitoring off.
         /// </summary>
         private void turnOff() {
-
+            monitoringRunning = false;
         }
     }
 }
