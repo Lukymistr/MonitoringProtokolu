@@ -1011,15 +1011,14 @@ namespace MonitoringProtokolu {
                 int[] numbers = monitoringRuns[i].data.interval.Split(':').Select(int.Parse).ToArray();
                 int time = numbers[3] + numbers[2] * 60 + numbers[1] * 60 * 60 + numbers[0] * 60 * 60 * 60;
                 monitoringRuns[i].timer.Interval = TimeSpan.FromSeconds(time); // tady je chyba
-                monitoringRuns[i].timer.Tick += Timer_Tick;
+                monitoringRuns[i].timer.Tick += (sender, e) => myMethod(5);
                 monitoringRuns[i].timer.Start();
                 if (!monitoringRunning) {
                     break;
                 }
+                System.Windows.MessageBox.Show("počkej"); // dočasné řešení
             }
-            while (monitoringRunning) {
-
-            }
+            
             /*
              * DispatcherTimer timer = new DispatcherTimer(); s časovač vzatého z řádky záznamu
              * udělat to časovač u všech. Všechny zapnout
@@ -1031,10 +1030,8 @@ namespace MonitoringProtokolu {
         /// <summary>
         /// ticks evokes (předělat)
         /// </summary>
-        private void Timer_Tick(object sender, EventArgs e) {
-            // TODO: potřebuji, aby to znalo monitoringRuns který to volá, pro ověření running.
-            // TODO: pokud running false, tak new Thread nové metody (něco jako check)
-            // TODO: pokud running true, tak nic
+        private void myMethod(int idk) {
+            Console.WriteLine("kámo");
             System.Windows.MessageBox.Show("kámo");
         }
 
