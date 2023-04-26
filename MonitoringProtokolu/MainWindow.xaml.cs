@@ -91,7 +91,7 @@ namespace MonitoringProtokolu {
 
             }
             txtBoxGlobalSettingsMaxLines.Text = (DB.maxLines == int.MinValue) ? default : DB.maxLines.ToString();
-            txtBoxGlobalSettingsEmailRecipient.Text = DB.emailRecipient_senderEmail;
+            txtBoxGlobalSettingsEmailRecipient.Text = DB.recipientEmail_senderEmail;
             txtBoxGlobalSettingsEmailSubject.Text = DB.emailSubject;
             txtBoxGlobalSettingsEmailMaxLines.Text = (DB.emailLines == int.MinValue) ? default : DB.emailLines.ToString();
             txtBoxGlobalSettingslogPath.Text = DB.path_logPath;
@@ -116,7 +116,7 @@ namespace MonitoringProtokolu {
         private void loadSmtp() {
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
             Database DB = db.Table<Database>().ElementAt(1);
-            txtBoxSmtpSenderEmail.Text = DB.emailRecipient_senderEmail;
+            txtBoxSmtpSenderEmail.Text = DB.recipientEmail_senderEmail;
             txtBoxSmtpUser.Text = DB.user;
             txtBoxSmtpPassword.Text = DB.password;
             txtBoxSmtpHost.Text = DB.host;
@@ -373,7 +373,7 @@ namespace MonitoringProtokolu {
         private void btnFileCopy_Click(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
             txtBoxFilePath.Text = DBSelectedRow.path_logPath;
-            txtBoxFileEmail.Text = DBSelectedRow.emailRecipient_senderEmail;
+            txtBoxFileEmail.Text = DBSelectedRow.recipientEmail_senderEmail;
             txtBoxFileInterval.Text = DBSelectedRow.interval.ToString();
             txtBoxFileMaxSize.Text = DBSelectedRow.maxSize.Split(" ")[0];
             if (DBSelectedRow.maxSize.Split(" ").Length != 1) {
@@ -409,7 +409,7 @@ namespace MonitoringProtokolu {
             bool run, formated = true;
 
             path = @txtBoxFilePath.Text;
-            email = @String.IsNullOrEmpty(txtBoxFileEmail.Text) ? DBGlobal.emailRecipient_senderEmail : txtBoxFileEmail.Text;
+            email = @String.IsNullOrEmpty(txtBoxFileEmail.Text) ? DBGlobal.recipientEmail_senderEmail : txtBoxFileEmail.Text;
             interval = @String.IsNullOrEmpty(txtBoxFileInterval.Text) ? DBGlobal.interval : txtBoxFileInterval.Text;
             size = @$"{(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? DBGlobal.maxSize.Split(" ")[0] : "") : txtBoxFileMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxFileMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? (String.IsNullOrEmpty(DBGlobal.maxSize.Split(" ")[0]) ? "" : DBGlobal.maxSize.Split(" ")[1]) : txtBoxFileMaxSize.Text) : comBoxDirectorySizeUnits.Text)}";
             linesString = @String.IsNullOrEmpty(txtBoxFileMaxLines.Text) ? DBGlobal.maxLines.ToString() : txtBoxFileMaxLines.Text;
@@ -511,7 +511,7 @@ namespace MonitoringProtokolu {
         private void btnDirectoryCopy_Click(object sender, RoutedEventArgs e) {
             Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
             txtBoxDirectoryPath.Text = DBSelectedRow.path_logPath;
-            txtBoxDirectoryEmail.Text = DBSelectedRow.emailRecipient_senderEmail;
+            txtBoxDirectoryEmail.Text = DBSelectedRow.recipientEmail_senderEmail;
             txtBoxDirectoryInterval.Text = DBSelectedRow.interval.ToString();
             txtBoxDirectoryMaxSize.Text = DBSelectedRow.maxSize.Split(" ")[0];
             if (DBSelectedRow.maxSize.Split(" ").Length != 1) {
@@ -547,7 +547,7 @@ namespace MonitoringProtokolu {
             bool run, formated = true;
 
             path = @txtBoxDirectoryPath.Text;
-            email = @String.IsNullOrEmpty(txtBoxDirectoryEmail.Text) ? DBGlobal.emailRecipient_senderEmail : txtBoxDirectoryEmail.Text;
+            email = @String.IsNullOrEmpty(txtBoxDirectoryEmail.Text) ? DBGlobal.recipientEmail_senderEmail : txtBoxDirectoryEmail.Text;
             interval = @String.IsNullOrEmpty(txtBoxDirectoryInterval.Text) ? DBGlobal.interval : txtBoxDirectoryInterval.Text;
             size = @$"{(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? DBGlobal.maxSize.Split(" ")[0] : "") : txtBoxDirectoryMaxSize.Text)} {(String.IsNullOrEmpty(txtBoxDirectoryMaxSize.Text) ? ((!String.IsNullOrEmpty(DBGlobal.maxSize)) ? (String.IsNullOrEmpty(DBGlobal.maxSize.Split(" ")[0]) ? "" : DBGlobal.maxSize.Split(" ")[1]) : txtBoxDirectoryMaxSize.Text) : comBoxDirectorySizeUnits.Text)}";
             linesString = @String.IsNullOrEmpty(txtBoxDirectoryMaxLines.Text) ? DBGlobal.maxLines.ToString() : txtBoxDirectoryMaxLines.Text;
@@ -625,7 +625,7 @@ namespace MonitoringProtokolu {
                 return;
             }
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
-            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.emailRecipient_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, true));
+            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.recipientEmail_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, true));
             db.Close();
         }
 
@@ -638,7 +638,7 @@ namespace MonitoringProtokolu {
                 return;
             }
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
-            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.emailRecipient_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, false));
+            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.recipientEmail_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, false));
             db.Close();
         }
 
@@ -651,7 +651,7 @@ namespace MonitoringProtokolu {
                 return;
             }
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
-            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.emailRecipient_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, true));
+            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.recipientEmail_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, true));
             db.Close();
         }
 
@@ -664,7 +664,7 @@ namespace MonitoringProtokolu {
                 return;
             }
             SQLiteConnection db = new SQLiteConnection(DatabasePath);
-            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.emailRecipient_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, false));
+            db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.recipientEmail_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, false));
             db.Close();
         }
 
@@ -793,8 +793,8 @@ namespace MonitoringProtokolu {
                 client.EnableSsl = DB.turnOn_tuningMode_SSL;
 
                 MailMessage message = new MailMessage();
-                message.From = new MailAddress(DB.emailRecipient_senderEmail);
-                message.To.Add(DBGlobalConfig.emailRecipient_senderEmail);
+                message.From = new MailAddress(DB.recipientEmail_senderEmail);
+                message.To.Add(DBGlobalConfig.recipientEmail_senderEmail);
                 message.Subject = "Monitoring Protokolu";
                 message.Body = "Teto je test od Monitoringu Protokolu";
 
@@ -906,7 +906,7 @@ namespace MonitoringProtokolu {
             }
             for (int i = 2; i < db.Table<Database>().Count(); i++) {
                 Database DB = db.Table<Database>().ElementAt(i);
-                if (!checkDatabase(DB, DB.path_logPath, DB.interval, DB.emailRecipient_senderEmail, DB.maxSize, DB.maxLines.ToString())) {
+                if (!checkDatabase(DB, DB.path_logPath, DB.interval, DB.recipientEmail_senderEmail, DB.maxSize, DB.maxLines.ToString())) {
                     return false;
                 }
 
@@ -952,9 +952,9 @@ namespace MonitoringProtokolu {
             try {
                 MailAddress mailAddress = new MailAddress(email);
             } catch (FormatException) {
-                errorStringBuilder.AppendLine($"Nebyl zadán správný formát e-mailu: {DB.emailRecipient_senderEmail}");
+                errorStringBuilder.AppendLine($"Nebyl zadán správný formát e-mailu: {DB.recipientEmail_senderEmail}");
             } catch (System.ArgumentException) {
-                errorStringBuilder.AppendLine($"E-mail není platný: {DB.emailRecipient_senderEmail}");
+                errorStringBuilder.AppendLine($"E-mail není platný: {DB.recipientEmail_senderEmail}");
             }
             if (!(Int32.TryParse(size.Split(" ")[0], out _) && size.Split(" ").Length == 2)) {
                 errorStringBuilder.AppendLine($"Nebylo zadáno číslo maximální velikosti: {DB.maxSize}");
@@ -1011,10 +1011,10 @@ namespace MonitoringProtokolu {
                 int[] numbers = monitoringRun.data.interval.Split(':').Select(int.Parse).ToArray();
                 int time = numbers[3] + numbers[2] * 60 + numbers[1] * 60 * 60 + numbers[0] * 60 * 60 * 60;
                 monitoringRun.timer.Interval = TimeSpan.FromSeconds(time);
-                monitoringRun.timer.Tick += (sender, e) => myMethod(5);
+                monitoringRun.timer.Tick += (sender, e) => myMethod(monitoringRun.data);
                 monitoringRun.timer.Start();
             }
-            while (monitoringRunning) { } // funguje s bool monitoringRunning, ale problém je, že nefunguje časovač a volání metody myMethod
+            //while (monitoringRunning) { } // funguje s bool monitoringRunning, ale problém je, že nefunguje časovač a volání metody myMethod
             System.Windows.MessageBox.Show("počkej"); // nefunguje s bool monitoringRunning, ale dokud se okno nezavře, nedá se ok dole, tak časovač funguje
             // potřebuji řešení, která by fungovalo s bool monitoringRunning a zároveň fungoval časovač
         }
@@ -1022,14 +1022,13 @@ namespace MonitoringProtokolu {
         /// <summary>
         /// ticks evokes (předělat)
         /// </summary>
-        private void myMethod(int idk) {
-            Console.WriteLine("kámo");
-            System.Windows.MessageBox.Show("kámo");
+        private void myMethod(Database database) {
+            System.Windows.MessageBox.Show(database.path_logPath);
         }
 
         /// <summary>
         /// loads the data from database.
-        /// </summary>D
+        /// </summary>
         /// <returns>A list of enable protocols.</returns>
         private List<MonitoringRun> loadData() {
             List<MonitoringRun> monitoringRuns = new List<MonitoringRun>();

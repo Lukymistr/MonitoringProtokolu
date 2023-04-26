@@ -177,7 +177,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Poslední test:" HorizontalAlignment="Right"/>
-                    <Label x:Name="lblDate" Grid.Column="1" Content="23.03" HorizontalAlignment="Right"/>
+                    <Label x:Name="lblDate" Grid.Column="1" Content="23.03" HorizontalAlignment="Center"/>
                     <Label x:Name="lblTime" Grid.Column="2" Content="8:23:31" HorizontalAlignment="Left"/>
                 </Grid>
                 <Border Grid.Row="7">
@@ -555,7 +555,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding id}" Visibility="Hidden"/>
                                 <DataGridTextColumn Header="cesta" Binding="{Binding path_logPath}" Width="5*"/>
-                                <DataGridTextColumn Header="Notifikační e-mail" Binding="{Binding emailRecipient_senderEmail}" Width="2.5*"/>
+                                <DataGridTextColumn Header="Notifikační e-mail" Binding="{Binding recipientEmail_senderEmail}" Width="2.5*"/>
                                 <DataGridTextColumn Header="Interval" Binding="{Binding interval}" Width="1*" MaxWidth="110"/>
                                 <DataGridTextColumn Header="Limit velikosti" Binding="{Binding maxSize}" Width="1*" MaxWidth="125"/>
                                 <DataGridTextColumn Header="Limit řádek" Binding="{Binding maxLines}" Width="1*" MaxWidth="105"/>
@@ -739,7 +739,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding id}" Visibility="Hidden"/>
                                 <DataGridTextColumn Header="cesta" Binding="{Binding path_logPath}" Width="5*"/>
-                                <DataGridTextColumn Header="Notifikační e-mail" Binding="{Binding emailRecipient_senderEmail}" Width="2.5*"/>
+                                <DataGridTextColumn Header="Notifikační e-mail" Binding="{Binding recipientEmail_senderEmail}" Width="2.5*"/>
                                 <DataGridTextColumn Header="Interval" Binding="{Binding interval}" Width="1*" MaxWidth="110"/>
                                 <DataGridTextColumn Header="Limit velikosti" Binding="{Binding maxSize}" Width="1*" MaxWidth="125"/>
                                 <DataGridTextColumn Header="Limit řádek" Binding="{Binding maxLines}" Width="1*" MaxWidth="105"/>
