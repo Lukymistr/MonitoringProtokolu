@@ -1007,24 +1007,16 @@ namespace MonitoringProtokolu {
         /// </summary>
         private void turnOn() {
             List<MonitoringRun> monitoringRuns = loadData();
-            for (int i = 0; i < monitoringRuns.Count; i++) {
-                int[] numbers = monitoringRuns[i].data.interval.Split(':').Select(int.Parse).ToArray();
+            foreach (MonitoringRun monitoringRun in monitoringRuns) {
+                int[] numbers = monitoringRun.data.interval.Split(':').Select(int.Parse).ToArray();
                 int time = numbers[3] + numbers[2] * 60 + numbers[1] * 60 * 60 + numbers[0] * 60 * 60 * 60;
-                monitoringRuns[i].timer.Interval = TimeSpan.FromSeconds(time); // tady je chyba
-                monitoringRuns[i].timer.Tick += (sender, e) => myMethod(5);
-                monitoringRuns[i].timer.Start();
-                if (!monitoringRunning) {
-                    break;
-                }
-                System.Windows.MessageBox.Show("počkej"); // dočasné řešení
+                monitoringRun.timer.Interval = TimeSpan.FromSeconds(time);
+                monitoringRun.timer.Tick += (sender, e) => myMethod(5);
+                monitoringRun.timer.Start();
             }
-            
-            /*
-             * DispatcherTimer timer = new DispatcherTimer(); s časovač vzatého z řádky záznamu
-             * udělat to časovač u všech. Všechny zapnout
-             * volat metodu pri find jako new Thread
-             * zvít věci z needed
-             */
+            while (monitoringRunning) { } // funguje s bool monitoringRunning, ale problém je, že nefunguje časovač a volání metody myMethod
+            System.Windows.MessageBox.Show("počkej"); // nefunguje s bool monitoringRunning, ale dokud se okno nezavře, nedá se ok dole, tak časovač funguje
+            // potřebuji řešení, která by fungovalo s bool monitoringRunning a zároveň fungoval časovač
         }
 
         /// <summary>
@@ -1037,7 +1029,7 @@ namespace MonitoringProtokolu {
 
         /// <summary>
         /// loads the data from database.
-        /// </summary>
+        /// </summary>D
         /// <returns>A list of enable protocols.</returns>
         private List<MonitoringRun> loadData() {
             List<MonitoringRun> monitoringRuns = new List<MonitoringRun>();
