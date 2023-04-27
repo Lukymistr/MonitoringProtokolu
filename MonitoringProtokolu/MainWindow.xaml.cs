@@ -1030,8 +1030,9 @@ namespace MonitoringProtokolu {
                 return;
             }
             monitoringRun.running = true;
+            // vyhledávač (tree)
             System.Windows.MessageBox.Show(monitoringRun.data.path_logPath);
-            //monitoringRun.running = false;
+            monitoringRun.running = false;
         }
 
         /// <summary>
@@ -1054,7 +1055,10 @@ namespace MonitoringProtokolu {
         /// turns the monitoring off.
         /// </summary>
         private void turnOff() {
-            monitoringRuns = null; // zeptat se, jestli funguje
+            foreach (MonitoringRun monitoringRun in monitoringRuns) {
+                monitoringRun.timer.Stop();
+            }
+            monitoringRuns = null;
         }
     }
 }
