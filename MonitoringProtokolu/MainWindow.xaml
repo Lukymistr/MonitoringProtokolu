@@ -562,7 +562,7 @@
                                 <DataGridTemplateColumn Header="Zapnout" Width="1*" MaxWidth="80">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox Checked="CheckBoxFileTurnOn_Checked" Unchecked="CheckBoxFileTurnOn_Unchecked" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn_tuningMode_SSL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                            <CheckBox Checked="CheckBoxFileTurnOn_Checked" Unchecked="CheckBoxFileTurnOn_Unchecked" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn_SSL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -746,7 +746,7 @@
                                 <DataGridTemplateColumn Header="Zapnout" Width="1*" MaxWidth="80">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox Checked="CheckBoxDirectoryTurnOn_Checked" Unchecked="CheckBoxDirectoryTurnOn_Unchecked" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn_tuningMode_SSL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                            <CheckBox Checked="CheckBoxDirectoryTurnOn_Checked" Unchecked="CheckBoxDirectoryTurnOn_Unchecked" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding turnOn_SSL, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -811,12 +811,8 @@
                             <RowDefinition Height="5*"/>
                             <!-- Umístění log souboru -->
                             <RowDefinition Height="5*"/>
-                            <!-- Ladící režim -->
-                            <RowDefinition Height="5*"/>
-                            <!-- Ladící režim -popis -->
-                            <RowDefinition Height="4*"/>
                             <!-- jen aby to bylo hezké -->
-                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="14*"/>
                         </Grid.RowDefinitions>
                         <!-- levá strana -->
                         <Label Grid.Column="0" Grid.Row="0" Content="Interval testování"/>
@@ -826,7 +822,6 @@
                         <Label Grid.Column="0" Grid.Row="5" Content="Předmět e-mailu"/>
                         <Label Grid.Column="0" Grid.Row="6" Content="Maximální počet řádek v emailu"/>
                         <Label Grid.Column="0" Grid.Row="7" Content="Umístění log souboru"/>
-                        <Label Grid.Column="0" Grid.Row="8" Content="Ladící režim"/>
                         <!-- pravá strana -->
                         <TextBox x:Name="txtBoxGlobalSettingsInterval"  Grid.Column="2" Grid.Row="0"/>
                         <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="1" Content="Ve formátu DD:HH:MM:SS"/>
@@ -855,9 +850,6 @@
                             <TextBox x:Name="txtBoxGlobalSettingslogPath"  Grid.Column="0"/>
                             <Button x:Name="btnGlobalSettingslogChoosePath" Content="vybrat" Grid.Column="1" Click="btnGlobalSettingslogChoosePath_Click"/>
                         </Grid>
-
-                        <CheckBox x:Name="CheckBoxGlobalSettingsTuningMode"  Grid.Column="2" Grid.Row="8"/>
-                        <Label Style="{StaticResource info}" Grid.Column="2" Grid.Row="9" Content="Při zapnutí je podrobnější výpis do logu"/>
                     </Grid>
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>

@@ -33,34 +33,13 @@ namespace MonitoringProtokolu {
         // path for ini file
         static String iniFilePath = @"cfg/MonitoringProtokolu.ini";
 
-        private void btnStart_Click(object sender, EventArgs e) {
-            // have still running
-            if (!running) {
-
-                // new thread for finding
-                Thread t2 = new Thread(find);
-                t2.Start();
-            }
+        private void turnOn() {
+            tree(path, size, lines);
         }
 
-
-        private static void find() {
-            running = true;
-            end = false;
-            while (tree(path, size, lines)) {
-                MessageBox.Show("opakovani");
-                //globální perioda
-                timer = DateTime.UtcNow;
-                while (DateTime.UtcNow - timer < TimeSpan.FromMilliseconds(globalPeriod)) { // TODO: je to v milisekundách, ale v GUI jsou sekudy, změnit GUI
-                    if (end) {
-                        break;
-                    }
-                }
-            }
+        private void turnOff() {
             renameBack();
             foundFiles.clear();
-            running = false;
-
         }
 
         private static void renameAndAdd(String path) {
@@ -83,15 +62,14 @@ namespace MonitoringProtokolu {
         }
 
         // varialble for end loop if found
-        static private Boolean end = false;
 
 
 
         // will go through every file, if it is folder do it in that folder 
-        static private Boolean tree(String path, long size, int lines) {
+        static private void tree(String path, long size, int lines) {
             string[] files = Directory.GetFiles(path).Concat(Directory.GetDirectories(path)).ToArray();
             foreach (String @tmp in files) {
-                if (end) {
+                if (!running) {
                     break;
                 }
                 if (File.Exists(tmp)) {
@@ -99,18 +77,13 @@ namespace MonitoringProtokolu {
                         renameAndAdd(tmp);
                         sendMail(tmp);
                     }
-                    //souborová perioda
-                    timer = DateTime.UtcNow;
-                    while (DateTime.UtcNow - timer < TimeSpan.FromMilliseconds(period)) { // TODO: je to v milisekundách, ale v GUI jsou sekudy, změnit GUI
-                        if (end) {
-                            break;
-                        }
+                    if (!running) {
+                        break;
                     }
                 } else {
                     tree(tmp, size, lines);
                 }
             }
-            return !end;
         }
 
         private static Boolean haveSizeOrLines(String path, long size, int lines) {
@@ -174,5 +147,5 @@ namespace MonitoringProtokolu {
             }
         }
         */
-    }
+    }   
 }

@@ -34,7 +34,7 @@ namespace MonitoringProtokolu {
         /// <summary>
         /// Gets or sets a turn on monitoring or tuning mod activated or SSL is allowed.
         /// </summary>
-        public bool turnOn_tuningMode_SSL { get; set; } // g: tuningMode, s: SSL
+        public bool turnOn_SSL { get; set; } // s: SSL
 
         // global
         // public String interval { get; set; }
@@ -52,7 +52,6 @@ namespace MonitoringProtokolu {
         public int emailLines { get; set; } //
 
         // public String logPath { get; set; }
-        // public Boolean tuningMode { get; set; }
 
         // SMTP
         // public String senderEmail { get; set; }
@@ -96,7 +95,7 @@ namespace MonitoringProtokolu {
             this.interval = interval;
             this.maxSize = maxSize;
             this.maxLines = maxLines;
-            this.turnOn_tuningMode_SSL = turnOn;
+            this.turnOn_SSL = turnOn;
         }
 
         /// <summary>
@@ -117,7 +116,7 @@ namespace MonitoringProtokolu {
             this.interval = interval;
             this.maxSize = maxSize;
             this.maxLines = maxLines;
-            this.turnOn_tuningMode_SSL = turnOn;
+            this.turnOn_SSL = turnOn;
         }
 
         /// <summary>
@@ -137,7 +136,7 @@ namespace MonitoringProtokolu {
             this.password = password;
             this.host = host;
             this.port = port;
-            this.turnOn_tuningMode_SSL = SSL;
+            this.turnOn_SSL = SSL;
         }
 
         /// <summary>
@@ -159,7 +158,7 @@ namespace MonitoringProtokolu {
             this.password = password;
             this.host = host;
             this.port = port;
-            this.turnOn_tuningMode_SSL = SSL;
+            this.turnOn_SSL = SSL;
         }
 
         /// <summary>
@@ -173,8 +172,7 @@ namespace MonitoringProtokolu {
         /// <param name="emailSubject">The email subject.</param>
         /// <param name="emailLines">The email lines.</param>
         /// <param name="logPath">The log path.</param>
-        /// <param name="tuningMode">If true, tuning mode.</param>
-        public Database(String interval, String maxSize, int maxLines, String recipientEmail, String emailSubject, int emailLines, String logPath, bool tuningMode) {
+        public Database(String interval, String maxSize, int maxLines, String recipientEmail, String emailSubject, int emailLines, String logPath) {
             this.interval = interval;
             this.maxSize = maxSize;
             this.maxLines = maxLines;
@@ -182,7 +180,6 @@ namespace MonitoringProtokolu {
             this.emailSubject = emailSubject;
             this.emailLines = emailLines;
             this.path_logPath = logPath;
-            this.turnOn_tuningMode_SSL = tuningMode;
         }
 
         /// <summary>
@@ -197,8 +194,7 @@ namespace MonitoringProtokolu {
         /// <param name="emailSubject">The email subject.</param>
         /// <param name="emailLines">The email lines.</param>
         /// <param name="logPath">The log path.</param>
-        /// <param name="tuningMode">If true, tuning mode.</param>
-        public Database(int id, String interval, String maxSize, int maxLines, String recipientEmail, String emailSubject, int emailLines, String logPath, bool tuningMode) {
+        public Database(int id, String interval, String maxSize, int maxLines, String recipientEmail, String emailSubject, int emailLines, String logPath) {
             this.id = id;
             this.interval = interval;
             this.maxSize = maxSize;
@@ -207,7 +203,6 @@ namespace MonitoringProtokolu {
             this.emailSubject = emailSubject;
             this.emailLines = emailLines;
             this.path_logPath = logPath;
-            this.turnOn_tuningMode_SSL = tuningMode;
         }
     }
 }

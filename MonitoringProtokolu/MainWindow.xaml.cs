@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Threading;
 using System.Linq;
+using System.Security.Policy;
 
 namespace MonitoringProtokolu {
     /// <summary>
@@ -21,10 +22,12 @@ namespace MonitoringProtokolu {
     /// </summary>
     public partial class MainWindow : Window {
         NotifyIcon icon = new NotifyIcon();
-        private readonly static String DBPath = @"./data";
-        private readonly static String DatabasePath = @$"{DBPath}/Database.db3";
+        private readonly static String dBPath = @"./data";
+        private readonly static String databasePath = @$"{dBPath}/Database.db3";
+        private static String logPathGlobal;
 
-        private List<MonitoringRun> monitoringRuns;
+        private static List<MonitoringRun> monitoringRuns = new List<MonitoringRun>();
+        private static List<String> foundFiles = new List<String>();
         private bool monitoringRunning = false;
 
         /// <summary>
@@ -59,8 +62,8 @@ namespace MonitoringProtokolu {
         /// Creates the database.
         /// </summary>
         private void createDatabase() {
-            if (!File.Exists(DatabasePath)) {
-                SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            if (!File.Exists(databasePath)) {
+                SQLiteConnection db = new SQLiteConnection(databasePath);
                 db.CreateTable<Database>();
                 db.Close();
             }
@@ -70,9 +73,9 @@ namespace MonitoringProtokolu {
         /// Creates the global settings record in database.
         /// </summary>
         private void createGlobalSettings() {
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             if (db.Table<Database>().Count() == 0) {
-                db.Insert(new Database("", "", int.MinValue, "", "", int.MinValue, "", false));
+                db.Insert(new Database("", "", int.MinValue, "", "", int.MinValue, ""));
             }
             db.Close();
         }
@@ -81,7 +84,7 @@ namespace MonitoringProtokolu {
         /// Loads the global settings.
         /// </summary>
         private void loadGlobalSettings() {
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             Database DB = db.Table<Database>().ElementAt(0);
             txtBoxGlobalSettingsInterval.Text = DB.interval;
             if (!String.IsNullOrEmpty(DB.maxSize)) {
@@ -96,7 +99,7 @@ namespace MonitoringProtokolu {
             txtBoxGlobalSettingsEmailSubject.Text = DB.emailSubject;
             txtBoxGlobalSettingsEmailMaxLines.Text = (DB.emailLines == int.MinValue) ? default : DB.emailLines.ToString();
             txtBoxGlobalSettingslogPath.Text = DB.path_logPath;
-            CheckBoxGlobalSettingsTuningMode.IsChecked = DB.turnOn_tuningMode_SSL;
+            logPathGlobal = $"{DB.path_logPath}/log.txt";
             db.Close();
         }
 
@@ -104,7 +107,7 @@ namespace MonitoringProtokolu {
         /// Creates the smtp record in database.
         /// </summary>
         private void createSmtp() {
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             if (db.Table<Database>().Count() == 1) {
                 db.Insert(new Database("", "", "", "", int.MinValue, false, true));
             }
@@ -115,14 +118,14 @@ namespace MonitoringProtokolu {
         /// Loads the smtp.
         /// </summary>
         private void loadSmtp() {
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             Database DB = db.Table<Database>().ElementAt(1);
             txtBoxSmtpSenderEmail.Text = DB.recipientEmail_senderEmail;
             txtBoxSmtpUser.Text = DB.user;
             txtBoxSmtpPassword.Text = DB.password;
             txtBoxSmtpHost.Text = DB.host;
             txtBoxSmtpPort.Text = (DB.port == int.MinValue) ? default : DB.port.ToString();
-            CheckBoxSmtpSSL.IsChecked = DB.turnOn_tuningMode_SSL;
+            CheckBoxSmtpSSL.IsChecked = DB.turnOn_SSL;
             db.Close();
         }
 
@@ -131,8 +134,8 @@ namespace MonitoringProtokolu {
         /// Creates the database directory.
         /// </summary>
         private void createDatabaseDirectory() {
-            if (!Directory.Exists(DBPath)) {
-                DirectoryInfo directory = new DirectoryInfo(DBPath);
+            if (!Directory.Exists(dBPath)) {
+                DirectoryInfo directory = new DirectoryInfo(dBPath);
                 directory.Create();
                 directory.Attributes |= FileAttributes.Hidden;
             }
@@ -144,7 +147,7 @@ namespace MonitoringProtokolu {
         private void loadDataGrids() {
             dataGridFile.Items.Clear();
             dataGridDirectory.Items.Clear();
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             List<Database> DBs = db.Table<Database>().ToList();
             for (int i = 2; i < DBs.Count; i++) {
                 Database DB = DBs[i];
@@ -361,7 +364,7 @@ namespace MonitoringProtokolu {
         private void btnFileRemove_Click(object sender, RoutedEventArgs e) {
             if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
                 Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
-                SQLiteConnection db = new SQLiteConnection(DatabasePath);
+                SQLiteConnection db = new SQLiteConnection(databasePath);
                 db.Delete(DBSelectedRow);
                 db.Close();
                 loadDataGrids();
@@ -381,7 +384,7 @@ namespace MonitoringProtokolu {
                 comBoxFileSizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
             }
             txtBoxFileMaxLines.Text = DBSelectedRow.maxLines.ToString();
-            CheckBoxFileTurnOn.IsChecked = DBSelectedRow.turnOn_tuningMode_SSL;
+            CheckBoxFileTurnOn.IsChecked = DBSelectedRow.turnOn_SSL;
 
         }
 
@@ -403,7 +406,7 @@ namespace MonitoringProtokolu {
         /// Button that adds the the row into database.
         /// </summary>
         private void btnFileAdd_Click(object sender, RoutedEventArgs e) {
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             Database DBGlobal = db.Table<Database>().ElementAt(0);
             String path, email, interval, size, linesString;
             int lines;
@@ -498,7 +501,7 @@ namespace MonitoringProtokolu {
         private void btnDirectoryRemove_Click(object sender, RoutedEventArgs e) {
             if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
                 Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
-                SQLiteConnection db = new SQLiteConnection(DatabasePath);
+                SQLiteConnection db = new SQLiteConnection(databasePath);
                 db.Delete(DBSelectedRow);
                 db.Close();
                 loadDataGrids();
@@ -519,7 +522,7 @@ namespace MonitoringProtokolu {
                 comBoxDirectorySizeUnits.Text = DBSelectedRow.maxSize.Split(" ")[1];
             }
             txtBoxDirectoryMaxLines.Text = DBSelectedRow.maxLines.ToString();
-            CheckBoxDirectoryTurnOn.IsChecked = DBSelectedRow.turnOn_tuningMode_SSL;
+            CheckBoxDirectoryTurnOn.IsChecked = DBSelectedRow.turnOn_SSL;
         }
 
         /// <summary>
@@ -541,7 +544,7 @@ namespace MonitoringProtokolu {
         /// Button that adds the the row into database.
         /// </summary>
         private void btnDirectoryAdd_Click(object sender, RoutedEventArgs e) {
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             Database DBGlobal = db.Table<Database>().ElementAt(0);
             String path, email, interval, size, linesString;
             int lines;
@@ -625,7 +628,7 @@ namespace MonitoringProtokolu {
             if (DBSelectedRow == null) {
                 return;
             }
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.recipientEmail_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, true));
             db.Close();
         }
@@ -638,7 +641,7 @@ namespace MonitoringProtokolu {
             if (DBSelectedRow == null) {
                 return;
             }
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.recipientEmail_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, false));
             db.Close();
         }
@@ -651,7 +654,7 @@ namespace MonitoringProtokolu {
             if (DBSelectedRow == null) {
                 return;
             }
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.recipientEmail_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, true));
             db.Close();
         }
@@ -664,7 +667,7 @@ namespace MonitoringProtokolu {
             if (DBSelectedRow == null) {
                 return;
             }
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             db.Update(new Database(DBSelectedRow.id, DBSelectedRow.path_logPath, DBSelectedRow.recipientEmail_senderEmail, DBSelectedRow.interval, DBSelectedRow.maxSize, DBSelectedRow.maxLines, false));
             db.Close();
         }
@@ -684,7 +687,7 @@ namespace MonitoringProtokolu {
         private bool GlobalSettingsSave(bool onlyTry) {
             String interval, size, emailAddress, emailSubject, emailLinesString, logPath, linesString;
             int lines = int.MinValue, emailLines = int.MinValue;
-            bool tuningMode, formated = true;
+            bool formated = true;
 
             interval = txtBoxGlobalSettingsInterval.Text;
             size = txtBoxGlobalSettingsMaxSize.Text;
@@ -693,7 +696,6 @@ namespace MonitoringProtokolu {
             emailSubject = txtBoxGlobalSettingsEmailSubject.Text;
             emailLinesString = txtBoxGlobalSettingsEmailMaxLines.Text;
             logPath = @txtBoxGlobalSettingslogPath.Text;
-            tuningMode = (bool)CheckBoxGlobalSettingsTuningMode.IsChecked;
 
             if (!String.IsNullOrEmpty(interval)) {
                 if (interval.Split(":").Length == 4) {
@@ -761,8 +763,8 @@ namespace MonitoringProtokolu {
                 return true;
             }
 
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
-            db.Update(new Database(1, interval, size, lines, emailAddress, emailSubject, emailLines, logPath, tuningMode));
+            SQLiteConnection db = new SQLiteConnection(databasePath);
+            db.Update(new Database(1, interval, size, lines, emailAddress, emailSubject, emailLines, logPath));
             db.Close();
 
             loadGlobalSettings();
@@ -777,7 +779,7 @@ namespace MonitoringProtokolu {
             if (!smtpSave(false)) {
                 return;
             }
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             Database DB = db.Table<Database>().ElementAt(1);
             Database DBGlobalConfig = new Database();
             try {
@@ -787,11 +789,23 @@ namespace MonitoringProtokolu {
                 txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný!";
                 return;
             }
+            if (String.IsNullOrEmpty(DBGlobalConfig.recipientEmail_senderEmail)) {
+                try {
+                    MailAddress mailAddress = new MailAddress(DBGlobalConfig.recipientEmail_senderEmail);
+                } catch (FormatException) {
+                    txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný!";
+                } catch (System.ArgumentException) {
+                    txtBoxGlobalSettingsEmailRecipient.Text = "E-mail není platný!";
+                }
+                VisibilityHiddenOneVisible(gridGlobalSettings);
+                db.Close();
+                return;
+            }
             try {
                 SmtpClient client = new SmtpClient(DB.host);
                 client.Port = DB.port;
                 client.Credentials = new NetworkCredential(DB.user, DB.password);
-                client.EnableSsl = DB.turnOn_tuningMode_SSL;
+                client.EnableSsl = DB.turnOn_SSL;
 
                 MailMessage message = new MailMessage();
                 message.From = new MailAddress(DB.recipientEmail_senderEmail);
@@ -871,7 +885,7 @@ namespace MonitoringProtokolu {
             if (onlyTry) {
                 return true;
             }
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             db.Update(new Database(2, senderEmail, user, password, host, port, SSL, true));
             db.Close();
 
@@ -900,7 +914,7 @@ namespace MonitoringProtokolu {
         /// </summary>
         /// <returns>Bool if all fits</returns>
         private bool checkAllFits() {
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             if (db.Table<Database>().Count() <= 2) {
                 System.Windows.MessageBox.Show("V databázi není žádný prvek");
                 return false;
@@ -1004,14 +1018,14 @@ namespace MonitoringProtokolu {
         }
 
         /// <summary>
-        /// turns the monitoring on.
+        /// Turns the monitoring on.
         /// </summary>
 
         private void turnOn() {
             monitoringRuns = loadData();
             foreach (MonitoringRun monitoringRun in monitoringRuns) {
                 int[] numbers = monitoringRun.data.interval.Split(':').Select(int.Parse).ToArray();
-                int time = numbers[3] + numbers[2] * 60 + numbers[1] * 60 * 60 + numbers[0] * 60 * 60 * 60;
+                int time = numbers[3] + numbers[2] * 60 + numbers[1] * 60 * 60 + numbers[0] * 60 * 60 * 24;
 
                 System.Timers.Timer timer = new System.Timers.Timer(time * 1000);
                 timer.Elapsed += (sender, e) => Tick(monitoringRun);
@@ -1022,17 +1036,159 @@ namespace MonitoringProtokolu {
             }
         }
 
+
         /// <summary>
-        /// ticks evokes (předělat)
+        /// Runs the file check, if isnt already running
         /// </summary>
+        /// <param name="monitoringRun">The monitoring run.</param>
         private void Tick(MonitoringRun monitoringRun) {
             if (monitoringRun.running) {
                 return;
             }
             monitoringRun.running = true;
-            // vyhledávač (tree)
-            System.Windows.MessageBox.Show(monitoringRun.data.path_logPath);
+            tree(monitoringRun.timer.Enabled, monitoringRun.data.path_logPath, monitoringRun.maxSize, monitoringRun.data.maxLines, monitoringRun.data.recipientEmail_senderEmail);
             monitoringRun.running = false;
+        }
+
+
+        /// <summary>
+        /// Checks all files
+        /// </summary>
+        /// <param name="enabled">If true, enabled.</param>
+        /// <param name="path">The path.</param>
+        /// <param name="size">The max size.</param>
+        /// <param name="lines">The max lines.</param>
+        /// <param name="recipientEmail_senderEmail">The email recipient.</param>
+        private void tree(bool enabled, String path, long size, int lines, String recipientEmail_senderEmail) {
+            if (isFileInList(path)) {
+                return;
+            }
+            String[] files;
+            if (File.Exists(path)) {
+                files = new string[] { path };
+            } else {
+                files = Directory.GetFiles(path).Concat(Directory.GetDirectories(path)).ToArray();
+            }
+            foreach (String @file in files) {
+                if (!enabled) {
+                    break;
+                }
+                if (File.Exists(file)) {
+                    if (haveSizeOrLines(file, size, lines)) {
+                        sendMail(file, recipientEmail_senderEmail);
+                        foundFiles.Add(file);
+                        addLog(path, file, recipientEmail_senderEmail);
+                    }
+                    if (!enabled) {
+                        break;
+                    }
+                } else {
+                    tree(enabled, file, size, lines, recipientEmail_senderEmail);
+                }
+            }
+        }
+
+        /// <summary>
+        /// sends the mail.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="recipientEmail_senderEmail">The email recipient.</param>
+        private void sendMail(String file, String recipientEmail_senderEmail) {
+            SQLiteConnection db = new SQLiteConnection(databasePath);
+            Database DBGlobalConfig = db.Table<Database>().ElementAt(0); //GlobalConfig
+            Database DB = db.Table<Database>().ElementAt(1); //SMTP
+
+            try {
+                SmtpClient client = new SmtpClient(DB.host);
+                client.Port = DB.port;
+                client.Credentials = new NetworkCredential(DB.user, DB.password);
+                client.EnableSsl = DB.turnOn_SSL;
+
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress(DB.recipientEmail_senderEmail);
+                message.To.Add(recipientEmail_senderEmail);
+                message.Subject = DBGlobalConfig.emailSubject;
+                message.Body = bodyOfEmail(file);
+
+                client.Send(message);
+            } catch (SmtpException) {
+            }
+
+            db.Close();
+        }
+
+        /// <summary>
+        /// Adds a record of the sent mail to the log.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="to">The email recipient.</param>
+        private void addLog(String path, String name, String to) {
+            if (!File.Exists(logPathGlobal)) {
+                File.Create(logPathGlobal).Close();
+            }
+
+            String[] nameArray = name.Split("\\");
+            name = nameArray[nameArray.Length-1];
+
+            SQLiteConnection db = new SQLiteConnection(databasePath);
+            Database DBGlobalConfig = db.Table<Database>().ElementAt(1); //SMTP
+            String from = DBGlobalConfig.recipientEmail_senderEmail;
+            StreamWriter protocols = new StreamWriter(logPathGlobal, true);
+            if (new FileInfo(logPathGlobal).Length == 0) {
+                protocols.WriteLine($"date;time;name;path;to;from");
+            }
+            protocols.WriteLine($"{DateTime.Now.ToString("dd.MM.yyyy;HH:mm:ss")};{name};{path};{to};{from}");
+            protocols.Close();
+            db.Close();
+        }
+
+        /// <summary>
+        /// bodies the of email.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns>String body of the mail.</returns>
+        private String bodyOfEmail(String file) {
+            SQLiteConnection db = new SQLiteConnection(databasePath);
+            Database DBGlobalConfig = db.Table<Database>().ElementAt(0); //GlobalConfig
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(file);
+            sb.AppendLine();
+            string[] lines = File.ReadAllLines(file);
+            int limit = DBGlobalConfig.emailLines;
+            if (lines.Length < limit) {
+                limit = lines.Length;
+            }
+            for (int i = 0; i < limit; i++) {
+                sb.AppendLine(lines[i]);
+            }
+
+            db.Close();
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// have the size or lines.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="size">The max size.</param>
+        /// <param name="lines">The max lines.</param>
+        /// <returns>bool if have</returns>
+        private bool haveSizeOrLines(String path, long size, int lines) {
+            FileInfo fi = new FileInfo(path);
+            if ((fi.Length >= size || File.ReadLines(path).Count() >= lines) && !isFileInList(path)) {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Che
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns>bool if is</returns>
+        private Boolean isFileInList(String path) {
+                return foundFiles.Contains(path);
         }
 
         /// <summary>
@@ -1041,14 +1197,32 @@ namespace MonitoringProtokolu {
         /// <returns>A list of enable protocols.</returns>
         private List<MonitoringRun> loadData() {
             List<MonitoringRun> monitoringRuns = new List<MonitoringRun>();
-            SQLiteConnection db = new SQLiteConnection(DatabasePath);
+            SQLiteConnection db = new SQLiteConnection(databasePath);
             for (int i = 2; i < db.Table<Database>().Count(); i++) {
                 Database DB = db.Table<Database>().ElementAt(i);
-                if (DB.turnOn_tuningMode_SSL) {
-                    monitoringRuns.Add(new MonitoringRun(false, DB, new System.Timers.Timer()));
+                if (DB.turnOn_SSL) {
+                    monitoringRuns.Add(new MonitoringRun(false, DB, calculateSize(DB.maxSize), new System.Timers.Timer()));
                 }
             }
             return monitoringRuns;
+        }
+
+        /// <summary>
+        /// calculates the maximum size of file.
+        /// </summary>
+        /// <param name="maxSize">The max size.</param>
+        /// <returns>long calculated size</returns>
+        private long calculateSize(String maxSize) {
+            int size = Int32.Parse(maxSize.Split(" ")[0]);
+            switch (maxSize.Split(" ")[1]) {
+                case "B":
+                    return size;
+                case "KB":
+                    return size * 1024;
+                case "MB":
+                    return size * 1024 * 1024;
+            }
+            return size * 1024 * 1024 * 1024;
         }
 
         /// <summary>
@@ -1058,7 +1232,7 @@ namespace MonitoringProtokolu {
             foreach (MonitoringRun monitoringRun in monitoringRuns) {
                 monitoringRun.timer.Stop();
             }
-            monitoringRuns = null;
+            foundFiles = new List<string>();
         }
     }
 }
