@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "NFs0X9atEHf6Fs9+YUDfgbbF287fMtH0cGTE/qK622FUKjYnoOwGvBy5jhRuAGqyiNCsbs8CMVb4haqL9QhIMQ==",
+  "dgSpecHash": "Oio496nmUrtdybJpqdBCm65cjIrKVVxgb3KZAbrz1LnG448TVIl+nRJitl9NHBukE5s+cGAOj5jTt1YP76tv0w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lukym\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj",
+  "projectFilePath": "C:\\Users\\Lukáš Patejdl\\Documents\\GitHub\\MonitoringProtokolu\\MonitoringProtokolu\\MonitoringProtokolu.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Lukym\\.nuget\\packages\\sqlite-net-pcl\\1.8.116\\sqlite-net-pcl.1.8.116.nupkg.sha512",
-    "C:\\Users\\Lukym\\.nuget\\packages\\sqlitepclraw.bundle_green\\2.0.4\\sqlitepclraw.bundle_green.2.0.4.nupkg.sha512",
-    "C:\\Users\\Lukym\\.nuget\\packages\\sqlitepclraw.core\\2.0.4\\sqlitepclraw.core.2.0.4.nupkg.sha512",
-    "C:\\Users\\Lukym\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.4\\sqlitepclraw.lib.e_sqlite3.2.0.4.nupkg.sha512",
-    "C:\\Users\\Lukym\\.nuget\\packages\\sqlitepclraw.provider.dynamic_cdecl\\2.0.4\\sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512",
-    "C:\\Users\\Lukym\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+    "C:\\Users\\Lukáš Patejdl\\.nuget\\packages\\sqlite-net-pcl\\1.8.116\\sqlite-net-pcl.1.8.116.nupkg.sha512",
+    "C:\\Users\\Lukáš Patejdl\\.nuget\\packages\\sqlitepclraw.bundle_green\\2.0.4\\sqlitepclraw.bundle_green.2.0.4.nupkg.sha512",
+    "C:\\Users\\Lukáš Patejdl\\.nuget\\packages\\sqlitepclraw.core\\2.0.4\\sqlitepclraw.core.2.0.4.nupkg.sha512",
+    "C:\\Users\\Lukáš Patejdl\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.4\\sqlitepclraw.lib.e_sqlite3.2.0.4.nupkg.sha512",
+    "C:\\Users\\Lukáš Patejdl\\.nuget\\packages\\sqlitepclraw.provider.dynamic_cdecl\\2.0.4\\sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512",
+    "C:\\Users\\Lukáš Patejdl\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
   ],
   "logs": []
 }

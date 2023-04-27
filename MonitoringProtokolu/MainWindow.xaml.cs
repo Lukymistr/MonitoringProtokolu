@@ -24,6 +24,7 @@ namespace MonitoringProtokolu {
         private readonly static String DBPath = @"./data";
         private readonly static String DatabasePath = @$"{DBPath}/Database.db3";
 
+        private List<MonitoringRun> monitoringRuns;
         private bool monitoringRunning = false;
 
         /// <summary>
@@ -1005,25 +1006,32 @@ namespace MonitoringProtokolu {
         /// <summary>
         /// turns the monitoring on.
         /// </summary>
+
         private void turnOn() {
-            List<MonitoringRun> monitoringRuns = loadData();
+            monitoringRuns = loadData();
             foreach (MonitoringRun monitoringRun in monitoringRuns) {
                 int[] numbers = monitoringRun.data.interval.Split(':').Select(int.Parse).ToArray();
                 int time = numbers[3] + numbers[2] * 60 + numbers[1] * 60 * 60 + numbers[0] * 60 * 60 * 60;
-                monitoringRun.timer.Interval = TimeSpan.FromSeconds(time);
-                monitoringRun.timer.Tick += (sender, e) => myMethod(monitoringRun.data);
-                monitoringRun.timer.Start();
+
+                System.Timers.Timer timer = new System.Timers.Timer(time * 1000);
+                timer.Elapsed += (sender, e) => Tick(monitoringRun);
+                timer.AutoReset = true;
+                timer.Enabled = true;
+
+                monitoringRun.timer = timer;
             }
-            //while (monitoringRunning) { } // funguje s bool monitoringRunning, ale problém je, že nefunguje časovač a volání metody myMethod
-            System.Windows.MessageBox.Show("počkej"); // nefunguje s bool monitoringRunning, ale dokud se okno nezavře, nedá se ok dole, tak časovač funguje
-            // potřebuji řešení, která by fungovalo s bool monitoringRunning a zároveň fungoval časovač
         }
 
         /// <summary>
         /// ticks evokes (předělat)
         /// </summary>
-        private void myMethod(Database database) {
-            System.Windows.MessageBox.Show(database.path_logPath);
+        private void Tick(MonitoringRun monitoringRun) {
+            if (monitoringRun.running) {
+                return;
+            }
+            monitoringRun.running = true;
+            System.Windows.MessageBox.Show(monitoringRun.data.path_logPath);
+            //monitoringRun.running = false;
         }
 
         /// <summary>
@@ -1036,7 +1044,7 @@ namespace MonitoringProtokolu {
             for (int i = 2; i < db.Table<Database>().Count(); i++) {
                 Database DB = db.Table<Database>().ElementAt(i);
                 if (DB.turnOn_tuningMode_SSL) {
-                    monitoringRuns.Add(new MonitoringRun(false, DB, new DispatcherTimer()));
+                    monitoringRuns.Add(new MonitoringRun(false, DB, new System.Timers.Timer()));
                 }
             }
             return monitoringRuns;
@@ -1046,7 +1054,7 @@ namespace MonitoringProtokolu {
         /// turns the monitoring off.
         /// </summary>
         private void turnOff() {
-            monitoringRunning = false;
+            monitoringRuns = null; // zeptat se, jestli funguje
         }
     }
 }
