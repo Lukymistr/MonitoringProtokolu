@@ -36,6 +36,9 @@ namespace MonitoringProtokolu {
         public MainWindow() {
             InitializeComponent();
 
+            informationWindow idk = new informationWindow();
+            idk.ShowDialog();
+
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0 });
