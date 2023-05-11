@@ -10,12 +10,13 @@
         ResizeMode="NoResize"
         WindowState="Normal"
         BorderBrush="#dbdee1" 
-        BorderThickness="0.6"
-        Title="Chyba" Height="150" Width="400" Icon="/icon.ico">
+        BorderThickness="0.9"
+        WindowStartupLocation="CenterScreen"
+        Title="Chyba" Height="200" Width="450" Icon="/icon.ico">
     <Grid>
         <Grid.Resources>
             <Style TargetType="Grid">
-                <Setter Property="Background" Value="#2b2d31"/>
+                <Setter Property="Background" Value="#313338"/>
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
@@ -25,9 +26,6 @@
         <!-- tittle bar -->
         <Grid Grid.Row="0" x:Name="TitleBar" MouseDown="TitleBar_MouseDown">
             <Grid.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="Foreground" Value="#dbdee1"/>
-                </Style>
                 <Style TargetType="Button">
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="BorderBrush" Value="Transparent"/>
@@ -55,21 +53,13 @@
                 </Style>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
-                <!-- nadpis -->
-                <ColumnDefinition Width="auto"/>
                 <!-- prostor -->
                 <ColumnDefinition Width="*"/>
-                <!-- minimalizovat -->
-                <ColumnDefinition Width="35"/>
                 <!-- zavřít -->
                 <ColumnDefinition Width="35"/>
             </Grid.ColumnDefinitions>
-            <!-- nadpis -->
-            <Label HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Nesprávné údaje" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
-            <!-- minimalizovat -->
-            <Button x:Name="btnTitleBarMinimize"  Grid.Column="2" Content="🗕" FontSize="20" Margin="0,-17,0,0" Click="btnTitleBarMinimize_Click"/>
             <!-- zavřít -->
-            <Button x:Name="btnTitleBarExit"  Grid.Column="3" Content="&#10060;" Click="btnTitleBarExit_Click"/>
+            <Button x:Name="btnTitleBarExit"  Grid.Column="1" Content="&#10060;" Click="btnTitleBarExit_Click"/>
         </Grid>
         <Grid Grid.Row="1">
             <Border BorderBrush="Transparent">
@@ -81,7 +71,7 @@
                     <Grid.Resources>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="#81868f"/>
                             <Setter Property="Foreground" Value="#81868f"/>
                             <Setter Property="VerticalAlignment" Value="Stretch"/>
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -96,6 +86,7 @@
                                         </Border>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="#c7cacd"/>
                                                 <Setter Property="Background" Value="#36373d"/>
                                                 <Setter Property="Foreground" Value="#c7cacd"/>
                                             </Trigger>
@@ -105,9 +96,11 @@
                             </Setter>
                         </Style>
                     </Grid.Resources>
-                    <Label x:Name="lblMessage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,2,2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#81868f" FontSize="15"/>
-                    <Button x:Name="btnClose" Grid.Row="1" Margin="310,10,5,10" Content="Zavřít" Click="btnClose_Click"/>
-                </Grid>
+                    <Label Content="Vyplňte všechny hodnoty" x:Name="lblMessage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,2,2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#dbdee1" FontSize="25"/>
+                    <Grid Grid.Row="1" Background="#2b2d31">
+                        <Button x:Name="btnClose" Margin="310,10,5,10" Content="ok" Click="btnClose_Click" FontSize="20"/>
+                    </Grid>
+                    </Grid>
             </Border>
         </Grid>
     </Grid>

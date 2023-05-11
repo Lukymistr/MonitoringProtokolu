@@ -36,9 +36,6 @@ namespace MonitoringProtokolu {
         public MainWindow() {
             InitializeComponent();
 
-            informationWindow idk = new informationWindow();
-            idk.ShowDialog();
-
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 0 });
@@ -469,7 +466,9 @@ namespace MonitoringProtokolu {
             }
 
             if (!formated) {
-                System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                informationWindow iWindow = new informationWindow("Vyplňte prosím všechny hodnoty");
+                iWindow.ShowDialog();
+                iWindow.Close();
                 return;
             }
 
