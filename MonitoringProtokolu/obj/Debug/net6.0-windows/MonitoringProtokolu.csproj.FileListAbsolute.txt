@@ -79,3 +79,8 @@ C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debu
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\informationWindow.g.cs
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu_MarkupCompile.lref
 C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\informationWindow.baml
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\informationWindow.g.cs
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\MonitoringProtokolu_MarkupCompile.lref
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\informationWindow.baml
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\YesNoWindow.g.cs
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\YesNoWindow.baml

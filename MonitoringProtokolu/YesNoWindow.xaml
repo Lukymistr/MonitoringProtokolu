@@ -1,0 +1,113 @@
+﻿<Window x:Class="MonitoringProtokolu.YesNoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MonitoringProtokolu"
+        mc:Ignorable="d"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowState="Normal"
+        BorderBrush="#dbdee1" 
+        BorderThickness="0.9"
+        WindowStartupLocation="CenterScreen"
+        Title="Dotaz" Height="200" Width="450" Icon="/icon.ico">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Grid">
+                <Setter Property="Background" Value="#313338"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- tittle bar -->
+        <Grid Grid.Row="0" x:Name="TitleBar" MouseDown="TitleBar_MouseDown">
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#81868f"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#36373d"/>
+                                        <Setter Property="Foreground" Value="#c7cacd"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <!-- prostor -->
+                <ColumnDefinition Width="*"/>
+                <!-- zavřít -->
+                <ColumnDefinition Width="35"/>
+            </Grid.ColumnDefinitions>
+            <!-- zavřít -->
+            <Button x:Name="btnTitleBarExit"  Grid.Column="1" Content="&#10060;" Click="btnTitleBarExit_Click"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Border BorderBrush="Transparent">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="#81868f"/>
+                            <Setter Property="Foreground" Value="#81868f"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="#c7cacd"/>
+                                                <Setter Property="Background" Value="#36373d"/>
+                                                <Setter Property="Foreground" Value="#c7cacd"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
+                    <Label Content="Opravdu Smazat?" x:Name="lblMessage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,2,2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#dbdee1" FontSize="50"/>
+                    <Grid Grid.Row="1" Background="#2b2d31">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" x:Name="btnYes" Margin="5,10,5,10" Content="Ano" Click="btnYes_Click" FontSize="20"/>
+                        <Button Grid.Column="2" x:Name="btnNo" Margin="5,10,5,10" Content="Ne" Click="btnNo_Click" FontSize="20"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

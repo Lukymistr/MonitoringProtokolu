@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\obj\Debug\net6.0-windows\
 MonitoringProtokolu
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\Users\Lukáš Patejdl\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\App.xaml
-2-1710428497
+C:\Users\Lukym\Documents\GitHub\MonitoringProtokolu\MonitoringProtokolu\App.xaml
+3-598921034
 
-6-1762455872
-2081882897887
-informationWindow.xaml;MainWindow.xaml;
+7982677928
+208541756582
+InformationWindow.xaml;MainWindow.xaml;YesNoWindow.xaml;
 
 False
 

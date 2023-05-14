@@ -362,13 +362,18 @@ namespace MonitoringProtokolu {
         /// Button that removes the row in database.
         /// </summary>
         private void btnFileRemove_Click(object sender, RoutedEventArgs e) {
-            if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
+            YesNoWindow yesNoWindow = new YesNoWindow();
+            yesNoWindow.Owner = System.Windows.Application.Current.MainWindow;
+            yesNoWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            yesNoWindow.ShowDialog();
+            if (yesNoWindow.delete) {
                 Database DBSelectedRow = (Database)dataGridFile.SelectedItem;
                 SQLiteConnection db = new SQLiteConnection(databasePath);
                 db.Delete(DBSelectedRow);
                 db.Close();
                 loadDataGrids();
             }
+            yesNoWindow.Close();
         }
 
         /// <summary>
@@ -466,7 +471,9 @@ namespace MonitoringProtokolu {
             }
 
             if (!formated) {
-                informationWindow iWindow = new informationWindow("Vyplňte prosím všechny hodnoty");
+                InformationWindow iWindow = new InformationWindow("Vyplňte prosím všechny hodnoty", 25);
+                iWindow.Owner = System.Windows.Application.Current.MainWindow;
+                iWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 iWindow.ShowDialog();
                 iWindow.Close();
                 return;
@@ -501,13 +508,18 @@ namespace MonitoringProtokolu {
         /// Button that removes the row in database.
         /// </summary>
         private void btnDirectoryRemove_Click(object sender, RoutedEventArgs e) {
-            if (System.Windows.MessageBox.Show("Opravdu Smazat?", "Dotaz", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.No) {
+            YesNoWindow yesNoWindow = new YesNoWindow();
+            yesNoWindow.Owner = System.Windows.Application.Current.MainWindow;
+            yesNoWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            yesNoWindow.ShowDialog();
+            if (yesNoWindow.delete) {
                 Database DBSelectedRow = (Database)dataGridDirectory.SelectedItem;
                 SQLiteConnection db = new SQLiteConnection(databasePath);
                 db.Delete(DBSelectedRow);
                 db.Close();
                 loadDataGrids();
             }
+            yesNoWindow.Close();
 
         }
 
@@ -605,7 +617,11 @@ namespace MonitoringProtokolu {
             }
 
             if (!formated) {
-                System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                InformationWindow iWindow = new InformationWindow("Vyplňte prosím všechny hodnoty", 25);
+                iWindow.Owner = System.Windows.Application.Current.MainWindow;
+                iWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                iWindow.ShowDialog();
+                iWindow.Close();
                 return;
             }
 
@@ -754,7 +770,11 @@ namespace MonitoringProtokolu {
             }
 
             if (!formated) {
-                System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                InformationWindow iWindow = new InformationWindow("Vyplňte prosím všechny hodnoty", 25);
+                iWindow.Owner = System.Windows.Application.Current.MainWindow;
+                iWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                iWindow.ShowDialog();
+                iWindow.Close();
                 if (onlyTry) {
                     VisibilityHiddenOneVisible(gridGlobalSettings);
                 }
@@ -816,9 +836,17 @@ namespace MonitoringProtokolu {
                 message.Body = "Teto je test od Monitoringu Protokolu";
 
                 client.Send(message);
-                System.Windows.MessageBox.Show("E-mail byl odeslán!");
+                InformationWindow iWindow = new InformationWindow("E-mail byl odeslán!", 50);
+                iWindow.Owner = System.Windows.Application.Current.MainWindow;
+                iWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                iWindow.ShowDialog();
+                iWindow.Close();
             } catch (SmtpException) {
-                System.Windows.MessageBox.Show("konfigurace byla uložena, ale E-mail nemohl být poslán!");
+                InformationWindow iWindow = new InformationWindow("konfigurace byla uložena, ale E-mail nemohl být poslán!", 17);
+                iWindow.Owner = System.Windows.Application.Current.MainWindow;
+                iWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                iWindow.ShowDialog();
+                iWindow.Close();
             }
 
             db.Close();
@@ -878,7 +906,11 @@ namespace MonitoringProtokolu {
 
 
             if (!formated) {
-                System.Windows.MessageBox.Show("Vyplňte prosím všechny hodnoty");
+                InformationWindow iWindow = new InformationWindow("Vyplňte prosím všechny hodnoty", 25);
+                iWindow.Owner = System.Windows.Application.Current.MainWindow;
+                iWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                iWindow.ShowDialog();
+                iWindow.Close();
                 if (onlyTry) {
                     VisibilityHiddenOneVisible(gridSMTP);
                 }
@@ -918,7 +950,11 @@ namespace MonitoringProtokolu {
         private bool checkAllFits() {
             SQLiteConnection db = new SQLiteConnection(databasePath);
             if (db.Table<Database>().Count() <= 2) {
-                System.Windows.MessageBox.Show("V databázi není žádný prvek");
+                InformationWindow iWindow = new InformationWindow("V databázi není žádný prvek", 25);
+                iWindow.Owner = System.Windows.Application.Current.MainWindow;
+                iWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                iWindow.ShowDialog();
+                iWindow.Close();
                 return false;
             }
             for (int i = 2; i < db.Table<Database>().Count(); i++) {
@@ -990,7 +1026,11 @@ namespace MonitoringProtokolu {
 
             error += errorStringBuilder.ToString();
             if (error != "našli se tyto chybné imputy: \n") {
-                System.Windows.MessageBox.Show(error);
+                InformationWindow iWindow = new InformationWindow(error, 25);
+                iWindow.Owner = System.Windows.Application.Current.MainWindow;
+                iWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                iWindow.ShowDialog();
+                iWindow.Close();
                 return false;
             }
             return true;
